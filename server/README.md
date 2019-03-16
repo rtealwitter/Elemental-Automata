@@ -2,11 +2,11 @@
 
 ## Running
 
-Launch server with `npm run start`. By default the application is available at <http://localhost:3001>. Alternately, to enable hot reloading of changes to the server, you can use `npm run watch`.
+Launch server with `npm run start`. By default the application is available at <http://localhost:3001>. Alternately, to enable hot reloading of changes to the server, you can use `npm run watch`. In general, though, you should launch the client and server concurrently from the "top-level" package.
 
 ## Setup
 
-Run `npm install` to install the dependencies.
+You should install the dependencies from the "top-level" package as described in its README or via `npm install` in this directory.
 
 ## Development
 
@@ -20,17 +20,18 @@ npm test
 
 ### Linting with ESLint
 
-The server is configured with the [AirBnB ESLint rules](https://github.com/airbnb/javascript). You can run the linter with `npm run lint` or `npx eslint .`. Thee rules were installed with:
+The server is configured with the [AirBnB ESLint rules](https://github.com/airbnb/javascript). You can run the linter with `npm run lint` or `npx eslint .`. The rules were installed with:
 
 ```
 npx install-peerdeps --dev eslint-config-airbnb-base
+npm install --save-dev eslint-config-prettier
 ```
 
 and `.eslintrc.json` configured with:
 
 ```
 {
-  "extends": "airbnb-base",
+  "extends": ["airbnb-base", "prettier",
   "env": {
     "jest": true
   }

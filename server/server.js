@@ -21,5 +21,5 @@ if (process.env.NODE_ENV === 'production') {
 // TODO: Add your routes here
 
 module.exports = {
-  app,
+  app
 };

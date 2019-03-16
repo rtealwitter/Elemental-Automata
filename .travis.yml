@@ -1,15 +1,14 @@
 language: node_js
 node_js:
-  - "lts/carbon"
+  - "lts/dubnium"
 before_script:
   - export TZ=America/New_York
 install:
-    - npm install --prefix client
-    - npm install --prefix server
+    - npm ci --prefix client
+    - npm ci --prefix server
 cache:
   directories:
-    - client/node_modules
-    - server/node_modules
+    - $HOME/.npm
 script:
   - npm run build --prefix client
   - npm test --prefix client
