@@ -1,3 +1,9 @@
+# Travis CI Badge
+[![Build Status](https://travis-ci.com/csci312a-s19/fp-automata.svg?token=Vppsohpjy84DqDDTyGDZ&branch=master)](https://travis-ci.com/csci312a-s19/fp-automata)
+
+# Need We Address
+Need in the gaming community for online elemental automata with community sharing functionality.
+
 # Project Skeleton Top-level
 
 This repository combines the client and server into a single repository that can be co-developed, tested and ultimately deployed to Heroku or basin.cs.middlebury.edu.
