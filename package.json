@@ -1,8 +1,8 @@
 {
-  "name": "project",
+  "name": "automata",
   "version": "0.1.0",
   "private": true,
-  "description": "Describe your project",
+  "description": "Elemental automata game",
   "engines": {
     "node": "10.15.x"
   },
