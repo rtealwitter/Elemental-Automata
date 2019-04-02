@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Grid from './components/Grid.js';
+import Toolbox from './components/Toolbox';
 
 /* eslint-disable react/prefer-stateless-function */
 class App extends Component {
@@ -9,11 +11,10 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to your CS312 Project</h1>
+          <h1 className="App-title">Automata</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Grid />
+        <Toolbox />
       </div>
     );
   }
