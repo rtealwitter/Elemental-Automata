@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Grid from './components/Grid.js';
 import Toolbox from './components/Toolbox';
+import Sandbox from './components/Sandbox.js';
 
 /* eslint-disable react/prefer-stateless-function */
 class App extends Component {
@@ -13,8 +13,8 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Automata</h1>
         </header>
-        <Grid />
         <Toolbox />
+        <Sandbox size={5} />
       </div>
     );
   }
