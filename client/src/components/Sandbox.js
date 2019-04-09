@@ -1,43 +1,41 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
-import { Stage, Layer, Text } from 'react-konva';
+import { Stage, Layer } from 'react-konva';
 import Cell from './Cell.js';
 
 class Sandbox extends Component {
   constructor() {
     super();
-    this.state = { grid: null };
     this.initGrid = this.initGrid.bind(this);
+
+    this.state = { grid: this.initGrid() };
   }
+
   initGrid() {
-    let grid = [];
-    for (let i = 0; i < this.props.size; i++) {
-      let row = [];
-      for (let j = 0; i < this.props.size; j++) {
+    //const dimension = this.props.size;
+    const dimension = 3;
+    const grid = [];
+    for (let i = 0; i < dimension; i++) {
+      const row = [];
+      for (let j = 0; j < dimension; j++) {
         row[j] = [100 * j, 100 * i];
       }
       grid[i] = row;
     }
     return grid;
   }
+
   render() {
+    const { grid } = this.state;
     return (
       <Stage width={window.innerWidth} height={window.innerHeight}>
         <Layer>
-          <Text text="Try to drag a star" />
-          {[...Array(10)].map(i => (
-            <Cell
-              id={i}
-              x={Math.random() * window.innerWidth}
-              y={Math.random() * window.innerHeight}
-              d={50}
-            />
-          ))}
+          {grid.map(row =>
+            row.map(cell => <Cell x={cell[0]} y={cell[1]} d={50} />)
+          )}
         </Layer>
       </Stage>
     );
   }
 }
 
-render(<Sandbox />, document.getElementById('root'));
 export default Sandbox;
