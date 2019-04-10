@@ -41,5 +41,8 @@
       "prettier --single-quote --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "styled-components": "^4.2.0"
   }
 }
