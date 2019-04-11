@@ -12,12 +12,12 @@ class Sandbox extends Component {
 
   initGrid() {
     //const dimension = this.props.size;
-    const dimension = 3;
+    const dimension = 300;
     const grid = [];
     for (let i = 0; i < dimension; i++) {
       const row = [];
       for (let j = 0; j < dimension; j++) {
-        row[j] = [100 * j, 100 * i];
+        row[j] = [2 * j, 2 * i];
       }
       grid[i] = row;
     }
@@ -30,7 +30,14 @@ class Sandbox extends Component {
       <Stage width={window.innerWidth} height={window.innerHeight}>
         <Layer>
           {grid.map(row =>
-            row.map(cell => <Cell x={cell[0]} y={cell[1]} d={50} />)
+            row.map(cell => (
+              <Cell
+                x={cell[0]}
+                y={cell[1]}
+                d={2}
+                color={'#' + (((1 << 24) * Math.random()) | 0).toString(16)}
+              />
+            ))
           )}
         </Layer>
       </Stage>
