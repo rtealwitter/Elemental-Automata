@@ -15,7 +15,7 @@ class Cell extends Component {
         y={this.props.y}
         height={this.props.d}
         width={this.props.d}
-        fill="#89b717"
+        fill={this.props.color}
       />
     );
   }
