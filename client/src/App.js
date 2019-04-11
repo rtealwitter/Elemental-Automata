@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Grid from './components/Grid.js';
 import Toolbox from './components/Toolbox';
+import styled from 'styled-components';
 
 /* eslint-disable react/prefer-stateless-function */
 class App extends Component {

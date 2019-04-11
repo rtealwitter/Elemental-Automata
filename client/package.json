@@ -12,8 +12,12 @@
   },
   "keywords": [],
   "contributors": [
-    "Student1 <student1@middlebury.edu>",
-    "Student2 <student2@middlebury.edu>"
+    "Tenzin Dorjee <tdorjee@middlebury.edu>",
+    "Seamus Turco <sturco@middlebury.edu>",
+    "Matt Diener <mdiener@middlebury.edu>",
+    "Alex Berry <awberry@middlebury.edu>",
+    "Teal Witter <twitter@middlebury.edu",
+    "Jack Cattabiani <jcattabiani@middlebury.edu>"
   ],
   "license": "Apache-2.0",
   "dependencies": {

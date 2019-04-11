@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 // eslint-disable-next-line
 import Cell from './Cell.js';
-
+import styled from 'styled-components';
+const OuterDiv = styled.div`
+  display: inline-block;
+`;
 class Grid extends Component {
   constructor() {
     super();
@@ -9,9 +12,9 @@ class Grid extends Component {
   }
   render() {
     return (
-      <div>
+      <OuterDiv>
         <p>Grid</p>
-      </div>
+      </OuterDiv>
     );
   }
 }

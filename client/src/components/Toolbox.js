@@ -16,6 +16,11 @@ const Button = styled.button`
     color: #46a67b;
     border: 0.15em solid #46a67b;
   }
+  &:disabled {
+    background: white;
+    color: #46a67b;
+    border: 0.15em solid #46a67b;
+  }
 `;
 const ButtonDiv = styled.div`
   position: relative;
@@ -31,11 +36,12 @@ const ButtonDiv = styled.div`
 const BrushOptions = styled(ButtonDiv)`
   height: 2em;
 `;
-const circle0 = styled.div`
-  width: 3px;
-  height: auto;
-  background: white;
+const Circle0 = styled.div`
+  width: 10px;
+  height: 10px;
+  background: black;
   border-radius: 50%;
+  display: inline-block;
 `;
 const P = styled.p`
   position: relative;
@@ -46,6 +52,7 @@ const P = styled.p`
 `;
 
 const ToolbarDiv = styled.div`
+  display: inline-block;
   position: relative;
   width: 11em;
   height: 20em;
@@ -74,6 +81,15 @@ class Toolbox extends Component {
       SelectedElement: null,
       BrushSize: 10
     };
+    this.handleSizeChange = this.handleBrushChange.bind(this, 'BrushSize');
+    this.handleTypeChange = this.handleBrushChange.bind(
+      this,
+      'SelectedElement'
+    );
+  }
+  handleBrushChange(field, event) {
+    this.setState({ [field]: event.target.value });
+    // this is where we update the props
   }
   render() {
     return (
@@ -82,25 +98,31 @@ class Toolbox extends Component {
           <ElementTitle>Elements</ElementTitle>
           <Button
             type="button"
-            onClick={() => this.setState({ SelectedElement: 'Element0' })}
+            disabled={this.state.SelectedElement === 'Element0'}
+            onClick={this.handleTypeChange}
+            value="Element0"
           >
             Element0
           </Button>
           <Button
+            disabled={this.state.SelectedElement === 'Element1'}
             type="button"
-            onClick={() => this.setState({ SelectedElement: 'Element1' })}
+            onClick={this.handleTypeChange}
+            value="Element1"
           >
             Element1
           </Button>
           <Button
             type="button"
-            onClick={() => this.setState({ SelectedElement: 'Element1' })}
+            onClick={this.handleTypeChange}
+            value="Element2"
           >
             Element2
           </Button>
           <Button
             type="button"
-            onClick={() => this.setState({ SelectedElement: 'Element1' })}
+            onClick={this.handleTypeChange}
+            value="Element3"
           >
             Element3
           </Button>
@@ -108,7 +130,7 @@ class Toolbox extends Component {
         <BrushOptions>
           <P>
             &#128396;
-            <circle0 />
+            <Circle0 />
           </P>
         </BrushOptions>
         <SaveDiv>
