@@ -26,36 +26,59 @@ const ButtonDiv = styled.div`
   position: relative;
   margin: 5px auto;
   width: 10em;
-  height: 6.5em;
+  height: 6em;
   background: #46a67b;
   color: white;
   border: 0.1em solid #46a67b;
   border-radius: 0.5em;
 `;
 
-const BrushOptions = styled(ButtonDiv)`
+const BrushBG = styled(ButtonDiv)`
   height: 2em;
+  text-align: left;
+`;
+const BrushDiv = styled.div`
+  position: relative;
+  width: 11em;
+  top: 0.3em;
+  left: 0.4em;
+  font-size: 14px;
+`;
+const BrushSizes = styled.div`
+  position: relative;
+  display: inline;
+  top: 0.2em;
 `;
 const Circle0 = styled.div`
-  width: 10px;
-  height: 10px;
-  background: black;
+  width: 0.3em;
+  height: 0.23em;
+  background: white;
   border-radius: 50%;
   display: inline-block;
+  margin: 0.25em;
+  &:hover {
+    background: #c9f0dd;
+  }
 `;
-const P = styled.p`
-  position: relative;
-  height: 1em;
-  width: 8em;
-  right: 2em;
-  bottom: 0.5em;
+const Circle1 = styled(Circle0)`
+  width: 0.5em;
+  height: 0.5em;
 `;
-
+const Circle2 = styled(Circle0)`
+  width: 0.75em;
+  height: 0.75em;
+`;
+const Clear = styled(Button)`
+  display: inline;
+  width: 6em;
+  font-size: 12px;
+  margin: 0;
+`;
 const ToolbarDiv = styled.div`
   display: inline-block;
   position: relative;
   width: 11em;
-  height: 20em;
+  height: 13em;
   background: #c9f0dd;
   border: 0.25em solid #46a67b;
   border-radius: 0.5em;
@@ -63,7 +86,7 @@ const ToolbarDiv = styled.div`
 `;
 const ElementTitle = styled.h1`
   font-size: 19px;
-  margin: 10px auto 4px;
+  margin: 7px auto 4px;
 `;
 const SaveDiv = styled(ButtonDiv)`
   height: 3em;
@@ -127,12 +150,24 @@ class Toolbox extends Component {
             Element3
           </Button>
         </ButtonDiv>
-        <BrushOptions>
-          <P>
-            &#128396;
-            <Circle0 />
-          </P>
-        </BrushOptions>
+        <BrushBG>
+          <BrushDiv>
+            Size&emsp;
+            <BrushSizes>
+              <Circle0 />
+              <Circle1 />
+              <Circle2 />
+              &emsp;
+            </BrushSizes>
+            <Clear
+              type="button"
+              onClick="" // TODO: clear method
+              value="Clear"
+            >
+              Clear
+            </Clear>
+          </BrushDiv>
+        </BrushBG>
         <SaveDiv>
           <OptionButtons type="button">Save</OptionButtons>
           <OptionButtons type="button">Share</OptionButtons>
