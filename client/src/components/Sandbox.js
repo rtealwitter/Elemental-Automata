@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 import React, { Component } from 'react';
 import { Stage, Layer } from 'react-konva';
 import Cell from './Cell.js';
