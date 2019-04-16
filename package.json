@@ -45,8 +45,11 @@
   },
   "dependencies": {
     "konva": "^3.2.4",
+    "nodemon": "^1.18.11",
     "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-konva": "^16.8.6",
+    "react-scripts": "^2.1.8",
     "styled-components": "^4.2.0"
   }
 }
