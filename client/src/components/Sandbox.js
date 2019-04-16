@@ -7,12 +7,12 @@ class Sandbox extends Component {
     super();
     this.initGrid = this.initGrid.bind(this);
     this.state = {
-      grid: this.initGrid(),
+      grid: this.initGrid(window.innerHeight),
       diameter: window.innerHeight
     };
   }
 
-  initGrid() {
+  initGrid(diameter) {
     //const dimension = this.props.size;
     const dimension = 200;
     const grid = [];
@@ -21,8 +21,10 @@ class Sandbox extends Component {
       const row = [];
       for (let j = 0; j < dimension; j++) {
         row[j] = [
-          (window.innerHeight / 200) * j,
-          (window.innerHeight / 200) * i
+          //(window.innerHeight / dimension) * j,
+          //(window.innerHeight / dimension) * i
+          (diameter / dimension) * j,
+          (diameter / dimension) * i
         ];
       }
       grid[i] = row;
@@ -33,7 +35,10 @@ class Sandbox extends Component {
   //to scale with changing window size
   updateDimensions() {
     let update_diameter = window.innerHeight;
-    this.setState({ diameter: update_diameter });
+    this.setState({
+      diameter: update_diameter,
+      grid: this.initGrid(window.innerHeight)
+    });
   }
 
   componentDidMount() {
