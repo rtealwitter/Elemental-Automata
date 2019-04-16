@@ -77,14 +77,14 @@ const Clear = styled(Button)`
 `;
 const ToolbarDiv = styled.div`
   display: inline-block;
-  position: fixed;
+  position: sticky;
   width: 11em;
   height: 13em;
   background: #c9f0dd;
   border: 0.25em solid #46a67b;
   border-radius: 0.5em;
-  top: 0;
-  left: 37.5em;
+  bottom: 40em;
+  right: -3em;
 `;
 const ElementTitle = styled.h1`
   font-size: 19px;
