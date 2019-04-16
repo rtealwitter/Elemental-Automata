@@ -1,6 +1,12 @@
+/* eslint-disable prefer-template */
 import React, { Component } from 'react';
 import { Stage, Layer } from 'react-konva';
 import Cell from './Cell.js';
+import styled from 'styled-components';
+
+const Div = styled.div`
+  display: inline-block;
+`;
 
 class Sandbox extends Component {
   constructor() {
@@ -59,20 +65,23 @@ class Sandbox extends Component {
   render() {
     const { grid } = this.state;
     return (
-      <Stage width={this.state.diameter} height={this.state.diameter}>
-        <Layer>
-          {grid.map(row =>
-            row.map(cell => (
-              <Cell
-                x={cell[0]}
-                y={cell[1]}
-                d={this.state.diameter / 200}
-                color={'#' + (((1 << 24) * Math.random()) | 0).toString(16)}
-              />
-            ))
-          )}
-        </Layer>
-      </Stage>
+      <Div>
+        <Stage width={this.state.diameter} height={this.state.diameter}>
+          <Layer>
+            {grid.map(row =>
+              row.map(cell => (
+                <Cell
+                  x={cell[0]}
+                  y={cell[1]}
+                  d={this.state.diameter / 200}
+                  color={'#' + (((1 << 24) * Math.random()) | 0).toString(16)}
+                />
+              ))
+            )}
+          </Layer>
+        </Stage>
+      </Div>
+
     );
   }
 }

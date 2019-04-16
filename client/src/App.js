@@ -8,8 +8,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Toolbox />
         <Sandbox size={5} />
+        <Toolbox />
       </div>
     );
   }
