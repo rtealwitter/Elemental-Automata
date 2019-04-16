@@ -20,12 +20,7 @@ class Sandbox extends Component {
     for (let i = 0; i < dimension; i++) {
       const row = [];
       for (let j = 0; j < dimension; j++) {
-        row[j] = [
-          //(window.innerHeight / dimension) * j,
-          //(window.innerHeight / dimension) * i
-          (diameter / dimension) * j,
-          (diameter / dimension) * i
-        ];
+        row[j] = [(diameter / dimension) * j, (diameter / dimension) * i];
       }
       grid[i] = row;
     }
@@ -34,10 +29,21 @@ class Sandbox extends Component {
 
   //to scale with changing window size
   updateDimensions() {
+    console.log(window.innerHeight);
     let update_diameter = window.innerHeight;
+    let dimension = 200;
+    let grid = this.state.grid;
+    for (let i = 0; i < dimension; i++) {
+      for (let j = 0; j < dimension; j++) {
+        grid[j][i] = [
+          (update_diameter / dimension) * j,
+          (update_diameter / dimension) * i
+        ];
+      }
+    }
     this.setState({
-      diameter: update_diameter,
-      grid: this.initGrid(window.innerHeight)
+      diameter: update_diameter
+      //grid: this.initGrid(window.innerHeight)
     });
   }
 
