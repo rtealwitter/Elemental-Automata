@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 const Div = styled.div`
   display: inline-block;
-  marginside: 0;
 `;
 
 const Void = { name: 'void', color: '#D3D3D3' };
