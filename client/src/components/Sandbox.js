@@ -9,6 +9,10 @@ const Div = styled.div`
   marginside: 0;
 `;
 
+const Void = { name: 'void', color: '#D3D3D3' };
+const Rock = { name: 'rock', color: '#A9A9A9' };
+const ElementArray = [Void, Rock];
+
 class Sandbox extends Component {
   constructor() {
     super();
@@ -47,7 +51,7 @@ class Sandbox extends Component {
             x: (window.innerWidth / dimension) * j,
             y: (window.innerHeight / dimension) * i
           },
-          grid ? { color: '#20b2aa' } : grid[i][j]
+          grid ? { element: 'void' } : grid[i][j]
         );
       }
       newGrid[i] = newRow;
@@ -79,7 +83,9 @@ class Sandbox extends Component {
                   y={cell.y}
                   dx={window.innerWidth / dimension}
                   dy={window.innerHeight / dimension}
-                  color={cell.color}
+                  color={
+                    ElementArray.find(elem => elem.name === cell.element).color
+                  }
                 />
               ))
             )}
