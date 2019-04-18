@@ -8,6 +8,9 @@ const Div = styled.div`
   display: inline-block;
 `;
 
+//# of rows:
+const dimension = 100;
+
 class Sandbox extends Component {
   constructor() {
     super();
@@ -20,7 +23,6 @@ class Sandbox extends Component {
 
   initGrid(diameter) {
     //const dimension = this.props.size;
-    const dimension = 200;
     const grid = [];
 
     for (let i = 0; i < dimension; i++) {
@@ -35,9 +37,7 @@ class Sandbox extends Component {
 
   //to scale with changing window size
   updateDimensions() {
-    console.log(window.innerHeight);
     let update_diameter = window.innerHeight;
-    let dimension = 200;
     let grid = this.state.grid;
     for (let i = 0; i < dimension; i++) {
       for (let j = 0; j < dimension; j++) {
@@ -49,7 +49,6 @@ class Sandbox extends Component {
     }
     this.setState({
       diameter: update_diameter
-      //grid: this.initGrid(window.innerHeight)
     });
   }
 
@@ -73,7 +72,8 @@ class Sandbox extends Component {
                 <Cell
                   x={cell[0]}
                   y={cell[1]}
-                  d={this.state.diameter / 200}
+                  d={this.state.diameter / dimension}
+                  //color = {'#af600ee'}
                   color={'#' + (((1 << 24) * Math.random()) | 0).toString(16)}
                 />
               ))
@@ -81,7 +81,6 @@ class Sandbox extends Component {
           </Layer>
         </Stage>
       </Div>
-
     );
   }
 }
