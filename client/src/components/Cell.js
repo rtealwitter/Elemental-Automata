@@ -13,8 +13,8 @@ class Cell extends Component {
       <Rect
         x={this.props.x}
         y={this.props.y}
-        height={this.props.d}
-        width={this.props.d}
+        height={this.props.dy}
+        width={this.props.dx}
         fill={this.props.color}
       />
     );
