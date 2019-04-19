@@ -52,7 +52,7 @@ const BrushSizes = styled.div`
 `;
 const Circle0 = styled.div`
   width: 0.3em;
-  height: 0.23em;
+  height: 0.3em;
   background: white;
   border-radius: 50%;
   display: inline-block;
@@ -104,7 +104,7 @@ class Toolbox extends Component {
     super(props);
     this.state = {
       SelectedElement: null,
-      BrushSize: 5
+      BrushSize: '5'
     };
     this.handleSizeChange = this.handleBrushChange.bind(this, 'BrushSize');
     this.handleTypeChange = this.handleBrushChange.bind(
@@ -118,26 +118,24 @@ class Toolbox extends Component {
     // this is where we update the props
   }
   render() {
+    const elementButton = el => {
+      return (
+        <Button
+          type="button"
+          disabled={this.state.SelectedElement === el}
+          onClick={this.handleTypeChange}
+          value={el}
+        >
+          {el}
+        </Button>
+      );
+    };
     return (
       <ToolbarDiv>
         <ButtonDiv>
           <ElementTitle>Elements</ElementTitle>
-          <Button
-            type="button"
-            disabled={this.state.SelectedElement === 'Rock'}
-            onClick={this.handleTypeChange}
-            value="Rock"
-          >
-            Rock
-          </Button>
-          <Button
-            disabled={this.state.SelectedElement === 'Test'}
-            type="button"
-            onClick={this.handleTypeChange}
-            value="Test"
-          >
-            Test
-          </Button>
+          {elementButton('Rock')}
+          {elementButton('Test')}
           <Button
             disabled={this.state.SelectedElement === 'Element2'}
             type="button"
