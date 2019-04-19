@@ -131,12 +131,12 @@ class Toolbox extends Component {
             Rock
           </Button>
           <Button
-            disabled={this.state.SelectedElement === 'Element1'}
+            disabled={this.state.SelectedElement === 'Test'}
             type="button"
             onClick={this.handleTypeChange}
-            value="Element1"
+            value="Test"
           >
-            Element1
+            Test
           </Button>
           <Button
             disabled={this.state.SelectedElement === 'Element2'}

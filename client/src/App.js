@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       x: 0,
       y: 0,
-      SelectedElement: null
+      SelectedElement: 'Void'
     }; // placeholder
     this.selectElement = this.selectElement.bind(this);
   }
@@ -22,7 +22,7 @@ class App extends Component {
     const { x, y } = this.state;
     return (
       <div className="App">
-        <Sandbox size={5} />
+        <Sandbox element={this.state.SelectedElement} size={5} />
         <Toolbox selected={this.selectElement} />
       </div>
     );
