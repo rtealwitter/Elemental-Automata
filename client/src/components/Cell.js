@@ -8,6 +8,7 @@ class Cell extends Component {
     super();
     this.state = {};
   }
+
   render() {
     return (
       <Rect
