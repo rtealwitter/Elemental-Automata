@@ -12,7 +12,7 @@ class App extends Component {
       x: 0,
       y: 0,
       SelectedElement: 'Void',
-      BrushSize: '5'
+      BrushSize: '1'
     }; // placeholder
     this.selectElement = this.selectElement.bind(this);
   }
