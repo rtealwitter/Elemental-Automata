@@ -166,7 +166,7 @@ class Toolbox extends Component {
             </BrushSizes>
             <Clear
               type="button"
-              onClick="" // TODO: clear method
+              // TODO: clear method
               value="Clear"
             >
               Clear
