@@ -104,7 +104,7 @@ class Toolbox extends Component {
     super(props);
     this.state = {
       SelectedElement: null,
-      BrushSize: '5'
+      BrushSize: '1'
     };
     this.handleSizeChange = this.handleBrushChange.bind(this, 'BrushSize');
     this.handleTypeChange = this.handleBrushChange.bind(
@@ -113,8 +113,8 @@ class Toolbox extends Component {
     );
   }
   handleBrushChange(field, event) {
-    this.setState({ [field]: event.target.value });
-    this.props.selected(field, event.target.value);
+    this.setState({ [field]: event.target.id });
+    this.props.selected(field, event.target.id);
     // this is where we update the props
   }
   render() {
@@ -124,7 +124,7 @@ class Toolbox extends Component {
           type="button"
           disabled={this.state.SelectedElement === el}
           onClick={this.handleTypeChange}
-          value={el}
+          id={el}
         >
           {el}
         </Button>
@@ -136,30 +136,16 @@ class Toolbox extends Component {
           <ElementTitle>Elements</ElementTitle>
           {elementButton('Rock')}
           {elementButton('Test')}
-          <Button
-            disabled={this.state.SelectedElement === 'Element2'}
-            type="button"
-            onClick={this.handleTypeChange}
-            value="Element2"
-          >
-            Element2
-          </Button>
-          <Button
-            disabled={this.state.SelectedElement === 'Element3'}
-            type="button"
-            onClick={this.handleTypeChange}
-            value="Element3"
-          >
-            Element3
-          </Button>
+          {elementButton('Void')}
+          {elementButton('Element3')}
         </ButtonDiv>
         <BrushBG>
           <BrushDiv>
             Size&emsp;
             <BrushSizes>
-              <Circle0 onClick={this.handleSizeChange} />
-              <Circle1 onClick={this.handleSizeChange} />
-              <Circle2 onClick={this.handleSizeChange} />
+              <Circle0 onClick={this.handleSizeChange} id="1" />
+              <Circle1 onClick={this.handleSizeChange} id="2" />
+              <Circle2 onClick={this.handleSizeChange} id="3" />
               &emsp;
             </BrushSizes>
             <Clear
