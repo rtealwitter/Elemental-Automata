@@ -9,15 +9,5 @@ exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   return knex('Scenario')
     .del()
-    .then(function() {
-      // Inserts seed entries
-      return knex('Scenario').insert([
-        {
-          title: 'Mountain',
-          author: 'Teal',
-          edited: '2019-04-19',
-          sandbox: '11'
-        }
-      ]);
-    });
+    .then(() => knex.batchInsert('Scenario', data, 100));
 };

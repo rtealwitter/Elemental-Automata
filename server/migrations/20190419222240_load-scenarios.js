@@ -10,7 +10,7 @@ exports.up = function(knex, Promise) {
     table.string('author').notNullable();
     table.date('edited').notNullable();
     table.binary('sandbox').notNullable();
-    //table.blob('image'); // to be used if we include image previews
+    // table.blob('image'); // to be used if we include image previews
   });
 };
 
