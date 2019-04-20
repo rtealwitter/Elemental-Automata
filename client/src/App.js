@@ -8,15 +8,22 @@ class App extends Component {
   constructor() {
     super();
 
-    this.state = { x: 0, y: 0 }; // placeholder
+    this.state = {
+      x: 0,
+      y: 0,
+      SelectedElement: 'Void'
+    }; // placeholder
+    this.selectElement = this.selectElement.bind(this);
   }
-
+  selectElement(field, evt) {
+    this.setState({ [field]: evt });
+  }
   render() {
     const { x, y } = this.state;
     return (
       <div className="App">
-        <Sandbox size={5} />
-        <Toolbox />
+        <Sandbox element={this.state.SelectedElement} size={5} />
+        <Toolbox selected={this.selectElement} />
       </div>
     );
   }

@@ -3,14 +3,15 @@ import React, { Component } from 'react';
 import { Stage, Layer } from 'react-konva';
 import Cell from './Cell.js';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Div = styled.div`
   display: inline-block;
 `;
 
-const Void = { name: 'void', color: '#D3D3D3' };
-const Rock = { name: 'rock', color: '#A9A9A9' };
-const Test = { name: 'test', color: '#8B008B' };
+const Void = { name: 'Void', color: '#D3D3D3' };
+const Rock = { name: 'Rock', color: '#A9A9A9' };
+const Test = { name: 'Test', color: '#8B008B' };
 
 const ElementArray = [Void, Rock, Test];
 
@@ -33,8 +34,8 @@ class Sandbox extends Component {
     // handle click
     const { dimension, grid } = this.state;
     const newGrid = Array.from(grid);
-    const targetX = Math.floor((e.screenX * dimension) / window.innerWidth);
-    const targetY = Math.floor(
+    let targetX = Math.floor((e.screenX * dimension) / window.innerWidth);
+    let targetY = Math.floor(
       ((e.screenY - 100) * dimension) / window.innerHeight
     );
     console.log(targetX);
@@ -46,7 +47,7 @@ class Sandbox extends Component {
       targetX = dimension;
     }
     newGrid[targetY][targetX] = Object.assign(grid[targetY][targetX], {
-      element: 'test'
+      element: this.props.element
     });
     this.setState({ grid: newGrid, x: e.screenX, y: e.screenY });
   }
@@ -66,7 +67,7 @@ class Sandbox extends Component {
             x: (window.innerWidth / dimension) * j,
             y: (window.innerHeight / dimension) * i
           },
-          grid ? { element: 'void' } : grid[i][j]
+          grid ? { element: 'Void' } : grid[i][j]
         );
       }
       newGrid[i] = newRow;
@@ -112,4 +113,8 @@ class Sandbox extends Component {
   }
 }
 
+Sandbox.propTypes = {
+  element: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired
+};
 export default Sandbox;
