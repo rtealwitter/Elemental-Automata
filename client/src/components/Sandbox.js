@@ -66,7 +66,8 @@ class Sandbox extends Component {
         newRow[j] = Object.assign(
           {
             x: (window.innerWidth / dimension) * j,
-            y: (window.innerHeight / dimension) * i
+            y: (window.innerHeight / dimension) * i,
+            should_update: false
           },
           grid ? { element: 'Void' } : grid[i][j]
         );
