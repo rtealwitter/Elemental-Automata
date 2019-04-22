@@ -52,7 +52,7 @@ const BrushSizes = styled.div`
 `;
 const Circle0 = styled.div`
   width: 0.3em;
-  height: 0.23em;
+  height: 0.3em;
   background: white;
   border-radius: 50%;
   display: inline-block;
@@ -104,7 +104,7 @@ class Toolbox extends Component {
     super(props);
     this.state = {
       SelectedElement: null,
-      BrushSize: 5
+      BrushSize: '1'
     };
     this.handleSizeChange = this.handleBrushChange.bind(this, 'BrushSize');
     this.handleTypeChange = this.handleBrushChange.bind(
@@ -113,55 +113,39 @@ class Toolbox extends Component {
     );
   }
   handleBrushChange(field, event) {
-    this.setState({ [field]: event.target.value });
-    this.props.selected(field, event.target.value);
+    this.setState({ [field]: event.target.id });
+    this.props.selected(field, event.target.id);
     // this is where we update the props
   }
   render() {
+    const elementButton = el => {
+      return (
+        <Button
+          type="button"
+          disabled={this.state.SelectedElement === el}
+          onClick={this.handleTypeChange}
+          id={el}
+        >
+          {el}
+        </Button>
+      );
+    };
     return (
       <ToolbarDiv>
         <ButtonDiv>
           <ElementTitle>Elements</ElementTitle>
-          <Button
-            type="button"
-            disabled={this.state.SelectedElement === 'Rock'}
-            onClick={this.handleTypeChange}
-            value="Rock"
-          >
-            Rock
-          </Button>
-          <Button
-            disabled={this.state.SelectedElement === 'Test'}
-            type="button"
-            onClick={this.handleTypeChange}
-            value="Test"
-          >
-            Test
-          </Button>
-          <Button
-            disabled={this.state.SelectedElement === 'Element2'}
-            type="button"
-            onClick={this.handleTypeChange}
-            value="Element2"
-          >
-            Element2
-          </Button>
-          <Button
-            disabled={this.state.SelectedElement === 'Element3'}
-            type="button"
-            onClick={this.handleTypeChange}
-            value="Element3"
-          >
-            Element3
-          </Button>
+          {elementButton('Rock')}
+          {elementButton('Test')}
+          {elementButton('Void')}
+          {elementButton('Element3')}
         </ButtonDiv>
         <BrushBG>
           <BrushDiv>
             Size&emsp;
             <BrushSizes>
-              <Circle0 onClick={this.handleSizeChange} />
-              <Circle1 onClick={this.handleSizeChange} />
-              <Circle2 onClick={this.handleSizeChange} />
+              <Circle0 onClick={this.handleSizeChange} id="1" />
+              <Circle1 onClick={this.handleSizeChange} id="2" />
+              <Circle2 onClick={this.handleSizeChange} id="3" />
               &emsp;
             </BrushSizes>
             <Clear
