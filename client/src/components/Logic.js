@@ -16,7 +16,7 @@ export function logic(grid, dimension) {
       } else if (current.element === 'Rock') {
         //also do probably nothing
       }
-      if (current.element === 'Sand' && j < dimension) {
+      if (current.element === 'Sand' && j < dimension - 1) {
         //just have to check if it needs to fall
         if (grid[j + 1][i].element === 'Void') {
           console.log(i);
