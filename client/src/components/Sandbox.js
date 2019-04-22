@@ -4,6 +4,7 @@ import { Stage, Layer } from 'react-konva';
 import Cell from './Cell.js';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { logic } from './Logic.js';
 
 const Div = styled.div`
   display: inline-block;
@@ -50,7 +51,8 @@ class Sandbox extends Component {
     newGrid[targetY][targetX] = Object.assign(grid[targetY][targetX], {
       element: this.props.element
     });
-    this.setState({ grid: newGrid, x: e.screenX, y: e.screenY });
+    let newerGrid = logic(newGrid, dimension);
+    this.setState({ grid: newerGrid, x: e.screenX, y: e.screenY });
   }
 
   //to scale with changing window size
