@@ -114,6 +114,7 @@ class Toolbox extends Component {
   }
   handleBrushChange(field, event) {
     this.setState({ [field]: event.target.value });
+    this.props.selected(field, event.target.value);
     // this is where we update the props
   }
   render() {
@@ -123,19 +124,19 @@ class Toolbox extends Component {
           <ElementTitle>Elements</ElementTitle>
           <Button
             type="button"
-            disabled={this.state.SelectedElement === 'Element0'}
+            disabled={this.state.SelectedElement === 'Rock'}
             onClick={this.handleTypeChange}
-            value="Element0"
+            value="Rock"
           >
-            Element0
+            Rock
           </Button>
           <Button
-            disabled={this.state.SelectedElement === 'Element1'}
+            disabled={this.state.SelectedElement === 'Test'}
             type="button"
             onClick={this.handleTypeChange}
-            value="Element1"
+            value="Test"
           >
-            Element1
+            Test
           </Button>
           <Button
             disabled={this.state.SelectedElement === 'Element2'}
@@ -181,7 +182,7 @@ class Toolbox extends Component {
   }
 }
 Toolbox.propTypes = {
-  selected: PropTypes.func, // TODO: prop function to pass element selected up to app?
+  selected: PropTypes.func.isRequired,
   saved: PropTypes.func //TODO: prop function to save state of grid
 };
 
