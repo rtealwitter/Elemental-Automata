@@ -25,6 +25,7 @@ const Button = styled.button`
 `;
 const ButtonDiv = styled.div`
   position: relative;
+  display: inline-block;
   margin: 5px auto;
   width: 10em;
   height: 6em;
@@ -37,6 +38,7 @@ const ButtonDiv = styled.div`
 const BrushBG = styled(ButtonDiv)`
   height: 2em;
   text-align: left;
+  display: block;
 `;
 const BrushDiv = styled.div`
   position: relative;
@@ -52,7 +54,7 @@ const BrushSizes = styled.div`
 `;
 const Circle0 = styled.div`
   width: 0.3em;
-  height: 0.23em;
+  height: 0.3em;
   background: white;
   border-radius: 50%;
   display: inline-block;
@@ -76,15 +78,15 @@ const Clear = styled(Button)`
   margin: 0;
 `;
 const ToolbarDiv = styled.div`
-  display: inline-block;
-  position: sticky;
-  width: 11em;
-  height: 13em;
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 7em;
   background: #c9f0dd;
   border: 0.25em solid #46a67b;
   border-radius: 0.5em;
-  bottom: 40em;
-  right: -3em;
+  bottom: 0em;
+  left: 0em;
 `;
 const ElementTitle = styled.h1`
   font-size: 19px;
@@ -92,11 +94,18 @@ const ElementTitle = styled.h1`
 `;
 const SaveDiv = styled(ButtonDiv)`
   height: 3em;
+  display: block;
 `;
 const OptionButtons = styled(Button)`
   font-size: 1em;
   width: 4.5em;
   margin: 0.5em 3px;
+`;
+const BrushAndSave = styled.div`
+  display: inline-block;
+  position: relative;
+  bottom: 0.5em;
+  left: 0.5em;
 `;
 
 class Toolbox extends Component {
@@ -104,7 +113,7 @@ class Toolbox extends Component {
     super(props);
     this.state = {
       SelectedElement: null,
-      BrushSize: 5
+      BrushSize: '1'
     };
     this.handleSizeChange = this.handleBrushChange.bind(this, 'BrushSize');
     this.handleTypeChange = this.handleBrushChange.bind(
@@ -113,70 +122,58 @@ class Toolbox extends Component {
     );
   }
   handleBrushChange(field, event) {
-    this.setState({ [field]: event.target.value });
-    this.props.selected(field, event.target.value);
+    this.setState({ [field]: event.target.id });
+    this.props.selected(field, event.target.id);
     // this is where we update the props
   }
   render() {
+    const elementButton = el => {
+      return (
+        <Button
+          type="button"
+          disabled={this.state.SelectedElement === el}
+          onClick={this.handleTypeChange}
+          id={el}
+        >
+          {el}
+        </Button>
+      );
+    };
     return (
       <ToolbarDiv>
         <ButtonDiv>
           <ElementTitle>Elements</ElementTitle>
-          <Button
-            type="button"
-            disabled={this.state.SelectedElement === 'Rock'}
-            onClick={this.handleTypeChange}
-            value="Rock"
-          >
-            Rock
-          </Button>
-          <Button
-            disabled={this.state.SelectedElement === 'Sand'}
-            type="button"
-            onClick={this.handleTypeChange}
-            value="Sand"
-          >
-            Sand
-          </Button>
-          <Button
-            disabled={this.state.SelectedElement === 'Element2'}
-            type="button"
-            onClick={this.handleTypeChange}
-            value="Element2"
-          >
-            Element2
-          </Button>
-          <Button
-            disabled={this.state.SelectedElement === 'Element3'}
-            type="button"
-            onClick={this.handleTypeChange}
-            value="Element3"
-          >
-            Element3
-          </Button>
+      
+          {elementButton('Rock')}
+          {elementButton('Test')}
+          {elementButton('Void')}
+          {elementButton('Element3')}
+
         </ButtonDiv>
-        <BrushBG>
-          <BrushDiv>
-            Size&emsp;
-            <BrushSizes>
-              <Circle0 onClick={this.handleSizeChange} />
-              <Circle1 onClick={this.handleSizeChange} />
-              <Circle2 onClick={this.handleSizeChange} />
-              &emsp;
-            </BrushSizes>
-            <Clear
-              type="button"
-              onClick="" // TODO: clear method
-              value="Clear"
-            >
-              Clear
-            </Clear>
-          </BrushDiv>
-        </BrushBG>
-        <SaveDiv>
-          <OptionButtons type="button">Save</OptionButtons>
-          <OptionButtons type="button">Share</OptionButtons>
-        </SaveDiv>
+        <BrushAndSave>
+          <BrushBG>
+            <BrushDiv>
+              Size&emsp;
+              <BrushSizes>
+                <Circle0 onClick={this.handleSizeChange} />
+                <Circle1 onClick={this.handleSizeChange} />
+                <Circle2 onClick={this.handleSizeChange} />
+                &emsp;
+              </BrushSizes>
+              <Clear
+                type="button"
+                onClick="" // TODO: clear method
+                value="Clear"
+              >
+                Clear
+              </Clear>
+            </BrushDiv>
+          </BrushBG>
+          <SaveDiv>
+            <OptionButtons type="button">Save</OptionButtons>
+            <OptionButtons type="button">Share</OptionButtons>
+          </SaveDiv>
+        </BrushAndSave>
       </ToolbarDiv>
     );
   }
