@@ -4,6 +4,7 @@ import { Stage, Layer } from 'react-konva';
 import Cell from './Cell.js';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { logic } from './Logic.js';
 
 const Div = styled.div`
   display: inline-block;
@@ -12,8 +13,9 @@ const Div = styled.div`
 const Void = { name: 'Void', color: '#D3D3D3' };
 const Rock = { name: 'Rock', color: '#A9A9A9' };
 const Test = { name: 'Test', color: '#8B008B' };
+const Sand = { name: 'Sand', color: '#FFF8DC' }; //will add more colors
 
-const ElementArray = [Void, Rock, Test];
+const ElementArray = [Void, Rock, Test, Sand];
 
 let addElement = false;
 
@@ -36,6 +38,7 @@ class Sandbox extends Component {
     };
   }
 
+
   //to scale with changing window size
   updateDimensions() {
     const { dimension, grid } = this.state;
@@ -49,7 +52,8 @@ class Sandbox extends Component {
         newRow[j] = Object.assign(
           {
             x: (window.innerWidth / dimension) * j,
-            y: (window.innerHeight / dimension) * i
+            y: (window.innerHeight / dimension) * i,
+            should_update: false
           },
           grid ? { element: 'Void' } : grid[i][j]
         );
