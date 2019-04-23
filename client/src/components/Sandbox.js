@@ -17,6 +17,8 @@ const Sand = { name: 'Sand', color: '#FFF8DC' }; //will add more colors
 
 const ElementArray = [Void, Rock, Test, Sand];
 
+const speed = 250; //milliseconds between updates
+
 let addElement = false;
 
 class Sandbox extends Component {
@@ -37,7 +39,6 @@ class Sandbox extends Component {
       y: 0 // hold last clicked location
     };
   }
-
 
   //to scale with changing window size
   updateDimensions() {
@@ -67,9 +68,14 @@ class Sandbox extends Component {
     });
   }
 
+  //handles resize of windows and time in the world
   componentDidMount() {
     this.updateDimensions();
     window.addEventListener('resize', this.updateDimensions);
+    this.interval = setInterval(() => {
+      let updated_grid = logic(this.state.grid, this.state.dimension);
+      this.setState({ grid: updated_grid });
+    }, speed);
   }
 
   componentWillUnmount() {

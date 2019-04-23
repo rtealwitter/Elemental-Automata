@@ -147,12 +147,11 @@ class Toolbox extends Component {
       <ToolbarDiv>
         <ButtonDiv>
           <ElementTitle>Elements</ElementTitle>
-      
+
           {elementButton('Rock')}
-          {elementButton('Test')}
+          {elementButton('Sand')}
           {elementButton('Void')}
           {elementButton('Element3')}
-
         </ButtonDiv>
         <BrushAndSave>
           <BrushBG>
