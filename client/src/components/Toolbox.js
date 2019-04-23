@@ -120,11 +120,15 @@ class Toolbox extends Component {
       this,
       'SelectedElement'
     );
+    this.handleClear = this.handleClear.bind(this);
   }
   handleBrushChange(field, event) {
     this.setState({ [field]: event.target.id });
     this.props.selected(field, event.target.id);
     // this is where we update the props
+  }
+  handleClear() {
+    this.props.toClear('clear', !this.props.clear);
   }
   render() {
     const elementButton = el => {
@@ -153,14 +157,14 @@ class Toolbox extends Component {
             <BrushDiv>
               Size&emsp;
               <BrushSizes>
-                <Circle0 onClick={this.handleSizeChange} />
-                <Circle1 onClick={this.handleSizeChange} />
-                <Circle2 onClick={this.handleSizeChange} />
+                <Circle0 onClick={this.handleSizeChange} id="1" />
+                <Circle1 onClick={this.handleSizeChange} id="2" />
+                <Circle2 onClick={this.handleSizeChange} id="3" />
                 &emsp;
               </BrushSizes>
               <Clear
                 type="button"
-                onClick="" // TODO: clear method
+                onClick={this.handleClear} // TODO: clear method
                 value="Clear"
               >
                 Clear
@@ -178,7 +182,9 @@ class Toolbox extends Component {
 }
 Toolbox.propTypes = {
   selected: PropTypes.func.isRequired,
-  saved: PropTypes.func //TODO: prop function to save state of grid
+  saved: PropTypes.func, //TODO: prop function to save state of grid
+  toClear: PropTypes.func.isRequired,
+  clear: PropTypes.bool.isRequired
 };
 
 export default Toolbox;

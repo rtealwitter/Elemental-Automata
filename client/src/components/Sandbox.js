@@ -24,6 +24,7 @@ class Sandbox extends Component {
     this.updateDimensions = this.updateDimensions.bind(this);
     this.onSandboxClick = this.onSandboxClick.bind(this);
     this.onSandboxDown = this.onSandboxDown.bind(this);
+    this.handleClear = this.handleClear.bind(this);
 
     this.state = {
       dimension: 20,
@@ -98,10 +99,40 @@ class Sandbox extends Component {
       this.setState({ grid: newGrid, x: e.screenX, y: e.screenY });
     }
   }
+  handleClear() {
+    this.props.cleared('clear', !this.props.clear);
+  }
 
   render() {
     const { dimension, grid, x, y } = this.state;
     // onMouseMove is alternative for onMouseDown
+
+    if (this.props.clear && grid) {
+      let newGrid = Array.from(grid);
+      for (let i = 0; i < dimension; i++) {
+        for (let j = 0; j < dimension; j++) {
+          newGrid[i][j] = Object.assign(grid[i][j], {
+            element: 'Void'
+          });
+          this.setState({ grid: newGrid });
+        }
+      }
+      this.setState({ grid: newGrid });
+      this.handleClear();
+    }
+
+    let renderedGrid = grid.map(row =>
+      row.map(cell => (
+        <Cell
+          key={dimension * cell.x + cell.y}
+          x={cell.x}
+          y={cell.y}
+          dx={window.innerWidth / dimension}
+          dy={window.innerHeight / dimension}
+          color={ElementArray.find(elem => elem.name === cell.element).color}
+        />
+      ))
+    );
     return (
       <Div
         onMouseMove={this.onSandboxClick}
@@ -110,22 +141,7 @@ class Sandbox extends Component {
         onMouseLeave={() => (addElement = false)}
       >
         <Stage width={window.innerWidth} height={window.innerHeight}>
-          <Layer>
-            {grid.map(row =>
-              row.map(cell => (
-                <Cell
-                  key={dimension * cell.x + cell.y}
-                  x={cell.x}
-                  y={cell.y}
-                  dx={window.innerWidth / dimension}
-                  dy={window.innerHeight / dimension}
-                  color={
-                    ElementArray.find(elem => elem.name === cell.element).color
-                  }
-                />
-              ))
-            )}
-          </Layer>
+          <Layer>{renderedGrid}</Layer>
         </Stage>
       </Div>
     );
@@ -134,6 +150,8 @@ class Sandbox extends Component {
 
 Sandbox.propTypes = {
   element: PropTypes.string.isRequired,
-  size: PropTypes.number.isRequired
+  size: PropTypes.string.isRequired,
+  clear: PropTypes.bool.isRequired,
+  cleared: PropTypes.func.isRequired
 };
 export default Sandbox;
