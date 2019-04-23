@@ -2,10 +2,7 @@
 
 const Void = { name: 'Void', color: '#D3D3D3' };
 const Rock = { name: 'Rock', color: '#A9A9A9' };
-const Test = { name: 'Test', color: '#8B008B' };
 const Sand = { name: 'Sand', color: '#FFF8DC' }; //will add more colors
-
-const ElementArray = [Void, Rock, Test, Sand];
 
 export function logic(grid, dimension) {
   for (let i = dimension - 1; i >= 0; i--) {
@@ -36,5 +33,5 @@ export function logic(grid, dimension) {
     }
   }
 
-  return grid; ////////////////////
+  return grid;
 }
