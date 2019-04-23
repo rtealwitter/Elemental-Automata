@@ -1,9 +1,5 @@
 //import React from 'react';
 
-const Void = { name: 'Void', color: '#D3D3D3' };
-const Rock = { name: 'Rock', color: '#A9A9A9' };
-const Sand = { name: 'Sand', color: '#FFF8DC' }; //will add more colors
-
 export function logic(grid, dimension) {
   for (let i = dimension - 1; i >= 0; i--) {
     for (let j = dimension - 1; j >= 0; j--) {
