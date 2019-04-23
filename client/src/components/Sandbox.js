@@ -15,41 +15,24 @@ const Test = { name: 'Test', color: '#8B008B' };
 
 const ElementArray = [Void, Rock, Test];
 
+let addElement = false;
+
 class Sandbox extends Component {
   constructor() {
     super();
 
     this.updateDimensions = this.updateDimensions.bind(this);
     this.onSandboxClick = this.onSandboxClick.bind(this);
+    this.onSandboxDown = this.onSandboxDown.bind(this);
 
     this.state = {
       dimension: 20,
       grid: [],
+      width: null,
+      height: null,
       x: 0,
       y: 0 // hold last clicked location
     };
-  }
-
-  onSandboxClick(e) {
-    // handle click
-    const { dimension, grid } = this.state;
-    const newGrid = Array.from(grid);
-    let targetX = Math.floor((e.screenX * dimension) / window.innerWidth);
-    let targetY = Math.floor(
-      ((e.screenY - 100) * dimension) / window.innerHeight
-    );
-    console.log(targetX);
-    console.log(targetY);
-    if (targetY > dimension) {
-      targetY = dimension;
-    }
-    if (targetX > dimension) {
-      targetX = dimension;
-    }
-    newGrid[targetY][targetX] = Object.assign(grid[targetY][targetX], {
-      element: this.props.element
-    });
-    this.setState({ grid: newGrid, x: e.screenX, y: e.screenY });
   }
 
   //to scale with changing window size
@@ -73,7 +56,9 @@ class Sandbox extends Component {
       newGrid[i] = newRow;
     }
     this.setState({
-      grid: newGrid
+      grid: newGrid,
+      width: window.innerWidth,
+      height: window.innerHeight
     });
   }
 
@@ -86,16 +71,50 @@ class Sandbox extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
+  onSandboxDown(e) {
+    addElement = true;
+    this.onSandboxClick(e);
+  }
+
+  onSandboxClick(e) {
+    // handle click
+    //console.log(addElement);
+    if (addElement) {
+      const { dimension, grid, width, height } = this.state;
+      const newGrid = Array.from(grid);
+      let targetX = Math.floor((e.screenX * dimension) / width);
+      let targetY = Math.floor(((e.screenY - 100) * dimension) / height);
+      //console.log(targetX);
+      //console.log(targetY);
+      if (targetY > dimension) {
+        targetY = dimension;
+      }
+      if (targetX > dimension) {
+        targetX = dimension;
+      }
+      newGrid[targetY][targetX] = Object.assign(grid[targetY][targetX], {
+        element: this.props.element
+      });
+      this.setState({ grid: newGrid, x: e.screenX, y: e.screenY });
+    }
+  }
+
   render() {
     const { dimension, grid, x, y } = this.state;
     // onMouseMove is alternative for onMouseDown
     return (
-      <Div onMouseDown={this.onSandboxClick}>
+      <Div
+        onMouseMove={this.onSandboxClick}
+        onMouseDown={this.onSandboxDown.bind(this)}
+        onMouseUp={() => (addElement = false)}
+        onMouseLeave={() => (addElement = false)}
+      >
         <Stage width={window.innerWidth} height={window.innerHeight}>
           <Layer>
             {grid.map(row =>
               row.map(cell => (
                 <Cell
+                  key={dimension * cell.x + cell.y}
                   x={cell.x}
                   y={cell.y}
                   dx={window.innerWidth / dimension}
