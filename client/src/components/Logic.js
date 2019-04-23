@@ -11,16 +11,21 @@ export function logic(grid, dimension) {
   for (let i = dimension - 1; i >= 0; i--) {
     for (let j = dimension - 1; j >= 0; j--) {
       let current = grid[j][i];
+
+      /*
+      grid[0][0] is top left
+      grid[0][n] is top right
+      grid[n][0] is bottom left
+      */
+
       if (current.element === 'Void') {
-        //do probably nothing?
+        //do nothing
       } else if (current.element === 'Rock') {
         //also do probably nothing
       }
       if (current.element === 'Sand' && j < dimension - 1) {
         //just have to check if it needs to fall
         if (grid[j + 1][i].element === 'Void') {
-          console.log(i);
-          console.log(j);
           //fall down
           grid[j + 1][i].element = 'Sand';
           grid[j + 1][i].should_update = true;
@@ -31,5 +36,5 @@ export function logic(grid, dimension) {
     }
   }
 
-  return grid;
+  return grid; ////////////////////
 }

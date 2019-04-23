@@ -40,8 +40,8 @@ class Sandbox extends Component {
     let targetY = Math.floor(
       ((e.screenY - 100) * dimension) / window.innerHeight
     );
-    console.log(targetX);
-    console.log(targetY);
+    //console.log(targetX);
+    //console.log(targetY);
     if (targetY > dimension) {
       targetY = dimension;
     }
@@ -51,8 +51,7 @@ class Sandbox extends Component {
     newGrid[targetY][targetX] = Object.assign(grid[targetY][targetX], {
       element: this.props.element
     });
-    let newerGrid = logic(newGrid, dimension);
-    this.setState({ grid: newerGrid, x: e.screenX, y: e.screenY });
+    this.setState({ grid: newGrid, x: e.screenX, y: e.screenY });
   }
 
   //to scale with changing window size
