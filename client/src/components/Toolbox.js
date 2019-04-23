@@ -25,6 +25,7 @@ const Button = styled.button`
 `;
 const ButtonDiv = styled.div`
   position: relative;
+  display: inline-block;
   margin: 5px auto;
   width: 10em;
   height: 6em;
@@ -37,6 +38,7 @@ const ButtonDiv = styled.div`
 const BrushBG = styled(ButtonDiv)`
   height: 2em;
   text-align: left;
+  display: block;
 `;
 const BrushDiv = styled.div`
   position: relative;
@@ -76,15 +78,15 @@ const Clear = styled(Button)`
   margin: 0;
 `;
 const ToolbarDiv = styled.div`
-  display: inline-block;
-  position: sticky;
-  width: 11em;
-  height: 13em;
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 7em;
   background: #c9f0dd;
   border: 0.25em solid #46a67b;
   border-radius: 0.5em;
-  bottom: 40em;
-  right: -3em;
+  bottom: 0em;
+  left: 0em;
 `;
 const ElementTitle = styled.h1`
   font-size: 19px;
@@ -92,11 +94,18 @@ const ElementTitle = styled.h1`
 `;
 const SaveDiv = styled(ButtonDiv)`
   height: 3em;
+  display: block;
 `;
 const OptionButtons = styled(Button)`
   font-size: 1em;
   width: 4.5em;
   margin: 0.5em 3px;
+`;
+const BrushAndSave = styled.div`
+  display: inline-block;
+  position: relative;
+  bottom: 0.5em;
+  left: 0.5em;
 `;
 
 class Toolbox extends Component {
@@ -139,28 +148,30 @@ class Toolbox extends Component {
           {elementButton('Void')}
           {elementButton('Element3')}
         </ButtonDiv>
-        <BrushBG>
-          <BrushDiv>
-            Size&emsp;
-            <BrushSizes>
-              <Circle0 onClick={this.handleSizeChange} id="1" />
-              <Circle1 onClick={this.handleSizeChange} id="2" />
-              <Circle2 onClick={this.handleSizeChange} id="3" />
-              &emsp;
-            </BrushSizes>
-            <Clear
-              type="button"
-              // TODO: clear method
-              value="Clear"
-            >
-              Clear
-            </Clear>
-          </BrushDiv>
-        </BrushBG>
-        <SaveDiv>
-          <OptionButtons type="button">Save</OptionButtons>
-          <OptionButtons type="button">Share</OptionButtons>
-        </SaveDiv>
+        <BrushAndSave>
+          <BrushBG>
+            <BrushDiv>
+              Size&emsp;
+              <BrushSizes>
+                <Circle0 onClick={this.handleSizeChange} />
+                <Circle1 onClick={this.handleSizeChange} />
+                <Circle2 onClick={this.handleSizeChange} />
+                &emsp;
+              </BrushSizes>
+              <Clear
+                type="button"
+                onClick="" // TODO: clear method
+                value="Clear"
+              >
+                Clear
+              </Clear>
+            </BrushDiv>
+          </BrushBG>
+          <SaveDiv>
+            <OptionButtons type="button">Save</OptionButtons>
+            <OptionButtons type="button">Share</OptionButtons>
+          </SaveDiv>
+        </BrushAndSave>
       </ToolbarDiv>
     );
   }
