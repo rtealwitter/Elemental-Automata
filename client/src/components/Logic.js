@@ -1,9 +1,7 @@
-//import React from 'react';
-
 export function logic(grid, dimension) {
   for (let i = dimension - 1; i >= 0; i--) {
     for (let j = dimension - 1; j >= 0; j--) {
-      let current = grid[j][i];
+      const current = grid[j][i];
 
       /*
       grid[0][0] is top left
