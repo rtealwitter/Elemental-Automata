@@ -16,6 +16,8 @@ const Sand = { name: 'Sand', color: '#FFF8DC' }; //will add more colors
 
 const ElementArray = [Void, Rock, Test, Sand];
 
+let mouseDown = false;
+
 const speed = 250; //milliseconds between updates
 
 class Sandbox extends Component {
@@ -88,12 +90,15 @@ class Sandbox extends Component {
   }
 
   changeElement(row, col) {
-    const { grid } = this.state;
-    const newGrid = Array.from(grid);
-    newGrid[row][col] = Object.assign(grid[row][col], {
-      element: this.props.element
-    });
-    this.setState({ grid: newGrid });
+    console.log(mouseDown);
+    if (mouseDown) {
+      const { grid } = this.state;
+      const newGrid = Array.from(grid);
+      newGrid[row][col] = Object.assign(grid[row][col], {
+        element: this.props.element
+      });
+      this.setState({ grid: newGrid });
+    }
   }
 
   render() {
@@ -119,7 +124,11 @@ class Sandbox extends Component {
       ))
     );
     return (
-      <Div>
+      <Div
+        onMouseDown={() => (mouseDown = true)}
+        onMouseUp={() => (mouseDown = false)}
+        onMouseLeave={() => (mouseDown = false)}
+      >
         <Stage width={window.innerWidth} height={window.innerHeight}>
           <Layer>{renderedGrid}</Layer>
         </Stage>

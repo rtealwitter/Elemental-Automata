@@ -24,7 +24,7 @@ class Cell extends Component {
         height={dy}
         width={dx}
         fill={color}
-        onClick={this.changeElement.bind(this)}
+        onMouseMove={this.changeElement.bind(this)}
       />
     );
   }
