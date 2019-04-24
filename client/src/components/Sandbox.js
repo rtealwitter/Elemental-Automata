@@ -37,9 +37,7 @@ class Sandbox extends Component {
   //to scale with changing window size
   updateDimensions() {
     const { dimension, grid } = this.state;
-    console.log(grid !== []);
-    //console.log(window.innerHeight);
-    //const oldGrid = this.state.grid;
+    //console.log(grid !== []);
     const newGrid = [];
     for (let i = 0; i < dimension; i++) {
       const newRow = [];
@@ -90,7 +88,7 @@ class Sandbox extends Component {
   }
 
   changeElement(row, col) {
-    console.log(mouseDown);
+    //console.log(mouseDown);
     if (mouseDown) {
       const { grid } = this.state;
       const newGrid = Array.from(grid);
