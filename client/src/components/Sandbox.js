@@ -63,8 +63,13 @@ class Sandbox extends Component {
     this.updateDimensions();
     window.addEventListener('resize', this.updateDimensions);
     this.interval = setInterval(() => {
-      const newGrid = logic(this.state.grid, this.state.dimension);
-      this.setState({ grid: newGrid });
+      if (this.props.play || this.props.step) {
+        const newGrid = logic(this.state.grid, this.state.dimension);
+        this.setState({ grid: newGrid });
+      }
+      if (this.props.step) {
+        this.props.unStep();
+      }
     }, speed);
   }
 
