@@ -29,7 +29,7 @@ class Sandbox extends Component {
     this.changeElement = this.changeElement.bind(this);
 
     this.state = {
-      dimension: 25,
+      dimension: 20,
       grid: []
     };
   }
