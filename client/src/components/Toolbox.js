@@ -128,6 +128,9 @@ class Toolbox extends Component {
     // this is where we update the props
   }
   handleClear() {
+    if (this.props.playState) {
+      this.props.play();
+    }
     this.props.toClear('clear', !this.props.clear);
   }
   render() {
@@ -143,6 +146,12 @@ class Toolbox extends Component {
         </Button>
       );
     };
+    let runState;
+    if (this.props.playState) {
+      runState = 'Pause';
+    } else {
+      runState = 'Play';
+    }
     return (
       <ToolbarDiv>
         <ButtonDiv>
@@ -175,6 +184,18 @@ class Toolbox extends Component {
           <SaveDiv>
             <OptionButtons type="button">Save</OptionButtons>
             <OptionButtons type="button">Share</OptionButtons>
+          </SaveDiv>
+        </BrushAndSave>
+        <BrushAndSave>
+          <SaveDiv>
+            <Button type="button" onClick={this.props.step}>
+              {' '}
+              Step
+            </Button>
+            <Button type="button" onClick={this.props.play}>
+              {' '}
+              {runState}
+            </Button>
           </SaveDiv>
         </BrushAndSave>
       </ToolbarDiv>
