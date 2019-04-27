@@ -1,31 +1,104 @@
 export function logic(grid, dimension) {
-  for (let i = dimension - 1; i >= 0; i--) {
-    for (let j = dimension - 1; j >= 0; j--) {
-      const current = grid[j][i];
+  const newGrid = JSON.parse(JSON.stringify(grid));
 
-      /*
-      grid[0][0] is top left
-      grid[0][n] is top right
-      grid[n][0] is bottom left
-      */
+  function elementAt(i, j) {
+    // Returns element at i,j
+    if (i >= 0 && i < dimension && j >= 0 && j < dimension) {
+      return grid[j][i].element;
+    }
+    return false;
+  }
 
-      if (current.element === 'Void') {
-        //do nothing
-      } else if (current.element === 'Rock') {
-        //also do probably nothing
+  function trade(i, j, newCurrent) {
+    // Trades elements
+    const newElement = newCurrent.element;
+    Object.assign(newCurrent, {
+      element: grid[j][i].element,
+      shouldUpdate: true
+    });
+    Object.assign(newGrid[j][i], { element: newElement, shouldUpdate: true });
+  }
+
+  function isEmpty(i, j, current) {
+    // Checks whether a cell is empty
+    const element = elementAt(i, j);
+    if (element) {
+      return (
+        grid[j][i].element === 'Void' ||
+        (current.element === 'Sand' && grid[j][i].element === 'Water')
+      );
+    }
+    return element;
+  }
+
+  function searchFor(search, direction, i, j, newCurrent) {
+    // Looks for lower elevation at i, j
+    const element = elementAt(i + search, j + 1);
+    if (element === 'Void') {
+      trade(i + search, j + 1, newCurrent);
+      search = false;
+    } else if (element === 'Water') {
+      search += direction;
+    } else {
+      search = false;
+    }
+    return search;
+  }
+
+  function flattenWater(i, j, current, newCurrent) {
+    // Flattens water
+    const direction = Math.random() >= 0.5 ? -1 : 1;
+    let search1 = direction * -1;
+    let search2 = direction;
+    while (search1 || search2) {
+      if (search1) {
+        search1 = searchFor(search1, direction * -1, i, j, newCurrent);
       }
-      if (current.element === 'Sand' && j < dimension - 1) {
-        //just have to check if it needs to fall
-        if (grid[j + 1][i].element === 'Void') {
-          //fall down
-          grid[j + 1][i].element = 'Sand';
-          grid[j + 1][i].should_update = true;
-          current.element = 'Void';
-          current.should_update = true;
-        }
+      if (search2) {
+        search2 = searchFor(search2, direction, i, j, newCurrent);
       }
     }
   }
 
-  return grid;
+  function pile(i, j, current, newCurrent) {
+    // Creates pile of element
+    if (isEmpty(i, j + 1, current)) {
+      trade(i, j + 1, newCurrent);
+    } else if (
+      isEmpty(i - 1, j + 1, current) &&
+      isEmpty(i + 1, j + 1, current)
+    ) {
+      Math.random() >= 0.5
+        ? trade(i - 1, j + 1, newCurrent)
+        : trade(i + 1, j + 1, newCurrent);
+    } else if (isEmpty(i - 1, j + 1, current)) {
+      trade(i - 1, j + 1, newCurrent);
+    } else if (isEmpty(i + 1, j + 1, current)) {
+      trade(i + 1, j + 1, newCurrent);
+    } else if (current.element === 'Water') {
+      flattenWater(i, j, current, newCurrent);
+    }
+  }
+
+  for (let i = dimension - 1; i >= 0; i--) {
+    for (let j = dimension - 1; j >= 0; j--) {
+      const current = grid[j][i];
+      const newCurrent = newGrid[j][i];
+
+      /*
+      grid[0][0] is top left
+      grid[0][dimension - 1] is top right
+      grid[dimension - 1][0] is bottom left
+      grid[dimension - 1][dimension - 1] is bottom right
+      */
+
+      // do nothing for void
+      // do nothing for rock
+      if (current.element === 'Sand' || current.element === 'Water') {
+        pile(i, j, current, newCurrent);
+      }
+    }
+  }
+
+  return newGrid;
 }

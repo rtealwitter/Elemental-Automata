@@ -160,7 +160,7 @@ class Toolbox extends Component {
           {elementButton('Rock')}
           {elementButton('Sand')}
           {elementButton('Void')}
-          {elementButton('Element3')}
+          {elementButton('Water')}
         </ButtonDiv>
         <BrushAndSave>
           <BrushBG>
