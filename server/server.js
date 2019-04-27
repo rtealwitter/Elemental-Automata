@@ -45,6 +45,15 @@ app.get('/api/scenarios', (request, response, next) => {
   }, next); // <- Notice the "next" function as the rejection handler
 });
 
+app.get('/api/scenarios/:id', (request, response, next) => {
+  const scenarioId = parseInt(request.params.id, 10);
+  Scenario.query()
+    .where('id', scenarioId)
+    .then(rows => {
+      response.send(rows);
+    }, next);
+});
+
 app.post('/api/scenarios', (request, response, next) => {
   Scenario.query()
     .insertAndFetch(request.body)

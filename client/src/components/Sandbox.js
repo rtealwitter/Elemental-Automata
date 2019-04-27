@@ -27,6 +27,7 @@ class Sandbox extends Component {
     this.updateDimensions = this.updateDimensions.bind(this);
     this.clear = this.clear.bind(this);
     this.changeElement = this.changeElement.bind(this);
+    this.saveGrid = this.saveGrid.bind(this);
 
     this.state = {
       dimension: 20,
@@ -77,6 +78,34 @@ class Sandbox extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
+  saveGrid() {
+    if (this.props.save) {
+      const getCurDate = () => {
+        const today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1;
+        let yyyy = today.getFullYear();
+
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+        return yyyy + '-' + mm + '-' + dd;
+      };
+      const saveDate = getCurDate();
+      const jsonGrid = JSON.stringify(this.state.grid);
+      const newRecord = {
+        title: 'test',
+        author: 'Mr. JSON',
+        edited: saveDate,
+        sandbox: jsonGrid
+      };
+      fetch('/api/scenarios/', {
+        method: 'POST',
+        body: JSON.stringify(newRecord),
+        headers: new Headers({ 'Content-type': 'application/json' })
+      });
+      this.props.unSave();
+    }
+  }
   clear() {
     const { dimension, grid } = this.state;
     const newGrid = Array.from(grid);
@@ -106,7 +135,9 @@ class Sandbox extends Component {
 
   render() {
     const { dimension, grid } = this.state;
-
+    if (this.props.save) {
+      this.saveGrid();
+    }
     if (this.props.clear && grid) {
       this.clear();
     }

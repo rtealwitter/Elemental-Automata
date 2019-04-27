@@ -19,7 +19,7 @@ class Scenario extends Model {
         title: { type: 'string' },
         author: { type: 'string' },
         edited: { type: 'string' },
-        sandbox: { type: 'string' }
+        sandbox: { type: 'JSON' }
         // not sure if sandbox property type is right,
         // couldn't find JSON or binary type in Objection documentation
       }

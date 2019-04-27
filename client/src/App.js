@@ -15,12 +15,17 @@ class App extends Component {
       BrushSize: '1',
       clear: false,
       play: false,
-      step: false
+      step: false,
+      save: false
     }; // placeholder
     this.selectElement = this.selectElement.bind(this);
     this.handleClear = this.handleClear.bind(this, 'clear');
     this.handleStep = this.handleStep.bind(this, 'step');
     this.handlePlay = this.handlePlay.bind(this, 'play');
+    this.handleSave = this.handleSave.bind(this);
+  }
+  handleSave() {
+    this.setState({ save: !this.state.save });
   }
   selectElement(field, evt) {
     this.setState({ [field]: evt });
@@ -48,6 +53,8 @@ class App extends Component {
           step={this.state.step}
           unStep={this.handleStep}
           play={this.state.play}
+          save={this.state.save}
+          unSave={this.handleSave}
         />
         <Toolbox
           selected={this.selectElement}
@@ -56,6 +63,7 @@ class App extends Component {
           step={this.handleStep}
           play={this.handlePlay}
           playState={this.state.play}
+          save={this.handleSave}
         />
       </div>
     );
