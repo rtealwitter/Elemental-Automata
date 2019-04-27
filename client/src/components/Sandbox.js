@@ -11,10 +11,10 @@ const Div = styled.div`
 
 const Void = { name: 'Void', color: '#D3D3D3' };
 const Rock = { name: 'Rock', color: '#A9A9A9' };
-const Test = { name: 'Test', color: '#8B008B' };
+const Water = { name: 'Water', color: '#2389DA' };
 const Sand = { name: 'Sand', color: '#FFF8DC' }; //will add more colors
 
-const ElementArray = [Void, Rock, Test, Sand];
+const ElementArray = [Void, Rock, Water, Sand];
 
 let mouseDown = false;
 
@@ -46,8 +46,9 @@ class Sandbox extends Component {
           grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
           {
             x: (window.innerWidth / dimension) * j,
-            y: (window.innerHeight / dimension) * i,
-            should_update: false // will need to init as true
+            // hack-y fix
+            y: ((window.innerHeight - 120) / dimension) * i,
+            shouldUpdate: false // will need to init as true
           }
         );
       }
