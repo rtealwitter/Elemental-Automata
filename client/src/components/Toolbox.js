@@ -182,7 +182,9 @@ class Toolbox extends Component {
             </BrushDiv>
           </BrushBG>
           <SaveDiv>
-            <OptionButtons type="button">Save</OptionButtons>
+            <OptionButtons type="button" onClick={this.props.save}>
+              Save
+            </OptionButtons>
             <OptionButtons type="button">Share</OptionButtons>
           </SaveDiv>
         </BrushAndSave>
