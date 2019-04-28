@@ -15,6 +15,17 @@ class Cell extends Component {
     handleChange(row, col);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      this.props.x === nextProps.x &&
+      this.props.y === nextProps.y &&
+      this.props.element.name === nextProps.element.name
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   render() {
     const { x, y, dx, dy, color } = this.props;
     return (
@@ -39,7 +50,8 @@ Cell.propTypes = {
   color: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   row: PropTypes.number.isRequired,
-  col: PropTypes.number.isRequired
+  col: PropTypes.number.isRequired,
+  element: PropTypes.object.isRequired
 };
 
 export default Cell;
