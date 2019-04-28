@@ -12,9 +12,10 @@ const Div = styled.div`
 const Void = { name: 'Void', color: '#D3D3D3' };
 const Rock = { name: 'Rock', color: '#A9A9A9' };
 const Water = { name: 'Water', color: '#2389DA' };
-const Sand = { name: 'Sand', color: '#FFF8DC' }; //will add more colors
+const Sand = { name: 'Sand', color: '#FFF8DC' };
+const Fire = { name: 'Fire', color: '#bf0600' };
 
-const ElementArray = [Void, Rock, Water, Sand];
+const ElementArray = [Void, Rock, Water, Sand, Fire];
 
 let mouseDown = false;
 

@@ -80,6 +80,38 @@ export function logic(grid, dimension) {
     }
   }
 
+  function checkNeighbors(i, j, current, element) {
+    if (
+      elementAt(i + 1, j) === element ||
+      elementAt(i - 1, j) === element ||
+      elementAt(i, j + 1) === element ||
+      elementAt(i, j - 1) === element
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  function fire(i, j, current, newCurrent) {
+    // if water is touching, fire disappears
+    if (checkNeighbors(i, j, current, 'Water')) {
+      trade(
+        i,
+        j,
+        Object.assign(newCurrent, { element: 'Void', shouldUpdate: true })
+      );
+    }
+    Object.assign(newCurrent, { shouldUpdate: false });
+    // disappears after set time if no element conducive to fire (wood, oil) is neighboring
+    setTimeout(() => {
+      trade(
+        i,
+        j,
+        Object.assign(newCurrent, { element: 'Void', shouldUpdate: true })
+      );
+    }, 200); // tried to have it last longer but this # is limited by the update speed
+  }
+
   for (let i = dimension - 1; i >= 0; i--) {
     for (let j = dimension - 1; j >= 0; j--) {
       const current = grid[j][i];
@@ -96,6 +128,8 @@ export function logic(grid, dimension) {
       // do nothing for rock
       if (current.element === 'Sand' || current.element === 'Water') {
         pile(i, j, current, newCurrent);
+      } else if (current.element === 'Fire') {
+        fire(i, j, current, newCurrent);
       }
     }
   }

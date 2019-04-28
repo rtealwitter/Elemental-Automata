@@ -161,6 +161,7 @@ class Toolbox extends Component {
           {elementButton('Sand')}
           {elementButton('Void')}
           {elementButton('Water')}
+          {elementButton('Fire')}
         </ButtonDiv>
         <BrushAndSave>
           <BrushBG>
