@@ -15,6 +15,7 @@ class Cell extends Component {
     handleChange(row, col);
   }
 
+  /* eslint-disable-next-line */
   shouldComponentUpdate(nextProps, nextState) {
     if (
       this.props.x === nextProps.x &&
