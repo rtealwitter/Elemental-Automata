@@ -9,10 +9,10 @@ const Div = styled.div`
   display: inline-block;
 `;
 
-const Void = { name: 'Void', color: '#D3D3D3' };
-const Rock = { name: 'Rock', color: '#A9A9A9' };
-const Water = { name: 'Water', color: '#2389DA' };
-const Sand = { name: 'Sand', color: '#FFF8DC' }; //will add more colors
+const Void = { name: 'Void', color: ['#D3D3D3', '#D3D3D3', '#D3D3D3'] };
+const Rock = { name: 'Rock', color: ['#b9b9b9', '#aaaaaa', '#9b9b9b'] };
+const Water = { name: 'Water', color: ['#2391e1', '#2383d2', '#217ac3'] };
+const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] }; //will add more colors
 
 const ElementArray = [Void, Rock, Water, Sand];
 
@@ -28,6 +28,7 @@ class Sandbox extends Component {
     this.clear = this.clear.bind(this);
     this.changeElement = this.changeElement.bind(this);
     this.saveGrid = this.saveGrid.bind(this);
+    this.randColor = this.randColor.bind(this);
 
     this.state = {
       dimension: 20,
@@ -123,7 +124,6 @@ class Sandbox extends Component {
   }
 
   changeElement(row, col) {
-    //console.log(mouseDown);
     if (mouseDown) {
       const { grid } = this.state;
       const newGrid = Array.from(grid);
@@ -132,6 +132,10 @@ class Sandbox extends Component {
       });
       this.setState({ grid: newGrid });
     }
+  }
+
+  randColor(element) {
+    return element.color[Math.floor(Math.random() * Math.floor(3))];
   }
 
   render() {
@@ -151,10 +155,13 @@ class Sandbox extends Component {
           y={cell.y}
           dx={window.innerWidth / dimension}
           dy={window.innerHeight / dimension}
-          color={ElementArray.find(elem => elem.name === cell.element).color}
+          color={this.randColor(
+            ElementArray.find(elem => elem.name === cell.element)
+          )}
           handleChange={this.changeElement}
           row={cell.row}
           col={cell.col}
+          element={ElementArray.find(elem => elem.name === cell.element)}
         />
       ))
     );
