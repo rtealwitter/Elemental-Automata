@@ -3,10 +3,7 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('Scenario', table => {
     table.increments('id');
-    table
-      .string('title')
-      .unique()
-      .notNullable();
+    table.string('title').notNullable();
     table.string('author').notNullable();
     table.date('edited').notNullable();
     table.json('sandbox').notNullable();

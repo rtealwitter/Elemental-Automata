@@ -44,13 +44,6 @@ describe('Automata API', () => {
     //     .expect(Object.assign({ id: 2 }, newScenario));
     // });
 
-    test('Should reject scenario with duplicate title', () => {
-      return request(app)
-        .post('/api/scenarios')
-        .send(scenario)
-        .expect(400);
-    });
-
     test('Should reject scenario with no title', () => {
       return request(app)
         .post('/api/scenarios')
