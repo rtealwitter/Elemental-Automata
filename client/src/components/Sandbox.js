@@ -86,11 +86,17 @@ class Sandbox extends Component {
         const today = new Date();
         let dd = today.getDate();
         let mm = today.getMonth() + 1;
+        let hh = today.getHours();
+        let min = today.getMinutes();
+        let sec = today.getSeconds();
         const yyyy = today.getFullYear();
 
         if (dd < 10) dd = `0${dd}`;
         if (mm < 10) mm = `0${mm}`;
-        return `${yyyy}-${mm}-${dd}`;
+        if (hh < 10) hh = `0${hh}`;
+        if (min < 10) min = `0${min}`;
+        if (sec < 10) sec = `0${sec}`;
+        return `${yyyy}-${mm}-${dd} ${hh}:${min}:${sec}`;
       };
       const saveDate = getCurDate();
       const jsonGrid = JSON.stringify(this.state.grid);
