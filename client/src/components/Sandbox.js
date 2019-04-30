@@ -122,7 +122,6 @@ class Sandbox extends Component {
         newGrid[i][j] = Object.assign(grid[i][j], {
           element: 'Void'
         });
-        this.setState({ grid: newGrid });
       }
     }
     this.setState({ grid: newGrid });
@@ -133,7 +132,81 @@ class Sandbox extends Component {
     if (mouseDown) {
       const { grid } = this.state;
       const newGrid = Array.from(grid);
+      if (this.props.size > 1) {
+        // will act the same for size 2 and size 3 to reduce redundencies
+        if (row > 0) {
+          // will do up always
+          if (col < this.state.dimension - 1) {
+            newGrid[row - 1][col + 1] = Object.assign(grid[row - 1][col + 1], {
+              // up and right
+              element: this.props.element
+            });
+            newGrid[row][col + 1] = Object.assign(grid[row][col + 1], {
+              // right
+              element: this.props.element
+            });
+          }
+          newGrid[row - 1][col] = Object.assign(grid[row - 1][col], {
+            // up
+            element: this.props.element
+          });
+        } else {
+          if (col < this.state.dimension - 1) {
+            // else just right
+            newGrid[row][col + 1] = Object.assign(grid[row][col + 1], {
+              // right
+              element: this.props.element
+            });
+          }
+        }
+      }
+      if (this.props.size > 2) {
+        // does not handle up and right to reduce redundencies
+        if (row < this.state.dimension - 1) {
+          // will do down always
+          if (col < this.state.dimension - 1) {
+            newGrid[row + 1][col + 1] = Object.assign(grid[row + 1][col + 1], {
+              // down and right
+              element: this.props.element
+            });
+          }
+          if (col > 0) {
+            // will do left and left down always
+            newGrid[row + 1][col - 1] = Object.assign(grid[row + 1][col - 1], {
+              // left down
+              element: this.props.element
+            });
+            newGrid[row][col - 1] = Object.assign(grid[row][col - 1], {
+              // left
+              element: this.props.element
+            });
+            if (row > 0) {
+              newGrid[row - 1][col - 1] = Object.assign(
+                grid[row - 1][col - 1],
+                {
+                  // left up
+                  element: this.props.element
+                }
+              );
+            }
+          }
+          newGrid[row + 1][col] = Object.assign(grid[row + 1][col], {
+            // down
+            element: this.props.element
+          });
+        }
+        if (row === this.state.dimension - 1 && col > 0) {
+          // does left and left up (opposite of dimension 2)
+          newGrid[row - 1][col - 1] = Object.assign(grid[row - 1][col - 1], {
+            element: this.props.element
+          });
+          newGrid[row][col - 1] = Object.assign(grid[row][col - 1], {
+            element: this.props.element
+          });
+        }
+      }
       newGrid[row][col] = Object.assign(grid[row][col], {
+        // always do clicked cell
         element: this.props.element
       });
       this.setState({ grid: newGrid });
