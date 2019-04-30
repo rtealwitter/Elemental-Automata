@@ -195,7 +195,7 @@ class Sandbox extends Component {
             element: this.props.element
           });
         }
-        if (row == this.state.dimension - 1 && col > 0) {
+        if (row === this.state.dimension - 1 && col > 0) {
           // does left and left up (opposite of dimension 2)
           newGrid[row - 1][col - 1] = Object.assign(grid[row - 1][col - 1], {
             element: this.props.element
