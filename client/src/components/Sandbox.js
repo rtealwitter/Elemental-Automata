@@ -9,11 +9,11 @@ const Div = styled.div`
   display: inline-block;
 `;
 
-const Void = { name: 'Void', color: '#D3D3D3' };
-const Rock = { name: 'Rock', color: '#A9A9A9' };
-const Water = { name: 'Water', color: '#2389DA' };
-const Sand = { name: 'Sand', color: '#FFF8DC' };
-const Fire = { name: 'Fire', color: '#bf0600' };
+const Void = { name: 'Void', color: ['#D3D3D3', '#D3D3D3', '#D3D3D3'] };
+const Rock = { name: 'Rock', color: ['#b9b9b9', '#aaaaaa', '#9b9b9b'] };
+const Water = { name: 'Water', color: ['#2391e1', '#2383d2', '#217ac3'] };
+const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] };
+const Fire = { name: 'Fire', color: ['#e21500', '#cc4e00', '#af0600'] };
 
 const ElementArray = [Void, Rock, Water, Sand, Fire];
 
@@ -29,6 +29,7 @@ class Sandbox extends Component {
     this.clear = this.clear.bind(this);
     this.changeElement = this.changeElement.bind(this);
     this.saveGrid = this.saveGrid.bind(this);
+    this.randColor = this.randColor.bind(this);
 
     this.state = {
       dimension: 20,
@@ -86,11 +87,17 @@ class Sandbox extends Component {
         const today = new Date();
         let dd = today.getDate();
         let mm = today.getMonth() + 1;
+        let hh = today.getHours();
+        let min = today.getMinutes();
+        let sec = today.getSeconds();
         const yyyy = today.getFullYear();
 
         if (dd < 10) dd = `0${dd}`;
         if (mm < 10) mm = `0${mm}`;
-        return `${yyyy}-${mm}-${dd}`;
+        if (hh < 10) hh = `0${hh}`;
+        if (min < 10) min = `0${min}`;
+        if (sec < 10) sec = `0${sec}`;
+        return `${yyyy}-${mm}-${dd} ${hh}:${min}:${sec}`;
       };
       const saveDate = getCurDate();
       const jsonGrid = JSON.stringify(this.state.grid);
@@ -124,7 +131,6 @@ class Sandbox extends Component {
   }
 
   changeElement(row, col) {
-    //console.log(mouseDown);
     if (mouseDown) {
       const { grid } = this.state;
       const newGrid = Array.from(grid);
@@ -133,6 +139,10 @@ class Sandbox extends Component {
       });
       this.setState({ grid: newGrid });
     }
+  }
+
+  randColor(element) {
+    return element.color[Math.floor(Math.random() * Math.floor(3))];
   }
 
   render() {
@@ -152,10 +162,13 @@ class Sandbox extends Component {
           y={cell.y}
           dx={window.innerWidth / dimension}
           dy={window.innerHeight / dimension}
-          color={ElementArray.find(elem => elem.name === cell.element).color}
+          color={this.randColor(
+            ElementArray.find(elem => elem.name === cell.element)
+          )}
           handleChange={this.changeElement}
           row={cell.row}
           col={cell.col}
+          element={ElementArray.find(elem => elem.name === cell.element)}
         />
       ))
     );
