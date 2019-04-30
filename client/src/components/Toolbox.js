@@ -112,7 +112,7 @@ class Toolbox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      SelectedElement: null,
+      SelectedElement: 'Void',
       BrushSize: '1'
     };
     this.handleSizeChange = this.handleBrushChange.bind(this, 'BrushSize');
@@ -121,6 +121,7 @@ class Toolbox extends Component {
       'SelectedElement'
     );
     this.handleClear = this.handleClear.bind(this);
+    this.handleFill = this.handleFill.bind(this);
   }
   handleBrushChange(field, event) {
     this.setState({ [field]: event.target.id });
@@ -131,7 +132,11 @@ class Toolbox extends Component {
     if (this.props.playState) {
       this.props.play();
     }
-    this.props.toClear('clear', !this.props.clear);
+    this.props.toFill('clear');
+    this.setState({ SelectedElement: 'Void' });
+  }
+  handleFill() {
+    this.props.toFill('fill');
   }
   render() {
     const elementButton = el => {
@@ -156,11 +161,13 @@ class Toolbox extends Component {
       <ToolbarDiv>
         <ButtonDiv>
           <ElementTitle>Elements</ElementTitle>
-
+          {elementButton('Void')}
           {elementButton('Rock')}
           {elementButton('Sand')}
-          {elementButton('Void')}
           {elementButton('Water')}
+          <Button type="button" onClick={this.handleFill} id="fill">
+            Fill
+          </Button>
         </ButtonDiv>
         <BrushAndSave>
           <BrushBG>
@@ -207,8 +214,8 @@ class Toolbox extends Component {
 Toolbox.propTypes = {
   selected: PropTypes.func.isRequired,
   saved: PropTypes.func, //TODO: prop function to save state of grid
-  toClear: PropTypes.func.isRequired,
-  clear: PropTypes.bool.isRequired
+  toFill: PropTypes.func.isRequired,
+  fill: PropTypes.bool.isRequired
 };
 
 export default Toolbox;

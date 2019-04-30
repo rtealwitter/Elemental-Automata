@@ -25,7 +25,7 @@ class Sandbox extends Component {
     super();
 
     this.updateDimensions = this.updateDimensions.bind(this);
-    this.clear = this.clear.bind(this);
+    this.fill = this.fill.bind(this);
     this.changeElement = this.changeElement.bind(this);
     this.saveGrid = this.saveGrid.bind(this);
     this.randColor = this.randColor.bind(this);
@@ -114,18 +114,18 @@ class Sandbox extends Component {
       this.props.unSave();
     }
   }
-  clear() {
+  fill() {
     const { dimension, grid } = this.state;
     const newGrid = Array.from(grid);
     for (let i = 0; i < dimension; i++) {
       for (let j = 0; j < dimension; j++) {
         newGrid[i][j] = Object.assign(grid[i][j], {
-          element: 'Void'
+          element: this.props.element
         });
       }
     }
     this.setState({ grid: newGrid });
-    this.props.cleared('clear', !this.props.clear);
+    this.props.filled('fill');
   }
 
   changeElement(row, col) {
@@ -222,8 +222,8 @@ class Sandbox extends Component {
     if (this.props.save) {
       this.saveGrid();
     }
-    if (this.props.clear && grid) {
-      this.clear();
+    if (this.props.fill && grid) {
+      this.fill();
     }
 
     const renderedGrid = grid.map(row =>
@@ -261,7 +261,7 @@ class Sandbox extends Component {
 Sandbox.propTypes = {
   element: PropTypes.string.isRequired,
   size: PropTypes.string.isRequired,
-  clear: PropTypes.bool.isRequired,
-  cleared: PropTypes.func.isRequired
+  fill: PropTypes.bool.isRequired,
+  filled: PropTypes.func.isRequired
 };
 export default Sandbox;

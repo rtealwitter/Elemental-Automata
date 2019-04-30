@@ -13,13 +13,13 @@ class App extends Component {
       y: 0,
       SelectedElement: 'Void',
       BrushSize: '1',
-      clear: false,
+      fill: false,
       play: false,
       step: false,
       save: false
     }; // placeholder
     this.selectElement = this.selectElement.bind(this);
-    this.handleClear = this.handleClear.bind(this, 'clear');
+    this.handleFill = this.handleFill.bind(this);
     this.handleStep = this.handleStep.bind(this, 'step');
     this.handlePlay = this.handlePlay.bind(this, 'play');
     this.handleSave = this.handleSave.bind(this);
@@ -30,10 +30,11 @@ class App extends Component {
   selectElement(field, evt) {
     this.setState({ [field]: evt });
   }
-  handleClear(field, evt) {
-    if (evt) {
-      this.setState({ [field]: !this.state.clear });
+  handleFill(evt) {
+    if (evt === 'clear') {
+      this.setState({ SelectedElement: 'Void' });
     }
+    this.setState({ fill: !this.state.fill });
   }
   handleStep(field) {
     this.setState({ [field]: !this.state.step });
@@ -48,8 +49,8 @@ class App extends Component {
         <Sandbox
           element={this.state.SelectedElement}
           size={this.state.BrushSize}
-          clear={this.state.clear}
-          cleared={this.handleClear}
+          fill={this.state.fill}
+          filled={this.handleFill}
           step={this.state.step}
           unStep={this.handleStep}
           play={this.state.play}
@@ -58,8 +59,8 @@ class App extends Component {
         />
         <Toolbox
           selected={this.selectElement}
-          clear={this.state.clear}
-          toClear={this.handleClear}
+          fill={this.state.fill}
+          toFill={this.handleFill}
           step={this.handleStep}
           play={this.handlePlay}
           playState={this.state.play}
