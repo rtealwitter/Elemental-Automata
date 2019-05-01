@@ -110,6 +110,18 @@ export function logic(grid, dimension) {
         Object.assign(newCurrent, { element: 'Void', shouldUpdate: true })
       );
     }, 200); // tried to have it last longer but this # is limited by the update speed
+    const maxJumpI = dimension - j;
+    const maxJumpJ = dimension - i;
+    const jumpI = Math.floor(Math.random() * maxJumpI);
+    const jumpJ = Math.floor(Math.random() * maxJumpJ);
+    if (elementAt(i, j - jumpJ) && elementAt(i - jumpI, j)) {
+      Math.random() >= 0.5
+        ? trade(i, j - Math.floor(jumpJ / 2), newCurrent)
+        : trade(i, j - Math.floor(jumpJ / 4), newCurrent);
+      Math.random() >= 0.5
+        ? trade(i - Math.floor(jumpI / 4), j, newCurrent)
+        : trade(i + Math.floor(jumpI / 4), j, newCurrent);
+    }
   }
 
   for (let i = dimension - 1; i >= 0; i--) {

@@ -142,7 +142,7 @@ class Sandbox extends Component {
   }
 
   randColor(element) {
-    return element.color[Math.floor(Math.random() * Math.floor(3))];
+    return element.color[Math.floor(Math.random() * 3)];
   }
 
   render() {
