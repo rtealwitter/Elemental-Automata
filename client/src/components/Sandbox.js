@@ -12,9 +12,10 @@ const Div = styled.div`
 const Void = { name: 'Void', color: ['#D3D3D3', '#D3D3D3', '#D3D3D3'] };
 const Rock = { name: 'Rock', color: ['#b9b9b9', '#aaaaaa', '#9b9b9b'] };
 const Water = { name: 'Water', color: ['#2391e1', '#2383d2', '#217ac3'] };
-const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] }; //will add more colors
+const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] };
+const Fire = { name: 'Fire', color: ['#e21500', '#e15100', '#c30600'] };
 
-const ElementArray = [Void, Rock, Water, Sand];
+const ElementArray = [Void, Rock, Water, Sand, Fire];
 
 let mouseDown = false;
 
@@ -214,7 +215,7 @@ class Sandbox extends Component {
   }
 
   randColor(element) {
-    return element.color[Math.floor(Math.random() * Math.floor(3))];
+    return element.color[Math.floor(Math.random() * 3)];
   }
 
   render() {
