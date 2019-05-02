@@ -11,7 +11,7 @@ exports.seed = function(knex, Promise) {
           title: 'Beach',
           author: 'Tenzin',
           edited: '2019-04-24',
-          sandbox: 110
+          sandbox: 'JSON'
         }
       ])
     );

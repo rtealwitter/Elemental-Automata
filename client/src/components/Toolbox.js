@@ -153,9 +153,9 @@ class Toolbox extends Component {
     };
     let runState;
     if (this.props.playState) {
-      runState = 'Pause';
+      runState = '| |';
     } else {
-      runState = 'Play';
+      runState = '|>';
     }
     return (
       <ToolbarDiv>
@@ -165,9 +165,7 @@ class Toolbox extends Component {
           {elementButton('Rock')}
           {elementButton('Sand')}
           {elementButton('Water')}
-          <Button type="button" onClick={this.handleFill} id="fill">
-            Fill
-          </Button>
+          {elementButton('Fire')}
         </ButtonDiv>
         <BrushAndSave>
           <BrushBG>
@@ -199,11 +197,14 @@ class Toolbox extends Component {
           <SaveDiv>
             <Button type="button" onClick={this.props.step}>
               {' '}
-              Step
+              {'|>|'}
             </Button>
             <Button type="button" onClick={this.props.play}>
               {' '}
               {runState}
+            </Button>
+            <Button type="button" onClick={this.handleFill} id="fill">
+              Fill
             </Button>
           </SaveDiv>
         </BrushAndSave>
