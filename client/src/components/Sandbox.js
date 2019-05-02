@@ -3,13 +3,13 @@ import { Stage, Layer } from 'react-konva';
 import Cell from './Cell.js';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { logic } from './Logic.js';
+import logic from './Logic.js';
 
 const Div = styled.div`
   display: inline-block;
 `;
 
-const Void = { name: 'Void', color: ['#D3D3D3', '#D3D3D3', '#D3D3D3'] };
+const Void = { name: 'Void', color: ['#FFFFFF', '#FFFFFF', '#FFFFFF'] };
 const Rock = { name: 'Rock', color: ['#b9b9b9', '#aaaaaa', '#9b9b9b'] };
 const Water = { name: 'Water', color: ['#2391e1', '#2383d2', '#217ac3'] };
 const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] };
@@ -50,8 +50,7 @@ class Sandbox extends Component {
           {
             x: (window.innerWidth / dimension) * j,
             // hack-y fix
-            y: ((window.innerHeight - 120) / dimension) * i,
-            shouldUpdate: false // will need to init as true
+            y: ((window.innerHeight - 120) / dimension) * i
           }
         );
       }
