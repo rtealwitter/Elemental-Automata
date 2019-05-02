@@ -112,7 +112,7 @@ class Toolbox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      SelectedElement: null,
+      SelectedElement: 'Void',
       BrushSize: '1'
     };
     this.handleSizeChange = this.handleBrushChange.bind(this, 'BrushSize');
@@ -121,6 +121,7 @@ class Toolbox extends Component {
       'SelectedElement'
     );
     this.handleClear = this.handleClear.bind(this);
+    this.handleFill = this.handleFill.bind(this);
   }
   handleBrushChange(field, event) {
     this.setState({ [field]: event.target.id });
@@ -131,7 +132,11 @@ class Toolbox extends Component {
     if (this.props.playState) {
       this.props.play();
     }
-    this.props.toClear('clear', !this.props.clear);
+    this.props.toFill('clear');
+    this.setState({ SelectedElement: 'Void' });
+  }
+  handleFill() {
+    this.props.toFill('fill');
   }
   render() {
     const elementButton = el => {
@@ -148,18 +153,17 @@ class Toolbox extends Component {
     };
     let runState;
     if (this.props.playState) {
-      runState = 'Pause';
+      runState = '| |';
     } else {
-      runState = 'Play';
+      runState = '|>';
     }
     return (
       <ToolbarDiv>
         <ButtonDiv>
           <ElementTitle>Elements</ElementTitle>
-
+          {elementButton('Void')}
           {elementButton('Rock')}
           {elementButton('Sand')}
-          {elementButton('Void')}
           {elementButton('Water')}
           {elementButton('Fire')}
         </ButtonDiv>
@@ -193,11 +197,14 @@ class Toolbox extends Component {
           <SaveDiv>
             <Button type="button" onClick={this.props.step}>
               {' '}
-              Step
+              {'|>|'}
             </Button>
             <Button type="button" onClick={this.props.play}>
               {' '}
               {runState}
+            </Button>
+            <Button type="button" onClick={this.handleFill} id="fill">
+              Fill
             </Button>
           </SaveDiv>
         </BrushAndSave>
@@ -208,8 +215,8 @@ class Toolbox extends Component {
 Toolbox.propTypes = {
   selected: PropTypes.func.isRequired,
   saved: PropTypes.func, //TODO: prop function to save state of grid
-  toClear: PropTypes.func.isRequired,
-  clear: PropTypes.bool.isRequired
+  toFill: PropTypes.func.isRequired,
+  fill: PropTypes.bool.isRequired
 };
 
 export default Toolbox;
