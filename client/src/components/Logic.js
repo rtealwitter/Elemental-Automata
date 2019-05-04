@@ -1,4 +1,4 @@
-export function logic(grid, dimension) {
+function logic(grid, dimension) {
   const newGrid = JSON.parse(JSON.stringify(grid));
 
   function elementAt(i, j) {
@@ -13,14 +13,14 @@ export function logic(grid, dimension) {
     // Trades elements
     const newElement = newCurrent.element;
     Object.assign(newCurrent, {
-      element: grid[j][i].element,
-      shouldUpdate: true
+      element: grid[j][i].element
     });
-    Object.assign(newGrid[j][i], { element: newElement, shouldUpdate: true });
+    Object.assign(newGrid[j][i], { element: newElement });
   }
 
   function isEmpty(i, j, current) {
     // Checks whether a cell is empty
+    // or current element should fall into it
     const element = elementAt(i, j);
     if (element) {
       return (
@@ -60,10 +60,28 @@ export function logic(grid, dimension) {
     }
   }
 
+  function isFalling(i, j) {
+    // Check whether current element is falling
+    let newJ = j + 1;
+    let newElement = elementAt(i, newJ);
+    // TO-DO: ADD OTHER FALLING ELEMENTS LIKE OIL
+    // TO BELOW CHECK
+    while (newElement === 'Water' || newElement === 'Sand') {
+      newJ += 1;
+      newElement = elementAt(i, newJ);
+    }
+    if (!newElement) {
+      return false;
+    }
+    return newElement === 'Void';
+  }
+
   function pile(i, j, current, newCurrent) {
     // Creates pile of element
     if (isEmpty(i, j + 1, current)) {
       trade(i, j + 1, newCurrent);
+    } else if (isFalling(i, j)) {
+      console.log('falling');
     } else if (
       isEmpty(i - 1, j + 1, current) &&
       isEmpty(i + 1, j + 1, current)
@@ -81,6 +99,7 @@ export function logic(grid, dimension) {
   }
 
   function checkNeighbors(i, j, current, element) {
+    // Check whether all four neighbors are element
     if (
       elementAt(i + 1, j) === element ||
       elementAt(i - 1, j) === element ||
@@ -95,22 +114,14 @@ export function logic(grid, dimension) {
   function fire(i, j, current, newCurrent) {
     // if water is touching, fire disappears
     if (checkNeighbors(i, j, current, 'Water')) {
-      trade(
-        i,
-        j,
-        Object.assign(newCurrent, { element: 'Void', shouldUpdate: true })
-      );
+      trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
     }
-    Object.assign(newCurrent, { shouldUpdate: false });
+    //    Object.assign(newCurrent, { shouldUpdate: false });
     // disappears after set time if no element conducive to fire (wood, oil) is neighboring
     setTimeout(() => {
-      trade(
-        i,
-        j,
-        Object.assign(newCurrent, { element: 'Void', shouldUpdate: true })
-      );
+      trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
     }, 200); // tried to have it last longer but this # is limited by the update speed
-    const maxJumpI = dimension - j;
+    const maxJumpI = dimension - j; // this doesn't make sense
     const maxJumpJ = dimension - i;
     const jumpI = Math.floor(Math.random() * maxJumpI);
     const jumpJ = Math.floor(Math.random() * maxJumpJ);
@@ -148,3 +159,5 @@ export function logic(grid, dimension) {
 
   return newGrid;
 }
+
+export default logic;
