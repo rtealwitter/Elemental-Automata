@@ -82,21 +82,10 @@ class Sandbox extends Component {
 
   saveGrid() {
     if (this.props.save) {
+      // Handle 'edited' field
       const getCurDate = () => {
         const today = new Date();
-        let dd = today.getDate();
-        let mm = today.getMonth() + 1;
-        let hh = today.getHours();
-        let min = today.getMinutes();
-        let sec = today.getSeconds();
-        const yyyy = today.getFullYear();
-
-        if (dd < 10) dd = `0${dd}`;
-        if (mm < 10) mm = `0${mm}`;
-        if (hh < 10) hh = `0${hh}`;
-        if (min < 10) min = `0${min}`;
-        if (sec < 10) sec = `0${sec}`;
-        return `${yyyy}-${mm}-${dd} ${hh}:${min}:${sec}`;
+        return today.toISOString();
       };
       const saveDate = getCurDate();
       const jsonGrid = JSON.stringify(this.state.grid);
