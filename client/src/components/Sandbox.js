@@ -21,6 +21,25 @@ let mouseDown = false;
 
 const speed = 250; //milliseconds between updates
 
+function assignDimensions(dimension, grid) {
+  const newGrid = [];
+  for (let i = 0; i < dimension; i++) {
+    const newRow = [];
+    for (let j = 0; j < dimension; j++) {
+      newRow[j] = Object.assign(
+        grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
+        {
+          x: (window.innerWidth / dimension) * j,
+          // hack-y fix
+          y: ((window.innerHeight - 120) / dimension) * i
+        }
+      );
+    }
+    newGrid[i] = newRow;
+  }
+  return newGrid;
+}
+
 class Sandbox extends Component {
   constructor() {
     super();
@@ -63,6 +82,24 @@ class Sandbox extends Component {
 
   //handles resize of windows and time in the world
   componentDidMount() {
+    if (window.location.pathname !== '/') {
+      fetch('/api/scenarios' + window.location.pathname)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error(response.statusText);
+        })
+        .then(data => {
+          const newGrid = JSON.parse(data[0].sandbox);
+          this.setState({
+            dimension: newGrid.length,
+            grid: assignDimensions(newGrid.length, newGrid)
+          });
+        })
+        .catch(err => console.log(err)); // eslint-disable-line no-console
+    }
+
     this.updateDimensions();
     window.addEventListener('resize', this.updateDimensions);
     this.interval = setInterval(() => {
