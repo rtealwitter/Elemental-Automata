@@ -83,7 +83,7 @@ class Sandbox extends Component {
   //handles resize of windows and time in the world
   componentDidMount() {
     if (window.location.pathname !== '/') {
-      fetch('/api/scenarios' + window.location.pathname)
+      fetch('/api/scenarios' + window.location.pathname) // eslint-disable-line prefer-template
         .then(response => {
           if (response.ok) {
             return response.json();
