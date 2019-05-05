@@ -125,10 +125,15 @@ function logic(grid, dimension) {
     const maxJumpJ = dimension - i;
     const jumpI = Math.floor(Math.random() * maxJumpI);
     const jumpJ = Math.floor(Math.random() * maxJumpJ);
-    if (elementAt(i, j - jumpJ) && elementAt(i - jumpI, j)) {
+    if (elementAt(i, j - jumpJ) === 'Void') {
       Math.random() >= 0.5
         ? trade(i, j - Math.floor(jumpJ / 2), newCurrent)
         : trade(i, j - Math.floor(jumpJ / 4), newCurrent);
+    }
+    if (
+      elementAt(i - jumpI, j) === 'Void' &&
+      elementAt(i + jumpI, j) === 'Void'
+    ) {
       Math.random() >= 0.5
         ? trade(i - Math.floor(jumpI / 4), j, newCurrent)
         : trade(i + Math.floor(jumpI / 4), j, newCurrent);
