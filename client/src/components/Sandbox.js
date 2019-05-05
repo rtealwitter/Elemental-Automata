@@ -194,6 +194,48 @@ class Sandbox extends Component {
           });
         }
       }
+      if (this.props.size > 3) {
+        if (row > 1) {
+          // does 2 above
+          newGrid[row - 2][col] = Object.assign(grid[row - 2][col], {
+            element: this.props.element
+          });
+          if (col < this.state.dimension - 1) {
+            newGrid[row - 2][col + 1] = Object.assign(grid[row - 2][col + 1], {
+              element: this.props.element
+            });
+          }
+          if (col < this.state.dimension - 2) {
+            // uppper right corner
+            newGrid[row - 2][col + 2] = Object.assign(grid[row - 2][col + 2], {
+              element: this.props.element
+            });
+          }
+          if (col > 0) {
+            // left corner
+            newGrid[row - 2][col - 1] = Object.assign(grid[row - 2][col - 1], {
+              element: this.props.element
+            });
+          }
+        }
+        if (row > 0 && col < this.state.dimension - 2) {
+          newGrid[row - 1][col + 2] = Object.assign(grid[row - 1][col + 2], {
+            element: this.props.element
+          });
+        }
+        if (col < this.state.dimension - 2) {
+          // right
+          newGrid[row][col + 2] = Object.assign(grid[row][col + 2], {
+            element: this.props.element
+          });
+        }
+        if (row < this.state.dimension - 1 && col < this.state.dimension - 2) {
+          // bottom right corner
+          newGrid[row + 1][col + 2] = Object.assign(grid[row + 1][col + 2], {
+            element: this.props.element
+          });
+        }
+      }
       newGrid[row][col] = Object.assign(grid[row][col], {
         // always do clicked cell
         element: this.props.element
