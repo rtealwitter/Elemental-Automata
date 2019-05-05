@@ -42,6 +42,7 @@ class App extends Component {
   handlePlay(field) {
     this.setState({ [field]: !this.state.play });
   }
+
   render() {
     const { x, y } = this.state;
     return (
