@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Container, Row, Navbar, Nav } from 'reactstrap';
+import { Container, Row, Nav } from 'reactstrap';
 
 const Button = styled.button`
   font-size: 0.8em;

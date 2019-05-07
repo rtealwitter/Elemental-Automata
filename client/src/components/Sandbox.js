@@ -125,7 +125,7 @@ class Sandbox extends Component {
       const { grid } = this.state;
       const newGrid = Array.from(grid);
       if (this.props.size > 1) {
-        // will act the same for size 2 and size 3 to reduce redundencies
+        // will act the same for size 2 and size 3 to reduce redundancies
         if (row > 0) {
           // will do up always
           if (col < this.state.dimension - 1) {

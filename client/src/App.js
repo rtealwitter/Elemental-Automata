@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
 import Toolbox from './components/Toolbox';
 import Sandbox from './components/Sandbox.js';
+import GlobalStyle from './assets/globalStyle.js';
 
 /* eslint-disable react/prefer-stateless-function, no-unused-vars */
 class App extends Component {
@@ -46,6 +46,7 @@ class App extends Component {
     const { x, y } = this.state;
     return (
       <div className="App">
+        <GlobalStyle />
         <Sandbox
           element={this.state.SelectedElement}
           size={this.state.BrushSize}
