@@ -8,6 +8,13 @@ const GlobalStyle = createGlobalStyle`
     font-family: Minecraft, sans-serif;
     text-align: center;
   }
+  button {
+    font-family: Minecraft, sans-serif;
+    align-content: center;
+    align-items: center;
+    padding-top: 0.25em;
+    background: transparent;
+  }
   @font-face {
     font-family: Minecraft;
     src: url(${Minecraft});

@@ -96,7 +96,6 @@ class App extends Component {
             <Button onClick={this.handleSave}>Cancel</Button>
           </ModalFooter>
         </Modal>
-        0f888c04a547e61c6311042e612a85bb53891b6b
         <Sandbox
           element={this.state.SelectedElement}
           size={this.state.BrushSize}

@@ -35,7 +35,7 @@ function assignDimensions(dimension, grid) {
         {
           x: (window.innerWidth / dimension) * j,
           // hack-y fix
-          y: ((window.innerHeight - 120) / dimension) * i
+          y: ((window.innerHeight - 200) / dimension) * i
         }
       );
     }
@@ -198,7 +198,7 @@ class Sandbox extends Component {
         onMouseUp={() => (mouseDown = false)}
         onMouseLeave={() => (mouseDown = false)}
       >
-        <Stage width={window.innerWidth - 175} height={window.innerHeight}>
+        <Stage width={window.innerWidth - 200} height={window.innerHeight}>
           <Layer>{renderedGrid}</Layer>
         </Stage>
       </Div>
