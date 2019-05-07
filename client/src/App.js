@@ -59,6 +59,7 @@ class App extends Component {
     return (
       <div className="App">
         <Modal
+          className="saveModal"
           isOpen={this.state.saveMode}
           toggle={this.handleSave}
           centered
@@ -66,7 +67,7 @@ class App extends Component {
         >
           <ModalHeader>Save This Scenario</ModalHeader>
           <ModalBody>
-            <Form>
+            <Form type="submit">
               <FormGroup>
                 <Label for="scenarioName">Scenario Name</Label>
                 <br />
@@ -90,7 +91,9 @@ class App extends Component {
             </Form>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={this.handleSave}>Submit</Button>
+            <Button type="Submit" onClick={this.handleSave}>
+              Submit
+            </Button>
             <Button onClick={this.handleSave}>Cancel</Button>
           </ModalFooter>
         </Modal>
