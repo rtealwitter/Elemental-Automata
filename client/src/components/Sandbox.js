@@ -28,7 +28,6 @@ class Sandbox extends Component {
     this.updateDimensions = this.updateDimensions.bind(this);
     this.fill = this.fill.bind(this);
     this.changeElement = this.changeElement.bind(this);
-    this.saveGrid = this.saveGrid.bind(this);
     this.randColor = this.randColor.bind(this);
 
     this.state = {
@@ -80,29 +79,29 @@ class Sandbox extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  saveGrid() {
-    if (this.props.save) {
-      // Handle 'edited' field
-      const getCurDate = () => {
-        const today = new Date();
-        return today.toISOString();
-      };
-      const saveDate = getCurDate();
-      const jsonGrid = JSON.stringify(this.state.grid);
-      const newRecord = {
-        title: 'test',
-        author: 'Mr. JSON',
-        edited: saveDate,
-        sandbox: jsonGrid
-      };
-      fetch('/api/scenarios/', {
-        method: 'POST',
-        body: JSON.stringify(newRecord),
-        headers: new Headers({ 'Content-type': 'application/json' })
-      });
-      this.props.unSave();
-    }
-  }
+  // saveGrid() {
+  //   if (this.props.save) {
+  //     // // Handle 'edited' field
+  //     const getCurDate = () => {
+  //       const today = new Date();
+  //       return today.toISOString();
+  //     };
+  //     const saveDate = getCurDate();
+  //     const jsonGrid = JSON.stringify(this.state.grid);
+  //     const newRecord = {
+  //       title: 'test',
+  //       author: 'Mr. JSON',
+  //       edited: saveDate,
+  //       sandbox: jsonGrid
+  //     };
+  //     fetch('/api/scenarios/', {
+  //       method: 'POST',
+  //       body: JSON.stringify(newRecord),
+  //       headers: new Headers({ 'Content-type': 'application/json' })
+  //     });
+  //     this.props.unSave();
+  //   }
+  // }
   fill() {
     const { dimension, grid } = this.state;
     const newGrid = Array.from(grid);
@@ -208,9 +207,6 @@ class Sandbox extends Component {
 
   render() {
     const { dimension, grid } = this.state;
-    if (this.props.save) {
-      this.saveGrid();
-    }
     if (this.props.fill && grid) {
       this.fill();
     }
