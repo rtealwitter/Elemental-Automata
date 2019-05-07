@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Container, Row, Navbar, Nav } from 'reactstrap';
 
 const Button = styled.button`
   font-size: 0.8em;
@@ -23,30 +24,7 @@ const Button = styled.button`
     border: 0.15em solid #46a67b;
   }
 `;
-const ButtonDiv = styled.div`
-  position: relative;
-  display: inline-block;
-  margin: 5px auto;
-  width: 10em;
-  height: 6em;
-  background: #46a67b;
-  color: white;
-  border: 0.1em solid #46a67b;
-  border-radius: 0.5em;
-`;
 
-const BrushBG = styled(ButtonDiv)`
-  height: 2em;
-  text-align: left;
-  display: block;
-`;
-const BrushDiv = styled.div`
-  position: relative;
-  width: 11em;
-  top: 0.3em;
-  left: 0.4em;
-  font-size: 14px;
-`;
 const BrushSizes = styled.div`
   position: relative;
   display: inline;
@@ -77,37 +55,23 @@ const Clear = styled(Button)`
   font-size: 12px;
   margin: 0;
 `;
-const ToolbarDiv = styled.div`
-  display: block;
-  position: fixed;
-  width: 100%;
-  height: 7em;
-  background: #c9f0dd;
-  border: 0.25em solid #46a67b;
-  border-radius: 0.5em;
-  bottom: 0em;
-  left: 0em;
-`;
 const ElementTitle = styled.h1`
   font-size: 19px;
   margin: 7px auto 4px;
 `;
-const SaveDiv = styled(ButtonDiv)`
-  height: 3em;
-  display: block;
-`;
+
 const OptionButtons = styled(Button)`
   font-size: 1em;
   width: 4.5em;
   margin: 0.5em 3px;
 `;
-const BrushAndSave = styled.div`
+const Div = styled.div`
   display: inline-block;
-  position: relative;
-  bottom: 0.5em;
-  left: 0.5em;
+  position: fixed;
+  top: 0;
+  right: 0.5em;
+  height: 100%;
 `;
-
 class Toolbox extends Component {
   constructor(props) {
     super(props);
@@ -158,18 +122,22 @@ class Toolbox extends Component {
       runState = '►';
     }
     return (
-      <ToolbarDiv>
-        <ButtonDiv>
-          <ElementTitle>Elements</ElementTitle>
-          {elementButton('Void')}
-          {elementButton('Rock')}
-          {elementButton('Sand')}
-          {elementButton('Water')}
-          {elementButton('Fire')}
-        </ButtonDiv>
-        <BrushAndSave>
-          <BrushBG>
-            <BrushDiv>
+      <Div>
+        <Container>
+          <Nav navbar>
+            <Row>
+              <ElementTitle>Elements</ElementTitle>
+              <Row>
+                {elementButton('Void')}
+                {elementButton('Rock')}
+                {elementButton('Sand')}
+              </Row>
+              <Row>
+                {elementButton('Water')}
+                {elementButton('Fire')}
+              </Row>
+            </Row>
+            <Row>
               Size&emsp;
               <BrushSizes>
                 <Circle0 onClick={this.handleSizeChange} id="1" />
@@ -184,29 +152,27 @@ class Toolbox extends Component {
               >
                 Clear
               </Clear>
-            </BrushDiv>
-          </BrushBG>
-          <SaveDiv>
-            <OptionButtons type="button" onClick={this.props.save}>
-              Save
-            </OptionButtons>
-            <OptionButtons type="button">Share</OptionButtons>
-          </SaveDiv>
-        </BrushAndSave>
-        <BrushAndSave>
-          <SaveDiv>
-            <Button type="button" onClick={this.props.step}>
-              {'►|'}
-            </Button>
-            <Button type="button" onClick={this.props.play}>
-              {runState}
-            </Button>
-            <Button type="button" onClick={this.handleFill} id="fill">
-              Fill
-            </Button>
-          </SaveDiv>
-        </BrushAndSave>
-      </ToolbarDiv>
+            </Row>
+            <Row>
+              <OptionButtons type="button" onClick={this.props.save}>
+                Save
+              </OptionButtons>
+              <OptionButtons type="button">Share</OptionButtons>
+            </Row>
+            <Row>
+              <Button type="button" onClick={this.props.step}>
+                {'►|'}
+              </Button>
+              <Button type="button" onClick={this.props.play}>
+                {runState}
+              </Button>
+              <Button type="button" onClick={this.handleFill} id="fill">
+                Fill
+              </Button>
+            </Row>
+          </Nav>
+        </Container>
+      </Div>
     );
   }
 }
