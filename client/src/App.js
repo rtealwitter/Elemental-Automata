@@ -1,4 +1,16 @@
 import React, { Component } from 'react';
+
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
+  Input
+} from 'reactstrap';
 import Toolbox from './components/Toolbox';
 import Sandbox from './components/Sandbox.js';
 import GlobalStyle from './assets/globalStyle.js';
@@ -16,7 +28,7 @@ class App extends Component {
       fill: false,
       play: false,
       step: false,
-      save: false
+      saveMode: false
     }; // placeholder
     this.selectElement = this.selectElement.bind(this);
     this.handleFill = this.handleFill.bind(this);
@@ -25,7 +37,7 @@ class App extends Component {
     this.handleSave = this.handleSave.bind(this);
   }
   handleSave() {
-    this.setState({ save: !this.state.save });
+    this.setState({ saveMode: !this.state.saveMode });
   }
   selectElement(field, evt) {
     this.setState({ [field]: evt });
@@ -42,11 +54,49 @@ class App extends Component {
   handlePlay(field) {
     this.setState({ [field]: !this.state.play });
   }
+
   render() {
     const { x, y } = this.state;
     return (
       <div className="App">
         <GlobalStyle />
+        <Modal
+          isOpen={this.state.saveMode}
+          toggle={this.handleSave}
+          centered
+          backdrop
+        >
+          <ModalHeader>Save This Scenario</ModalHeader>
+          <ModalBody>
+            <Form>
+              <FormGroup>
+                <Label for="scenarioName">Scenario Name</Label>
+                <br />
+                <Input
+                  type="text"
+                  name="scenarioName"
+                  id="scenarioName"
+                  placeholder="Enter a name for the scenario"
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="authorName">Author Name</Label>
+                <br />
+                <Input
+                  type="text"
+                  name="authorName"
+                  id="authorName"
+                  placeholder="Enter your name"
+                />
+              </FormGroup>
+            </Form>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={this.handleSave}>Submit</Button>
+            <Button onClick={this.handleSave}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+        0f888c04a547e61c6311042e612a85bb53891b6b
         <Sandbox
           element={this.state.SelectedElement}
           size={this.state.BrushSize}
@@ -65,7 +115,7 @@ class App extends Component {
           step={this.handleStep}
           play={this.handlePlay}
           playState={this.state.play}
-          save={this.handleSave}
+          saveMode={this.handleSave}
         />
       </div>
     );

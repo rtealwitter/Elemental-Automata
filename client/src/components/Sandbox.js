@@ -4,6 +4,7 @@ import Cell from './Cell.js';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import logic from './Logic.js';
+import change from './change.js';
 
 const Div = styled.div`
   display: inline-block;
@@ -24,6 +25,25 @@ let mouseDown = false;
 
 const speed = 250; //milliseconds between updates
 
+function assignDimensions(dimension, grid) {
+  const newGrid = [];
+  for (let i = 0; i < dimension; i++) {
+    const newRow = [];
+    for (let j = 0; j < dimension; j++) {
+      newRow[j] = Object.assign(
+        grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
+        {
+          x: (window.innerWidth / dimension) * j,
+          // hack-y fix
+          y: ((window.innerHeight - 120) / dimension) * i
+        }
+      );
+    }
+    newGrid[i] = newRow;
+  }
+  return newGrid;
+}
+
 class Sandbox extends Component {
   constructor() {
     super();
@@ -31,7 +51,6 @@ class Sandbox extends Component {
     this.updateDimensions = this.updateDimensions.bind(this);
     this.fill = this.fill.bind(this);
     this.changeElement = this.changeElement.bind(this);
-    this.saveGrid = this.saveGrid.bind(this);
     this.randColor = this.randColor.bind(this);
 
     this.state = {
@@ -66,6 +85,24 @@ class Sandbox extends Component {
 
   //handles resize of windows and time in the world
   componentDidMount() {
+    if (window.location.pathname !== '/') {
+      fetch('/api/scenarios' + window.location.pathname) // eslint-disable-line prefer-template
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error(response.statusText);
+        })
+        .then(data => {
+          const newGrid = JSON.parse(data[0].sandbox);
+          this.setState({
+            dimension: newGrid.length,
+            grid: assignDimensions(newGrid.length, newGrid)
+          });
+        })
+        .catch(err => console.log(err)); // eslint-disable-line no-console
+    }
+
     this.updateDimensions();
     window.addEventListener('resize', this.updateDimensions);
     this.interval = setInterval(() => {
@@ -83,29 +120,29 @@ class Sandbox extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  saveGrid() {
-    if (this.props.save) {
-      // Handle 'edited' field
-      const getCurDate = () => {
-        const today = new Date();
-        return today.toISOString();
-      };
-      const saveDate = getCurDate();
-      const jsonGrid = JSON.stringify(this.state.grid);
-      const newRecord = {
-        title: 'test',
-        author: 'Mr. JSON',
-        edited: saveDate,
-        sandbox: jsonGrid
-      };
-      fetch('/api/scenarios/', {
-        method: 'POST',
-        body: JSON.stringify(newRecord),
-        headers: new Headers({ 'Content-type': 'application/json' })
-      });
-      this.props.unSave();
-    }
-  }
+  // saveGrid() {
+  //   if (this.props.save) {
+  //     // // Handle 'edited' field
+  //     const getCurDate = () => {
+  //       const today = new Date();
+  //       return today.toISOString();
+  //     };
+  //     const saveDate = getCurDate();
+  //     const jsonGrid = JSON.stringify(this.state.grid);
+  //     const newRecord = {
+  //       title: 'test',
+  //       author: 'Mr. JSON',
+  //       edited: saveDate,
+  //       sandbox: jsonGrid
+  //     };
+  //     fetch('/api/scenarios/', {
+  //       method: 'POST',
+  //       body: JSON.stringify(newRecord),
+  //       headers: new Headers({ 'Content-type': 'application/json' })
+  //     });
+  //     this.props.unSave();
+  //   }
+  // }
   fill() {
     const { dimension, grid } = this.state;
     const newGrid = Array.from(grid);
@@ -203,6 +240,10 @@ class Sandbox extends Component {
       });
       this.setState({ grid: newGrid });
     }
+    const { dimension, grid } = this.state;
+    const { size, element } = this.props;
+    const newGrid = change(row, col, grid, size, dimension, element, mouseDown);
+    this.setState({ grid: newGrid });
   }
 
   randColor(element) {
@@ -211,9 +252,6 @@ class Sandbox extends Component {
 
   render() {
     const { dimension, grid } = this.state;
-    if (this.props.save) {
-      this.saveGrid();
-    }
     if (this.props.fill && grid) {
       this.fill();
     }
