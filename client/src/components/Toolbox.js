@@ -187,7 +187,7 @@ class Toolbox extends Component {
             </BrushDiv>
           </BrushBG>
           <SaveDiv>
-            <OptionButtons type="button" onClick={this.props.save}>
+            <OptionButtons type="button" onClick={this.props.saveMode}>
               Save
             </OptionButtons>
             <OptionButtons type="button">Share</OptionButtons>
@@ -212,7 +212,6 @@ class Toolbox extends Component {
 }
 Toolbox.propTypes = {
   selected: PropTypes.func.isRequired,
-  saved: PropTypes.func, //TODO: prop function to save state of grid
   toFill: PropTypes.func.isRequired,
   fill: PropTypes.bool.isRequired
 };
