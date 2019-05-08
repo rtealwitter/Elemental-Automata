@@ -15,8 +15,10 @@ const Rock = { name: 'Rock', color: ['#b9b9b9', '#aaaaaa', '#9b9b9b'] };
 const Water = { name: 'Water', color: ['#2391e1', '#2383d2', '#217ac3'] };
 const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] };
 const Fire = { name: 'Fire', color: ['#e21500', '#e15100', '#c30600'] };
+const Plant = { name: 'Plant', color: ['#228B22', '#008000', '#006400'] };
+const Flower = { name: 'Flower', color: ['#FF00FF', '#F08080', '#FFD700'] };
 
-const ElementArray = [Void, Rock, Water, Sand, Fire];
+const ElementArray = [Void, Rock, Water, Sand, Fire, Plant, Flower];
 
 let mouseDown = false;
 
