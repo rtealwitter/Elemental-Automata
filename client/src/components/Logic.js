@@ -67,7 +67,11 @@ function logic(grid, dimension) {
     let newElement = elementAt(i, newJ);
     // TO-DO: ADD OTHER FALLING ELEMENTS LIKE OIL
     // TO BELOW CHECK
-    while (newElement === 'Water' || newElement === 'Sand') {
+    while (
+      newElement === 'Water' ||
+      newElement === 'Sand' ||
+      newElement === 'Plant'
+    ) {
       newJ += 1;
       newElement = elementAt(i, newJ);
     }
@@ -192,7 +196,9 @@ function logic(grid, dimension) {
     //should have a flower at the top
     else if (
       current.element === 'Plant' &&
-      grid[j - 1][i].element === 'Void' &&
+      (grid[j - 1][i].element === 'Void' ||
+        grid[j - 1][i].element === 'Water') &&
+      !isFalling(i, j) &&
       j > 0
     ) {
       sprout(i, j - 1, current, newCurrent);
@@ -201,7 +207,8 @@ function logic(grid, dimension) {
     else if (
       current.element === 'Flower' &&
       shouldGrow(i, j + 1, current) &&
-      grid[j - 1][i].element === 'Void' &&
+      (grid[j - 1][i].element === 'Void' ||
+        grid[j - 1][i].element === 'Water') &&
       j > 1
     ) {
       trade(i, j - 1, Object.assign(newCurrent, { element: 'Flower' }));
