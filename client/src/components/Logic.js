@@ -178,11 +178,11 @@ function logic(grid, dimension) {
     trade(i, j, Object.assign(newCurrent, { element: 'Flower' }));
   }
 
-  function sproutLeaf(i, j, newCurrent) {
-    Math.random() >= 0.5
-      ? trade(i - 1, j, Object.assign(newCurrent, { element: 'Plant' }))
-      : trade(i + 1, j, Object.assign(newCurrent, { element: 'Plant' }));
-  }
+  // function sproutLeaf(i, j, newCurrent) {
+  //   Math.random() >= 0.5
+  //     ? trade(i - 1, j, Object.assign(newCurrent, { element: 'Plant' }))
+  //     : trade(i + 1, j, Object.assign(newCurrent, { element: 'Plant' }));
+  // }
 
   function plant(i, j, current, newCurrent) {
     //should fall if void is below
