@@ -107,12 +107,11 @@ const BrushAndSave = styled.div`
   bottom: 0.5em;
   left: 0.5em;
 `;
-
 class Toolbox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      SelectedElement: 'Void',
+      SelectedElement: 'Rock',
       BrushSize: '1'
     };
     this.handleSizeChange = this.handleBrushChange.bind(this, 'BrushSize');
@@ -122,6 +121,7 @@ class Toolbox extends Component {
     );
     this.handleClear = this.handleClear.bind(this);
     this.handleFill = this.handleFill.bind(this);
+    this.set = this.set.bind(this);
   }
   handleBrushChange(field, event) {
     this.setState({ [field]: event.target.id });
@@ -138,7 +138,13 @@ class Toolbox extends Component {
   handleFill() {
     this.props.toFill('fill');
   }
+  set(state) {
+    this.setState(state);
+  }
   render() {
+    const { play, step, toFill, selected } = this.props;
+    const { handleClear, set } = this;
+
     const elementButton = el => {
       return (
         <Button
@@ -151,22 +157,45 @@ class Toolbox extends Component {
         </Button>
       );
     };
+    const elementList = ['Void', 'Rock', 'Sand', 'Water', 'Fire', 'Plant']; // Put new elements here
+    const buttonList = elementList.map(el => {
+      return elementButton(el);
+    });
+
     let runState;
     if (this.props.playState) {
       runState = '■';
     } else {
       runState = '►';
     }
+
+    document.onkeypress = function(e) {
+      if (['p', 'P'].includes(e.key)) {
+        play();
+      }
+      if (['s', 'S'].includes(e.key)) {
+        step();
+      }
+      if (['f', 'F'].includes(e.key)) {
+        toFill('fill');
+      }
+      if (['c', 'C'].includes(e.key)) {
+        handleClear();
+        set({ SelectedElement: 'Void' });
+      }
+      if (Number.isInteger(parseInt(e.key))) {
+        const index = parseInt(e.key);
+        if (index < elementList.length) {
+          set({ SelectedElement: elementList[index] });
+          selected('SelectedElement', elementList[index]);
+        }
+      }
+    };
     return (
       <ToolbarDiv>
         <ButtonDiv>
           <ElementTitle>Elements</ElementTitle>
-          {elementButton('Void')}
-          {elementButton('Rock')}
-          {elementButton('Sand')}
-          {elementButton('Water')}
-          {elementButton('Fire')}
-          {elementButton('Plant')}
+          {buttonList}
         </ButtonDiv>
         <BrushAndSave>
           <BrushBG>
@@ -178,11 +207,7 @@ class Toolbox extends Component {
                 <Circle2 onClick={this.handleSizeChange} id="3" />
                 &emsp;
               </BrushSizes>
-              <Clear
-                type="button"
-                onClick={this.handleClear} // TODO: clear method
-                value="Clear"
-              >
+              <Clear type="button" onClick={this.handleClear} value="Clear">
                 Clear
               </Clear>
             </BrushDiv>

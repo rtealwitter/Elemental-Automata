@@ -159,8 +159,17 @@ class Sandbox extends Component {
   changeElement(row, col) {
     const { dimension, grid } = this.state;
     const { size, element } = this.props;
-    const newGrid = change(row, col, grid, size, dimension, element, mouseDown);
-    this.setState({ grid: newGrid });
+    if (mouseDown) {
+      const newGrid = change(
+        row,
+        col,
+        grid,
+        parseInt(size),
+        dimension,
+        element
+      );
+      this.setState({ grid: newGrid });
+    }
   }
 
   randColor(element) {
