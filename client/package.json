@@ -22,7 +22,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "konva": "^3.2.5",
-    "pg": "^7.10.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-konva": "^16.8.6",
