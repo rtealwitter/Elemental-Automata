@@ -20,6 +20,8 @@ class App extends Component {
     super();
 
     this.state = {
+      scenarioName: '',
+      authorName: '',
       x: 0,
       y: 0,
       SelectedElement: 'Void',
@@ -27,13 +29,18 @@ class App extends Component {
       fill: false,
       play: false,
       step: false,
-      saveMode: false
-    }; // placeholder
+      saveMode: false,
+      saveGrid: false
+    };
     this.selectElement = this.selectElement.bind(this);
     this.handleFill = this.handleFill.bind(this);
     this.handleStep = this.handleStep.bind(this, 'step');
     this.handlePlay = this.handlePlay.bind(this, 'play');
     this.handleSave = this.handleSave.bind(this);
+    this.setScenarioName = this.setScenarioName.bind(this);
+    this.setAuthorName = this.setAuthorName.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.unSaveGrid = this.unSaveGrid.bind(this);
   }
   handleSave() {
     this.setState({ saveMode: !this.state.saveMode });
@@ -53,12 +60,28 @@ class App extends Component {
   handlePlay(field) {
     this.setState({ [field]: !this.state.play });
   }
-
+  setScenarioName(evt) {
+    this.setState({ scenarioName: evt.target.value });
+  }
+  setAuthorName(evt) {
+    this.setState({ authorName: evt.target.value });
+  }
+  handleSubmit(evt) {
+    evt.preventDefault(); // prevent page reload
+    // change saveGrid state to activate callback in Sandbox.js
+    this.setState({ saveGrid: true });
+    // revert saveMode state
+    this.setState({ saveMode: !this.state.saveMode });
+  }
+  unSaveGrid() {
+    this.setState({ saveGrid: false });
+  }
   render() {
     const { x, y } = this.state;
     return (
       <div className="App">
         <Modal
+          className="saveModal"
           isOpen={this.state.saveMode}
           toggle={this.handleSave}
           centered
@@ -66,7 +89,7 @@ class App extends Component {
         >
           <ModalHeader>Save This Scenario</ModalHeader>
           <ModalBody>
-            <Form>
+            <Form onSubmit={this.handleSubmit}>
               <FormGroup>
                 <Label for="scenarioName">Scenario Name</Label>
                 <br />
@@ -75,6 +98,8 @@ class App extends Component {
                   name="scenarioName"
                   id="scenarioName"
                   placeholder="Enter a name for the scenario"
+                  value={this.state.scenarioName}
+                  onChange={this.setScenarioName}
                 />
               </FormGroup>
               <FormGroup>
@@ -85,12 +110,14 @@ class App extends Component {
                   name="authorName"
                   id="authorName"
                   placeholder="Enter your name"
+                  value={this.state.authorName}
+                  onChange={this.setAuthorName}
                 />
               </FormGroup>
+              <Button type="submit">Submit</Button>
             </Form>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={this.handleSave}>Submit</Button>
             <Button onClick={this.handleSave}>Cancel</Button>
           </ModalFooter>
         </Modal>
@@ -104,6 +131,10 @@ class App extends Component {
           play={this.state.play}
           save={this.state.save}
           unSave={this.handleSave}
+          saveGrid={this.state.saveGrid}
+          unSaveGrid={this.unSaveGrid}
+          scenarioName={this.state.scenarioName}
+          authorName={this.state.authorName}
         />
         <Toolbox
           selected={this.selectElement}
