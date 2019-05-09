@@ -51,10 +51,13 @@ class Sandbox extends Component {
     this.fill = this.fill.bind(this);
     this.changeElement = this.changeElement.bind(this);
     this.randColor = this.randColor.bind(this);
+    this.loadGrid = this.loadGrid.bind(this);
+    this.loadScenariosGrid = this.loadScenariosGrid.bind(this);
 
     this.state = {
       dimension: 20,
-      grid: []
+      grid: [],
+      hasBeenSet: false
     };
   }
 
@@ -82,27 +85,36 @@ class Sandbox extends Component {
     });
   }
 
+  loadGrid() {
+    fetch('/api/scenarios' + window.location.pathname) // eslint-disable-line prefer-template
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(response.statusText);
+      })
+      .then(data => {
+        console.log(data);
+        const newGrid = JSON.parse(data[0].sandbox);
+        this.setState({
+          dimension: newGrid.length,
+          grid: assignDimensions(newGrid.length, newGrid)
+        });
+      })
+      .catch(err => console.log(err)); // eslint-disable-line no-console
+  }
+
   //handles resize of windows and time in the world
   componentDidMount() {
-    if (window.location.pathname !== '/') {
-      fetch('/api/scenarios' + window.location.pathname) // eslint-disable-line prefer-template
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error(response.statusText);
-        })
-        .then(data => {
-          const newGrid = JSON.parse(data[0].sandbox);
-          this.setState({
-            dimension: newGrid.length,
-            grid: assignDimensions(newGrid.length, newGrid)
-          });
-        })
-        .catch(err => console.log(err)); // eslint-disable-line no-console
+    const ID = window.location.pathname.substring(1);
+    if (ID !== 'scenarios') {
+      this.loadGrid();
     }
 
+    this.setState({ hasBeenSet: false });
+
     this.updateDimensions();
+
     window.addEventListener('resize', this.updateDimensions);
     this.interval = setInterval(() => {
       if (this.props.play || this.props.step) {
@@ -161,16 +173,31 @@ class Sandbox extends Component {
     const { size, element } = this.props;
     const newGrid = change(row, col, grid, size, dimension, element, mouseDown);
     this.setState({ grid: newGrid });
+    this.updateDimensions();
   }
 
   randColor(element) {
     return element.color[Math.floor(Math.random() * 3)];
   }
 
+  loadScenariosGrid() {
+    const { newGrid } = this.props;
+    const newestGrid = JSON.parse(newGrid.sandbox);
+    this.setState({
+      grid: newestGrid,
+      dimension: newestGrid.length,
+      hasBeenSet: true
+    });
+  }
+
   render() {
-    const { dimension, grid } = this.state;
+    const { dimension, grid, hasBeenSet } = this.state;
     if (this.props.fill && grid) {
       this.fill();
+    }
+
+    if (this.props.newGrid && !hasBeenSet) {
+      this.loadScenariosGrid();
     }
 
     const renderedGrid = grid.map(row =>
