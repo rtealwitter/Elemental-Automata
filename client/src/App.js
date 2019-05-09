@@ -20,6 +20,8 @@ class App extends Component {
     super();
 
     this.state = {
+      scenarioName: '',
+      authorName: '',
       x: 0,
       y: 0,
       SelectedElement: 'Void',
@@ -30,15 +32,21 @@ class App extends Component {
       saveMode: false,
       scenarios: undefined,
       scenarioMode: undefined,
-      newGrid: undefined
+      newGrid: undefined,
+      saveGrid: false
     }; // placeholder
     this.getScenarios = this.getScenarios.bind(this);
     this.changeGrid = this.changeGrid.bind(this);
+
     this.selectElement = this.selectElement.bind(this);
     this.handleFill = this.handleFill.bind(this);
     this.handleStep = this.handleStep.bind(this, 'step');
     this.handlePlay = this.handlePlay.bind(this, 'play');
     this.handleSave = this.handleSave.bind(this);
+    this.setScenarioName = this.setScenarioName.bind(this);
+    this.setAuthorName = this.setAuthorName.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.unSaveGrid = this.unSaveGrid.bind(this);
   }
   handleSave() {
     this.setState({ saveMode: !this.state.saveMode });
@@ -85,6 +93,22 @@ class App extends Component {
     this.setState({ scenarioMode: window.location.pathname === '/scenarios' });
   }
 
+  setScenarioName(evt) {
+    this.setState({ scenarioName: evt.target.value });
+  }
+  setAuthorName(evt) {
+    this.setState({ authorName: evt.target.value });
+  }
+  handleSubmit(evt) {
+    evt.preventDefault(); // prevent page reload
+    // change saveGrid state to activate callback in Sandbox.js
+    this.setState({ saveGrid: true });
+    // revert saveMode state
+    this.setState({ saveMode: !this.state.saveMode });
+  }
+  unSaveGrid() {
+    this.setState({ saveGrid: false });
+  }
   render() {
     const { x, y, scenarios, scenarioMode } = this.state;
     let scenarioView = <p>Loading scenarios... </p>;
@@ -149,10 +173,14 @@ class App extends Component {
               step={this.state.step}
               unStep={this.handleStep}
               play={this.state.play}
-              save={this.state.save}
-              unSave={this.handleSave}
               newGrid={this.state.newGrid}
               scenarios={this.state.scenarios}
+              save={this.state.save}
+              unSave={this.handleSave}
+              saveGrid={this.state.saveGrid}
+              unSaveGrid={this.unSaveGrid}
+              scenarioName={this.state.scenarioName}
+              authorName={this.state.authorName}
             />
             <Toolbox
               selected={this.selectElement}
@@ -165,7 +193,6 @@ class App extends Component {
             />
           </div>
         )}
-      </div>
     );
   }
 }

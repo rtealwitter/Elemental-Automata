@@ -131,29 +131,6 @@ class Sandbox extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  // saveGrid() {
-  //   if (this.props.save) {
-  //     // // Handle 'edited' field
-  //     const getCurDate = () => {
-  //       const today = new Date();
-  //       return today.toISOString();
-  //     };
-  //     const saveDate = getCurDate();
-  //     const jsonGrid = JSON.stringify(this.state.grid);
-  //     const newRecord = {
-  //       title: 'test',
-  //       author: 'Mr. JSON',
-  //       edited: saveDate,
-  //       sandbox: jsonGrid
-  //     };
-  //     fetch('/api/scenarios/', {
-  //       method: 'POST',
-  //       body: JSON.stringify(newRecord),
-  //       headers: new Headers({ 'Content-type': 'application/json' })
-  //     });
-  //     this.props.unSave();
-  //   }
-  // }
   fill() {
     const { dimension, grid } = this.state;
     const newGrid = Array.from(grid);
@@ -200,6 +177,26 @@ class Sandbox extends Component {
       this.loadScenariosGrid();
     }
 
+    if (this.props.saveGrid && grid) {
+      const getCurDate = () => {
+        const today = new Date();
+        return today.toISOString();
+      };
+      const saveDate = getCurDate();
+      const jsonGrid = JSON.stringify(grid);
+      const newRecord = {
+        title: this.props.scenarioName,
+        author: this.props.authorName,
+        edited: saveDate,
+        sandbox: jsonGrid
+      };
+      fetch('/api/scenarios/', {
+        method: 'POST',
+        body: JSON.stringify(newRecord),
+        headers: new Headers({ 'Content-type': 'application/json' })
+      });
+      this.props.unSaveGrid();
+    }
     const renderedGrid = grid.map(row =>
       row.map(cell => (
         <Cell
