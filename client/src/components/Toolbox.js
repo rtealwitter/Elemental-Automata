@@ -37,25 +37,6 @@ const BrushSizes = styled.div`
   display: inline;
   top: 0.2em;
 `;
-const Circle0 = styled.div`
-  width: 0.3em;
-  height: 0.3em;
-  background: white;
-  border-radius: 50%;
-  display: inline-block;
-  margin: 0.25em;
-  &:hover {
-    background: #c9f0dd;
-  }
-`;
-const Circle1 = styled(Circle0)`
-  width: 0.5em;
-  height: 0.5em;
-`;
-const Circle2 = styled(Circle0)`
-  width: 0.75em;
-  height: 0.75em;
-`;
 const ButtonDiv = styled(ElementDiv)`
   margin: 0.25em 0;
 `;
@@ -74,16 +55,24 @@ class Toolbox extends Component {
       SelectedElement: 'Rock',
       BrushSize: '1'
     };
-    this.handleSizeChange = this.handleBrushChange.bind(this, 'BrushSize');
-    this.handleTypeChange = this.handleBrushChange.bind(
-      this,
-      'SelectedElement'
-    );
+    this.handleSizeChange = this.handleSizeChange.bind(this, 'BrushSize');
+    this.handleTypeChange = this.handleTypeChange.bind(this, 'SelectedElement');
     this.handleClear = this.handleClear.bind(this);
     this.handleFill = this.handleFill.bind(this);
     this.set = this.set.bind(this);
   }
-  handleBrushChange(field, event) {
+  handleSizeChange(field, event) {
+    let newSize = event.target.id;
+    if (newSize <= 0) {
+      newSize = 1;
+    }
+    if (newSize >= 10) {
+      newSize = 10;
+    }
+    this.setState({ [field]: newSize });
+    this.props.selected(field, newSize);
+  }
+  handleTypeChange(field, event) {
     this.setState({ [field]: event.target.id });
     this.props.selected(field, event.target.id);
     // this is where we update the props
@@ -166,7 +155,7 @@ class Toolbox extends Component {
               >
                 -
               </button>
-              <button>{this.state.BrushSize}</button>
+              <button disabled={true}>{this.state.BrushSize}</button>
               <button
                 onClick={this.handleSizeChange}
                 id={parseInt(this.state.BrushSize) + 1}
@@ -203,8 +192,12 @@ class Toolbox extends Component {
 }
 Toolbox.propTypes = {
   selected: PropTypes.func.isRequired,
+  fill: PropTypes.bool.isRequired,
   toFill: PropTypes.func.isRequired,
-  fill: PropTypes.bool.isRequired
+  step: PropTypes.func.isRequired,
+  play: PropTypes.func.isRequired,
+  playState: PropTypes.bool.isRequired,
+  saveMode: PropTypes.func.isRequired
 };
 
 export default Toolbox;
