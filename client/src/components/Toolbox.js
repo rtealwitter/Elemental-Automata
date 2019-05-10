@@ -5,8 +5,33 @@ import PropTypes from 'prop-types';
 import { Col } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Button = styled.button``;
-
+const OuterDiv = styled.div`
+  display: inline-block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 14em;
+  height: 100%;
+  margin: 0 auto;
+  background: seagreen;
+  color: white;
+`;
+const ElementDiv = styled.div`
+  display: block;
+  position: relative;
+  align-content: center;
+  top: 0;
+  margin: 1em 0;
+  width: 12em;
+  height: 5em;
+`;
+const ElementTitle = styled.h1`
+  font-size: 20px;
+  margin: auto;
+`;
+const Button = styled.button`
+  margin: 0 0.2em;
+`;
 const BrushSizes = styled.div`
   position: relative;
   display: inline;
@@ -15,7 +40,7 @@ const BrushSizes = styled.div`
 const Circle0 = styled.div`
   width: 0.3em;
   height: 0.3em;
-  background: black;
+  background: white;
   border-radius: 50%;
   display: inline-block;
   margin: 0.25em;
@@ -31,54 +56,16 @@ const Circle2 = styled(Circle0)`
   width: 0.75em;
   height: 0.75em;
 `;
-const Clear = styled(Button)`
-  display: inline;
-  width: 6em;
-  font-size: 12px;
-  margin: 0;
-`;
-const ElementTitle = styled.h1`
-  font-size: 19px;
-  margin: auto;
-`;
-
-const OptionButtons = styled(Button)`
-  font-size: 1em;
-  width: 4.5em;
-  margin: 0.5em 3px;
-`;
-
-const OuterDiv = styled.div`
-  display: inline-block;
-  position: fixed;
-  top: 0;
-  right: -1em;
-  width: 14em;
-  height: 100%;
-  margin: 0 auto;
-`;
-
-const ElementDiv = styled.div`
-  display: block;
-  position: relative;
-  align-content: center;
-  top: 0;
-  margin: 1em 0;
-  width: 12em;
-  height: 5em;
-`;
-
 const ButtonDiv = styled(ElementDiv)`
   margin: 0.25em 0;
 `;
-
 const SizeDiv = styled(ElementDiv)`
   height: 2em;
   margin: auto;
+  top: 0.25em;
 `;
-
-const PlayDiv = styled(SizeDiv)`
-  margin: 1.1em auto;
+const SavePlayDiv = styled(SizeDiv)`
+  margin: 0.5em auto;
 `;
 
 class Toolbox extends Component {
@@ -114,13 +101,13 @@ class Toolbox extends Component {
   render() {
     const elementButton = el => {
       return (
-        <Button
+        <button
           disabled={this.state.SelectedElement === el}
           onClick={this.handleTypeChange}
           id={el}
         >
           {el}
-        </Button>
+        </button>
       );
     };
     let runState;
@@ -150,17 +137,17 @@ class Toolbox extends Component {
               <Circle2 onClick={this.handleSizeChange} id="3" />
               &emsp;
             </BrushSizes>
-            <Clear type="button" onClick={this.handleClear} value="Clear">
+            <Button type="button" onClick={this.handleClear} value="Clear">
               Clear
-            </Clear>
+            </Button>
           </SizeDiv>
-          <SizeDiv>
-            <OptionButtons type="button" onClick={this.props.saveMode}>
+          <SavePlayDiv>
+            <Button type="button" onClick={this.props.saveMode}>
               Save
-            </OptionButtons>
-            <OptionButtons type="button">Share</OptionButtons>
-          </SizeDiv>
-          <PlayDiv>
+            </Button>
+            <Button type="button">Share</Button>
+          </SavePlayDiv>
+          <SavePlayDiv>
             <Button type="button" onClick={this.props.step}>
               {'►|'}
             </Button>
@@ -170,7 +157,7 @@ class Toolbox extends Component {
             <Button type="button" onClick={this.handleFill} id="fill">
               Fill
             </Button>
-          </PlayDiv>
+          </SavePlayDiv>
         </Col>
       </OuterDiv>
     );

@@ -13,7 +13,7 @@ const Div = styled.div`
   top: 0;
 `;
 
-const Void = { name: 'Void', color: ['#90ff76', '#90ff76', '#90ff76'] };
+const Void = { name: 'Void', color: ['#ffffff', '#ffffff', '#ffffff'] };
 const Rock = { name: 'Rock', color: ['#b9b9b9', '#aaaaaa', '#9b9b9b'] };
 const Water = { name: 'Water', color: ['#2391e1', '#2383d2', '#217ac3'] };
 const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] };
@@ -35,7 +35,7 @@ function assignDimensions(dimension, grid) {
         {
           x: (window.innerWidth / dimension) * j,
           // hack-y fix
-          y: ((window.innerHeight - 200) / dimension) * i
+          y: ((window.innerHeight - 180) / dimension) * i
         }
       );
     }
@@ -198,7 +198,7 @@ class Sandbox extends Component {
         onMouseUp={() => (mouseDown = false)}
         onMouseLeave={() => (mouseDown = false)}
       >
-        <Stage width={window.innerWidth - 200} height={window.innerHeight}>
+        <Stage width={window.innerWidth - 175} height={window.innerHeight}>
           <Layer>{renderedGrid}</Layer>
         </Stage>
       </Div>
