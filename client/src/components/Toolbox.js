@@ -127,6 +127,7 @@ class Toolbox extends Component {
               {elementButton('Sand')}
               {elementButton('Water')}
               {elementButton('Fire')}
+              {elementButton('Plant')}
             </ButtonDiv>
           </ElementDiv>
           <SizeDiv>

@@ -157,7 +157,7 @@ function logic(grid, dimension) {
     }
   }
 
-  function shouldGrow(i, j, current) {
+  function shouldGrow(i, j, current, newCurrent) {
     //looks to see if water is touching the Plant
     //only runs for top block of plant
     let currentJ = j;
@@ -165,7 +165,7 @@ function logic(grid, dimension) {
       elementAt(i, currentJ) === 'Plant' ||
       elementAt(i, currentJ) === 'Flower'
     ) {
-      if (drinkWater(i, currentJ, current, 'Water')) {
+      if (drinkWater(i, currentJ, newCurrent)) {
         return true;
       } else {
         if (j < dimension - 1) {
@@ -179,7 +179,7 @@ function logic(grid, dimension) {
   }
 
   function sprout(i, j, newCurrent) {
-    trade(i, j, Object.assign(newCurrent, { element: 'Flower' }));
+    trade(i, j - 1, Object.assign(newCurrent, { element: 'Flower' }));
   }
 
   // function sproutLeaf(i, j, newCurrent) {
@@ -189,6 +189,7 @@ function logic(grid, dimension) {
   // }
 
   function plant(i, j, current, newCurrent) {
+    console.log(j);
     //should fall if void is below
     if (isEmpty(i, j + 1, current)) {
       trade(i, j + 1, newCurrent);
@@ -201,7 +202,7 @@ function logic(grid, dimension) {
       !isFalling(i, j) &&
       j > 0
     ) {
-      sprout(i, j - 1, current, newCurrent);
+      sprout(i, j, current, newCurrent);
     }
     //should  grow one block per turn if water is touching the plant and there is room to grow, and drink water
     else if (
@@ -212,9 +213,7 @@ function logic(grid, dimension) {
       j > 1
     ) {
       trade(i, j - 1, Object.assign(newCurrent, { element: 'Flower' }));
-      Object.assign(newCurrent, { element: 'Plant' });
-
-      //should have chance to grow leaf
+      trade(i, j, Object.assign(newCurrent, { element: 'Plant' }));
     }
   }
 

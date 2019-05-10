@@ -134,3 +134,50 @@ describe('Sand tests', () => {
     ]);
   });
 });
+
+describe('Plant tests', () => {
+  test('Plant falls', () => {
+    expect(
+      logic(
+        [
+          [{ element: 'Plant' }, { element: 'Void' }],
+          [{ element: 'Void' }, { element: 'Void' }]
+        ],
+        2
+      )
+    ).toEqual([
+      [{ element: 'Void' }, { element: 'Void' }],
+      [{ element: 'Plant' }, { element: 'Void' }]
+    ]);
+  });
+  test('Plant blooms', () => {
+    expect(
+      logic(
+        [
+          [{ element: 'Void' }, { element: 'Void' }],
+          [{ element: 'Plant' }, { element: 'Void' }]
+        ],
+        2
+      )
+    ).toEqual([
+      [{ element: 'Flower' }, { element: 'Void' }],
+      [{ element: 'Plant' }, { element: 'Void' }]
+    ]);
+  });
+  test('Plant grows and drinks water', () => {
+    expect(
+      logic(
+        [
+          [{ element: 'Void' }, { element: 'Void' }, { element: 'Void' }],
+          [{ element: 'Flower' }, { element: 'Void' }, { element: 'Void' }],
+          [{ element: 'Plant' }, { element: 'Water' }, { element: 'Void' }]
+        ],
+        3
+      )
+    ).toEqual([
+      [{ element: 'Flower' }, { element: 'Void' }, { element: 'Void' }],
+      [{ element: 'Plant' }, { element: 'Void' }, { element: 'Void' }],
+      [{ element: 'Plant' }, { element: 'Void' }, { element: 'Void' }]
+    ]);
+  });
+});
