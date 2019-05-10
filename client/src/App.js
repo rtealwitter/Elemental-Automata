@@ -234,7 +234,7 @@ class App extends Component {
     if (this.state.start) {
       return (
         <Div className="App">
-          <GlobalStyle start />
+          <GlobalStyle mode="start" />
           <img src={logo} alt="elemental automata" />{' '}
           <Start onClick={this.handleStart}>START</Start>
           <Start onClick={this.handleExplore}>EXPLORE</Start>
@@ -243,7 +243,7 @@ class App extends Component {
     } else if (inScenarioView) {
       return (
         <Div className="App">
-          <GlobalStyle start />
+          <GlobalStyle mode="scenario" />
           {scenarioView}
         </Div>
       );
