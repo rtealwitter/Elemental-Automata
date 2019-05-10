@@ -168,16 +168,58 @@ describe('Plant tests', () => {
     expect(
       logic(
         [
-          [{ element: 'Void' }, { element: 'Void' }, { element: 'Void' }],
-          [{ element: 'Flower' }, { element: 'Void' }, { element: 'Void' }],
-          [{ element: 'Plant' }, { element: 'Water' }, { element: 'Void' }]
+          [
+            { element: 'Void' },
+            { element: 'Void' },
+            { element: 'Void' },
+            { element: 'Void' }
+          ],
+          [
+            { element: 'Void' },
+            { element: 'Void' },
+            { element: 'Void' },
+            { element: 'Void' }
+          ],
+          [
+            { element: 'Flower' },
+            { element: 'Void' },
+            { element: 'Void' },
+            { element: 'Void' }
+          ],
+          [
+            { element: 'Plant' },
+            { element: 'Water' },
+            { element: 'Void' },
+            { element: 'Void' }
+          ]
         ],
-        3
+        4
       )
     ).toEqual([
-      [{ element: 'Flower' }, { element: 'Void' }, { element: 'Void' }],
-      [{ element: 'Plant' }, { element: 'Void' }, { element: 'Void' }],
-      [{ element: 'Plant' }, { element: 'Void' }, { element: 'Void' }]
+      [
+        { element: 'Void' },
+        { element: 'Void' },
+        { element: 'Void' },
+        { element: 'Void' }
+      ],
+      [
+        { element: 'Flower' },
+        { element: 'Void' },
+        { element: 'Void' },
+        { element: 'Void' }
+      ],
+      [
+        { element: 'Plant' },
+        { element: 'Void' },
+        { element: 'Void' },
+        { element: 'Void' }
+      ],
+      [
+        { element: 'Plant' },
+        { element: 'Void' },
+        { element: 'Void' },
+        { element: 'Void' }
+      ]
     ]);
   });
 });

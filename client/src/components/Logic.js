@@ -165,7 +165,7 @@ function logic(grid, dimension) {
       elementAt(i, currentJ) === 'Plant' ||
       elementAt(i, currentJ) === 'Flower'
     ) {
-      if (drinkWater(i, currentJ, newCurrent)) {
+      if (drinkWater(i, currentJ, current)) {
         return true;
       } else {
         if (j < dimension - 1) {
@@ -181,12 +181,6 @@ function logic(grid, dimension) {
   function sprout(i, j, newCurrent) {
     trade(i, j - 1, Object.assign(newCurrent, { element: 'Flower' }));
   }
-
-  // function sproutLeaf(i, j, newCurrent) {
-  //   Math.random() >= 0.5
-  //     ? trade(i - 1, j, Object.assign(newCurrent, { element: 'Plant' }))
-  //     : trade(i + 1, j, Object.assign(newCurrent, { element: 'Plant' }));
-  // }
 
   function plant(i, j, current, newCurrent) {
     console.log(j);
