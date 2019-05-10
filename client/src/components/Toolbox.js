@@ -123,7 +123,7 @@ class Toolbox extends Component {
 
     let runState;
     if (this.props.playState) {
-      runState = '■';
+      runState = '▉';
     } else {
       runState = '►';
     }
@@ -158,15 +158,25 @@ class Toolbox extends Component {
             <ButtonDiv>{buttonList}</ButtonDiv>
           </ElementDiv>
           <SizeDiv>
-            Size&emsp;
+            &emsp;
             <BrushSizes>
-              <Circle0 onClick={this.handleSizeChange} id="1" />
-              <Circle1 onClick={this.handleSizeChange} id="2" />
-              <Circle2 onClick={this.handleSizeChange} id="3" />
+              <button
+                onClick={this.handleSizeChange}
+                id={parseInt(this.state.BrushSize) - 1}
+              >
+                -
+              </button>
+              <button>{this.state.BrushSize}</button>
+              <button
+                onClick={this.handleSizeChange}
+                id={parseInt(this.state.BrushSize) + 1}
+              >
+                +
+              </button>
               &emsp;
             </BrushSizes>
-            <Button type="button" onClick={this.handleClear} value="Clear">
-              Clear
+            <Button type="button" onClick={this.handleFill} value="fill">
+              Fill
             </Button>
           </SizeDiv>
           <SavePlayDiv>
@@ -182,8 +192,8 @@ class Toolbox extends Component {
             <Button type="button" onClick={this.props.play}>
               {runState}
             </Button>
-            <Button type="button" onClick={this.handleFill} id="fill">
-              Fill
+            <Button type="button" onClick={this.handleClear} id="Clear">
+              Clear
             </Button>
           </SavePlayDiv>
         </Col>
