@@ -101,7 +101,7 @@ class Toolbox extends Component {
   render() {
     const elementButton = el => {
       return (
-        <Button
+        <button
           type="button"
           name="elementButton"
           disabled={this.state.SelectedElement === el}
@@ -109,7 +109,7 @@ class Toolbox extends Component {
           id={el}
         >
           {el}
-        </Button>
+        </button>
       );
     };
     let runState;
