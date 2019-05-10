@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import Arcade from './ArcadeClassic.TTF';
 import Minecraft from './Minecraft.ttf';
+/* eslint-disable no-confusing-arrow */
 
 const GlobalStyle = createGlobalStyle`
   body {
