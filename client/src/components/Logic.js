@@ -157,7 +157,7 @@ function logic(grid, dimension) {
     }
   }
 
-  function shouldGrow(i, j, current, newCurrent) {
+  function shouldGrow(i, j, current) {
     //looks to see if water is touching the Plant
     //only runs for top block of plant
     let currentJ = j;
@@ -204,7 +204,8 @@ function logic(grid, dimension) {
     ) {
       if (
         grid[j - 1][i].element === 'Void' ||
-        grid[j - 1][i].element === 'Water'
+        grid[j - 1][i].element === 'Water' ||
+        grid[j - 1][i].element === 'Flower'
       ) {
         trade(i, j - 1, Object.assign(newCurrent, { element: 'Flower' }));
         trade(i, j, Object.assign(newCurrent, { element: 'Plant' }));
