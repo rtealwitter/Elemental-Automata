@@ -27,25 +27,6 @@ let mouseDown = false;
 
 const speed = 250; //milliseconds between updates
 
-function assignDimensions(dimension, grid) {
-  const newGrid = [];
-  for (let i = 0; i < dimension; i++) {
-    const newRow = [];
-    for (let j = 0; j < dimension; j++) {
-      newRow[j] = Object.assign(
-        grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
-        {
-          x: (window.innerWidth / dimension) * j,
-          // hack-y fix
-          y: ((window.innerHeight - 180) / dimension) * i
-        }
-      );
-    }
-    newGrid[i] = newRow;
-  }
-  return newGrid;
-}
-
 class Sandbox extends Component {
   constructor() {
     super();
@@ -54,7 +35,6 @@ class Sandbox extends Component {
     this.fill = this.fill.bind(this);
     this.changeElement = this.changeElement.bind(this);
     this.randColor = this.randColor.bind(this);
-    this.loadGrid = this.loadGrid.bind(this);
     this.loadScenariosGrid = this.loadScenariosGrid.bind(this);
 
     this.state = {
@@ -88,32 +68,8 @@ class Sandbox extends Component {
     });
   }
 
-  loadGrid() {
-    fetch('/api/scenarios' + window.location.pathname) // eslint-disable-line prefer-template
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error(response.statusText);
-      })
-      .then(data => {
-        console.log(data);
-        const newGrid = JSON.parse(data[0].sandbox);
-        this.setState({
-          dimension: newGrid.length,
-          grid: assignDimensions(newGrid.length, newGrid)
-        });
-      })
-      .catch(err => console.log(err)); // eslint-disable-line no-console
-  }
-
   //handles resize of windows and time in the world
   componentDidMount() {
-    const ID = window.location.pathname.substring(1);
-    if (ID !== 'scenarios') {
-      this.loadGrid();
-    }
-
     this.setState({ hasBeenSet: false });
 
     this.updateDimensions();
@@ -181,6 +137,7 @@ class Sandbox extends Component {
     }
 
     if (this.props.saveGrid && grid) {
+      console.log('saving grid');
       const getCurDate = () => {
         const today = new Date();
         return today.toISOString();
@@ -236,6 +193,14 @@ Sandbox.propTypes = {
   element: PropTypes.string.isRequired,
   size: PropTypes.string.isRequired,
   fill: PropTypes.bool.isRequired,
-  filled: PropTypes.func.isRequired
+  filled: PropTypes.func.isRequired,
+  step: PropTypes.bool.isRequired,
+  unStep: PropTypes.func.isRequired,
+  play: PropTypes.bool.isRequired,
+  newGrid: PropTypes.object,
+  saveGrid: PropTypes.bool.isRequired,
+  unSaveGrid: PropTypes.func.isRequired,
+  scenarioName: PropTypes.string.isRequired,
+  authorName: PropTypes.string.isRequired
 };
 export default Sandbox;

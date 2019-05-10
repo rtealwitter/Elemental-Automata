@@ -52,6 +52,7 @@ class App extends Component {
     this.setAuthorName = this.setAuthorName.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.unSaveGrid = this.unSaveGrid.bind(this);
+    this.handleExplore = this.handleExplore.bind(this);
   }
   handleSave() {
     this.setState({ saveMode: !this.state.saveMode });
@@ -98,7 +99,6 @@ class App extends Component {
 
   componentDidMount() {
     this.getScenarios();
-    this.setState({ scenarioMode: window.location.pathname === '/scenarios' });
   }
 
   setScenarioName(evt) {
@@ -108,6 +108,7 @@ class App extends Component {
     this.setState({ authorName: evt.target.value });
   }
   handleSubmit(evt) {
+    console.log('handling submit');
     evt.preventDefault(); // prevent page reload
     // change saveGrid state to activate callback in Sandbox.js
     this.setState({ saveGrid: true });
@@ -116,6 +117,9 @@ class App extends Component {
   }
   unSaveGrid() {
     this.setState({ saveGrid: false });
+  }
+  handleExplore() {
+    this.setState({ scenarioMode: true, start: false });
   }
   render() {
     const Div = styled.div`
@@ -142,6 +146,79 @@ class App extends Component {
       }
     `;
     const { x, y, scenarios, scenarioMode } = this.state;
+
+    const modal = (
+      <Modal
+        isOpen={this.state.saveMode}
+        toggle={this.handleSave}
+        centered
+        backdrop
+      >
+        <ModalHeader>Save This Scenario</ModalHeader>
+        <ModalBody>
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup>
+              <Label for="scenarioName">Scenario Name</Label>
+              <br />
+              <Input
+                type="text"
+                name="scenarioName"
+                id="scenarioName"
+                placeholder="Enter a name for the scenario"
+                value={this.state.scenarioName}
+                onChange={this.setScenarioName}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="authorName">Author Name</Label>
+              <br />
+              <Input
+                type="text"
+                name="authorName"
+                id="authorName"
+                placeholder="Enter your name"
+                value={this.state.authorName}
+                onChange={this.setAuthorName}
+              />
+            </FormGroup>
+            <Button type="submit">Submit</Button>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={this.handleSave}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
+    );
+
+    const sandbox = (
+      <Sandbox
+        element={this.state.SelectedElement}
+        size={this.state.BrushSize}
+        fill={this.state.fill}
+        filled={this.handleFill}
+        step={this.state.step}
+        unStep={this.handleStep}
+        play={this.state.play}
+        newGrid={this.state.newGrid}
+        saveGrid={this.state.saveGrid}
+        unSaveGrid={this.unSaveGrid}
+        scenarioName={this.state.scenarioName}
+        authorName={this.state.authorName}
+      />
+    );
+
+    const toolbox = (
+      <Toolbox
+        selected={this.selectElement}
+        fill={this.state.fill}
+        toFill={this.handleFill}
+        step={this.handleStep}
+        play={this.handlePlay}
+        playState={this.state.play}
+        saveMode={this.handleSave}
+      />
+    );
+
     const inScenarioView = scenarioMode && scenarios !== undefined;
     let scenarioView = <p>Loading scenarios... </p>;
     if (scenarios) {
@@ -152,77 +229,6 @@ class App extends Component {
           </button>
         </p>
       ));
-      return (
-        <div className="App">
-          {inScenarioView && scenarioView}
-          {!inScenarioView && (
-            <div>
-              <Modal
-                isOpen={this.state.saveMode}
-                toggle={this.handleSave}
-                centered
-                backdrop
-              >
-                <ModalHeader>Save This Scenario</ModalHeader>
-                <ModalBody>
-                  <Form>
-                    <FormGroup>
-                      <Label for="scenarioName">Scenario Name</Label>
-                      <br />
-                      <Input
-                        type="text"
-                        name="scenarioName"
-                        id="scenarioName"
-                        placeholder="Enter a name for the scenario"
-                      />
-                    </FormGroup>
-                    <FormGroup>
-                      <Label for="authorName">Author Name</Label>
-                      <br />
-                      <Input
-                        type="text"
-                        name="authorName"
-                        id="authorName"
-                        placeholder="Enter your name"
-                      />
-                    </FormGroup>
-                  </Form>
-                </ModalBody>
-                <ModalFooter>
-                  <Button onClick={this.handleSave}>Submit</Button>
-                  <Button onClick={this.handleSave}>Cancel</Button>
-                </ModalFooter>
-              </Modal>
-              <Sandbox
-                element={this.state.SelectedElement}
-                size={this.state.BrushSize}
-                fill={this.state.fill}
-                filled={this.handleFill}
-                step={this.state.step}
-                unStep={this.handleStep}
-                play={this.state.play}
-                newGrid={this.state.newGrid}
-                scenarios={this.state.scenarios}
-                save={this.state.save}
-                unSave={this.handleSave}
-                saveGrid={this.state.saveGrid}
-                unSaveGrid={this.unSaveGrid}
-                scenarioName={this.state.scenarioName}
-                authorName={this.state.authorName}
-              />
-              <Toolbox
-                selected={this.selectElement}
-                fill={this.state.fill}
-                toFill={this.handleFill}
-                step={this.handleStep}
-                play={this.handlePlay}
-                playState={this.state.play}
-                saveMode={this.handleSave}
-              />
-            </div>
-          )}
-        </div>
-      );
     }
 
     if (this.state.start) {
@@ -231,68 +237,23 @@ class App extends Component {
           <GlobalStyle start />
           <img src={logo} alt="elemental automata" />{' '}
           <Start onClick={this.handleStart}>START</Start>
+          <Start onClick={this.handleExplore}>EXPLORE</Start>
+        </Div>
+      );
+    } else if (inScenarioView) {
+      return (
+        <Div className="App">
+          <GlobalStyle start />
+          {scenarioView}
         </Div>
       );
     } else {
       return (
         <div className="App">
           <GlobalStyle />
-          <Modal
-            isOpen={this.state.saveMode}
-            toggle={this.handleSave}
-            centered
-            backdrop
-          >
-            <ModalHeader>Save This Scenario</ModalHeader>
-            <ModalBody>
-              <Form>
-                <FormGroup>
-                  <Label for="scenarioName">Scenario Name</Label>
-                  <br />
-                  <Input
-                    type="text"
-                    name="scenarioName"
-                    id="scenarioName"
-                    placeholder="Enter a name for the scenario"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="authorName">Author Name</Label>
-                  <br />
-                  <Input
-                    type="text"
-                    name="authorName"
-                    id="authorName"
-                    placeholder="Enter your name"
-                  />
-                </FormGroup>
-              </Form>
-            </ModalBody>
-            <ModalFooter>
-              <Button onClick={this.handleSave}>Submit</Button>
-              <Button onClick={this.handleSave}>Cancel</Button>
-            </ModalFooter>
-          </Modal>
-          <Sandbox
-            element={this.state.SelectedElement}
-            size={this.state.BrushSize}
-            fill={this.state.fill}
-            filled={this.handleFill}
-            step={this.state.step}
-            unStep={this.handleStep}
-            play={this.state.play}
-            save={this.state.save}
-            unSave={this.handleSave}
-          />
-          <Toolbox
-            selected={this.selectElement}
-            fill={this.state.fill}
-            toFill={this.handleFill}
-            step={this.handleStep}
-            play={this.handlePlay}
-            playState={this.state.play}
-            saveMode={this.handleSave}
-          />
+          {modal}
+          {sandbox}
+          {toolbox}
         </div>
       );
     }
