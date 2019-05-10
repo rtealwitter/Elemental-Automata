@@ -143,6 +143,7 @@ class Toolbox extends Component {
       return (
         <Button
           type="button"
+          name="elementButton"
           disabled={this.state.SelectedElement === el}
           onClick={this.handleTypeChange}
           id={el}
@@ -180,6 +181,7 @@ class Toolbox extends Component {
               </BrushSizes>
               <Clear
                 type="button"
+                name="Clear"
                 onClick={this.handleClear} // TODO: clear method
                 value="Clear"
               >
@@ -213,8 +215,8 @@ class Toolbox extends Component {
 }
 Toolbox.propTypes = {
   selected: PropTypes.func.isRequired,
-  toFill: PropTypes.func.isRequired,
-  fill: PropTypes.bool.isRequired
+  toFill: PropTypes.func,
+  fill: PropTypes.bool
 };
 
 export default Toolbox;
