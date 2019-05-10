@@ -30,8 +30,14 @@ class App extends Component {
       play: false,
       step: false,
       saveMode: false,
+      scenarios: undefined,
+      scenarioMode: undefined,
+      newGrid: undefined,
       saveGrid: false
-    };
+    }; // placeholder
+    this.getScenarios = this.getScenarios.bind(this);
+    this.changeGrid = this.changeGrid.bind(this);
+
     this.selectElement = this.selectElement.bind(this);
     this.handleFill = this.handleFill.bind(this);
     this.handleStep = this.handleStep.bind(this, 'step');
@@ -57,9 +63,36 @@ class App extends Component {
   handleStep(field) {
     this.setState({ [field]: !this.state.step });
   }
+
   handlePlay(field) {
     this.setState({ [field]: !this.state.play });
   }
+
+  getScenarios() {
+    fetch('/api/scenarios/')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.status_text);
+        }
+        return response.json();
+      })
+      .then(data => {
+        this.setState({ scenarios: data });
+      })
+      .catch(err => console.log(err)); // eslint-disable-line no-conso   le
+  }
+
+  changeGrid(id) {
+    const { scenarios } = this.state;
+    const result = scenarios.find(scenario => scenario.id === id);
+    this.setState({ newGrid: result, scenarioMode: false });
+  }
+
+  componentDidMount() {
+    this.getScenarios();
+    this.setState({ scenarioMode: window.location.pathname === '/scenarios' });
+  }
+
   setScenarioName(evt) {
     this.setState({ scenarioName: evt.target.value });
   }
@@ -77,74 +110,89 @@ class App extends Component {
     this.setState({ saveGrid: false });
   }
   render() {
-    const { x, y } = this.state;
+    const { x, y, scenarios, scenarioMode } = this.state;
+    let scenarioView = <p>Loading scenarios... </p>;
+    if (scenarios) {
+      scenarioView = scenarios.map(scenario => (
+        <p key={scenario.id}>
+          <button onClick={() => this.changeGrid(scenario.id)}>
+            {scenario.title} by {scenario.author}
+          </button>
+        </p>
+      ));
+    }
+
+    const inScenarioView = scenarioMode && scenarios !== undefined;
+
     return (
       <div className="App">
-        <Modal
-          className="saveModal"
-          isOpen={this.state.saveMode}
-          toggle={this.handleSave}
-          centered
-          backdrop
-        >
-          <ModalHeader>Save This Scenario</ModalHeader>
-          <ModalBody>
-            <Form onSubmit={this.handleSubmit}>
-              <FormGroup>
-                <Label for="scenarioName">Scenario Name</Label>
-                <br />
-                <Input
-                  type="text"
-                  name="scenarioName"
-                  id="scenarioName"
-                  placeholder="Enter a name for the scenario"
-                  value={this.state.scenarioName}
-                  onChange={this.setScenarioName}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="authorName">Author Name</Label>
-                <br />
-                <Input
-                  type="text"
-                  name="authorName"
-                  id="authorName"
-                  placeholder="Enter your name"
-                  value={this.state.authorName}
-                  onChange={this.setAuthorName}
-                />
-              </FormGroup>
-              <Button type="submit">Submit</Button>
-            </Form>
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={this.handleSave}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-        <Sandbox
-          element={this.state.SelectedElement}
-          size={this.state.BrushSize}
-          fill={this.state.fill}
-          filled={this.handleFill}
-          step={this.state.step}
-          unStep={this.handleStep}
-          play={this.state.play}
-          save={this.state.save}
-          unSave={this.handleSave}
-          saveGrid={this.state.saveGrid}
-          unSaveGrid={this.unSaveGrid}
-          scenarioName={this.state.scenarioName}
-          authorName={this.state.authorName}
-        />
-        <Toolbox
-          selected={this.selectElement}
-          fill={this.state.fill}
-          toFill={this.handleFill}
-          step={this.handleStep}
-          play={this.handlePlay}
-          playState={this.state.play}
-          saveMode={this.handleSave}
-        />
+        {inScenarioView && scenarioView}
+        {!inScenarioView && (
+          <div>
+            <Modal
+              isOpen={this.state.saveMode}
+              toggle={this.handleSave}
+              centered
+              backdrop
+            >
+              <ModalHeader>Save This Scenario</ModalHeader>
+              <ModalBody>
+                <Form>
+                  <FormGroup>
+                    <Label for="scenarioName">Scenario Name</Label>
+                    <br />
+                    <Input
+                      type="text"
+                      name="scenarioName"
+                      id="scenarioName"
+                      placeholder="Enter a name for the scenario"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="authorName">Author Name</Label>
+                    <br />
+                    <Input
+                      type="text"
+                      name="authorName"
+                      id="authorName"
+                      placeholder="Enter your name"
+                    />
+                  </FormGroup>
+                </Form>
+              </ModalBody>
+              <ModalFooter>
+                <Button onClick={this.handleSave}>Submit</Button>
+                <Button onClick={this.handleSave}>Cancel</Button>
+              </ModalFooter>
+            </Modal>
+            <Sandbox
+              element={this.state.SelectedElement}
+              size={this.state.BrushSize}
+              fill={this.state.fill}
+              filled={this.handleFill}
+              step={this.state.step}
+              unStep={this.handleStep}
+              play={this.state.play}
+              newGrid={this.state.newGrid}
+              scenarios={this.state.scenarios}
+              save={this.state.save}
+              unSave={this.handleSave}
+              saveGrid={this.state.saveGrid}
+              unSaveGrid={this.unSaveGrid}
+              scenarioName={this.state.scenarioName}
+              authorName={this.state.authorName}
+            />
+            <Toolbox
+              selected={this.selectElement}
+              fill={this.state.fill}
+              toFill={this.handleFill}
+              step={this.handleStep}
+              play={this.handlePlay}
+              playState={this.state.play}
+              saveMode={this.handleSave}
+            />
+          </div>
+        )}
       </div>
     );
   }
