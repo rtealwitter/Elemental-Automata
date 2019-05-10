@@ -37,25 +37,6 @@ const BrushSizes = styled.div`
   display: inline;
   top: 0.2em;
 `;
-const Circle0 = styled.div`
-  width: 0.3em;
-  height: 0.3em;
-  background: white;
-  border-radius: 50%;
-  display: inline-block;
-  margin: 0.25em;
-  &:hover {
-    background: #c9f0dd;
-  }
-`;
-const Circle1 = styled(Circle0)`
-  width: 0.5em;
-  height: 0.5em;
-`;
-const Circle2 = styled(Circle0)`
-  width: 0.75em;
-  height: 0.75em;
-`;
 const ButtonDiv = styled(ElementDiv)`
   margin: 0.25em 0;
 `;
@@ -67,25 +48,33 @@ const SizeDiv = styled(ElementDiv)`
 const SavePlayDiv = styled(SizeDiv)`
   margin: 0.5em auto;
 `;
-
 class Toolbox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      SelectedElement: 'Void',
+      SelectedElement: 'Rock',
       BrushSize: '1'
     };
-    this.handleSizeChange = this.handleBrushChange.bind(this, 'BrushSize');
-    this.handleTypeChange = this.handleBrushChange.bind(
-      this,
-      'SelectedElement'
-    );
+    this.handleSizeChange = this.handleSizeChange.bind(this, 'BrushSize');
+    this.handleTypeChange = this.handleTypeChange.bind(this, 'SelectedElement');
     this.handleClear = this.handleClear.bind(this);
     this.handleFill = this.handleFill.bind(this);
+    this.set = this.set.bind(this);
   }
-  handleBrushChange(field, event) {
-    this.setState({ [field]: event.target.id });
-    this.props.selected(field, event.target.id);
+  handleSizeChange(field, event) {
+    let newSize = event.target.value;
+    if (newSize <= 0) {
+      newSize = 1;
+    }
+    if (newSize >= 10) {
+      newSize = 10;
+    }
+    this.setState({ [field]: newSize });
+    this.props.selected(field, newSize);
+  }
+  handleTypeChange(field, event) {
+    this.setState({ [field]: event.target.value });
+    this.props.selected(field, event.target.value);
     // this is where we update the props
   }
   handleClear() {
@@ -98,7 +87,13 @@ class Toolbox extends Component {
   handleFill() {
     this.props.toFill('fill');
   }
+  set(state) {
+    this.setState(state);
+  }
   render() {
+    const { play, step, toFill, selected } = this.props;
+    const { handleClear, set } = this;
+
     const elementButton = el => {
       return (
         <button
@@ -106,42 +101,74 @@ class Toolbox extends Component {
           name="elementButton"
           disabled={this.state.SelectedElement === el}
           onClick={this.handleTypeChange}
-          id={el}
+          key={el}
+          value={el}
         >
           {el}
         </button>
       );
     };
+    const elementList = ['Void', 'Rock', 'Sand', 'Water', 'Fire', 'Plant']; // Put new elements here
+    const buttonList = elementList.map(el => {
+      return elementButton(el);
+    });
+
     let runState;
     if (this.props.playState) {
-      runState = '■';
+      runState = '▉';
     } else {
       runState = '►';
     }
+
+    document.onkeypress = function(e) {
+      if (['p', 'P'].includes(e.key)) {
+        play();
+      }
+      if (['s', 'S'].includes(e.key)) {
+        step();
+      }
+      if (['f', 'F'].includes(e.key)) {
+        toFill('fill');
+      }
+      if (['c', 'C'].includes(e.key)) {
+        handleClear();
+        set({ SelectedElement: 'Void' });
+      }
+      if (Number.isInteger(parseInt(e.key))) {
+        const index = parseInt(e.key);
+        if (index < elementList.length) {
+          set({ SelectedElement: elementList[index] });
+          selected('SelectedElement', elementList[index]);
+        }
+      }
+    };
     return (
       <OuterDiv>
         <Col sm={{ size: 'auto' }}>
           <ElementDiv>
             <ElementTitle>Elements</ElementTitle>
-            <ButtonDiv>
-              {elementButton('Void')}
-              {elementButton('Rock')}
-              {elementButton('Sand')}
-              {elementButton('Water')}
-              {elementButton('Fire')}
-              {elementButton('Plant')}
-            </ButtonDiv>
+            <ButtonDiv>{buttonList}</ButtonDiv>
           </ElementDiv>
           <SizeDiv>
-            Size&emsp;
+            &emsp;
             <BrushSizes>
-              <Circle0 onClick={this.handleSizeChange} id="1" />
-              <Circle1 onClick={this.handleSizeChange} id="2" />
-              <Circle2 onClick={this.handleSizeChange} id="3" />
+              <button
+                onClick={this.handleSizeChange}
+                value={parseInt(this.state.BrushSize) - 1}
+              >
+                -
+              </button>
+              <button disabled>{this.state.BrushSize}</button>
+              <button
+                onClick={this.handleSizeChange}
+                value={parseInt(this.state.BrushSize) + 1}
+              >
+                +
+              </button>
               &emsp;
             </BrushSizes>
-            <Button type="button" onClick={this.handleClear} value="Clear">
-              Clear
+            <Button type="button" onClick={this.handleFill} value="fill">
+              Fill
             </Button>
           </SizeDiv>
           <SavePlayDiv>
@@ -157,8 +184,8 @@ class Toolbox extends Component {
             <Button type="button" onClick={this.props.play}>
               {runState}
             </Button>
-            <Button type="button" onClick={this.handleFill} id="fill">
-              Fill
+            <Button type="button" onClick={this.handleClear} id="Clear">
+              Clear
             </Button>
           </SavePlayDiv>
         </Col>
@@ -168,8 +195,12 @@ class Toolbox extends Component {
 }
 Toolbox.propTypes = {
   selected: PropTypes.func.isRequired,
-  toFill: PropTypes.func,
-  fill: PropTypes.bool
+  fill: PropTypes.bool,
+  toFill: PropTypes.func.isRequired,
+  step: PropTypes.func,
+  play: PropTypes.func,
+  playState: PropTypes.bool,
+  saveMode: PropTypes.func
 };
 
 export default Toolbox;
