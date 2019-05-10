@@ -222,4 +222,18 @@ describe('Plant tests', () => {
       ]
     ]);
   });
+  test('Plant doesnt grow too high', () => {
+    expect(
+      logic(
+        [
+          [{ element: 'Flower' }, { element: 'Void' }],
+          [{ element: 'Plant' }, { element: 'Water' }]
+        ],
+        2
+      )
+    ).toEqual([
+      [{ element: 'Flower' }, { element: 'Void' }],
+      [{ element: 'Plant' }, { element: 'Void' }]
+    ]);
+  });
 });
