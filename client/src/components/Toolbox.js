@@ -97,6 +97,8 @@ class Toolbox extends Component {
     const elementButton = el => {
       return (
         <button
+          type="button"
+          name="elementButton"
           disabled={this.state.SelectedElement === el}
           onClick={this.handleTypeChange}
           id={el}
