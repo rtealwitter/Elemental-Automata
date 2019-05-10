@@ -8,9 +8,12 @@ import change from './change.js';
 
 const Div = styled.div`
   display: inline-block;
+  position: fixed;
+  left: 0;
+  top: 0;
 `;
 
-const Void = { name: 'Void', color: ['#FFFFFF', '#FFFFFF', '#FFFFFF'] };
+const Void = { name: 'Void', color: ['#ffffff', '#ffffff', '#ffffff'] };
 const Rock = { name: 'Rock', color: ['#b9b9b9', '#aaaaaa', '#9b9b9b'] };
 const Water = { name: 'Water', color: ['#2391e1', '#2383d2', '#217ac3'] };
 const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] };
@@ -34,7 +37,7 @@ function assignDimensions(dimension, grid) {
         {
           x: (window.innerWidth / dimension) * j,
           // hack-y fix
-          y: ((window.innerHeight - 120) / dimension) * i
+          y: ((window.innerHeight - 180) / dimension) * i
         }
       );
     }
@@ -72,9 +75,9 @@ class Sandbox extends Component {
         newRow[j] = Object.assign(
           grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
           {
-            x: (window.innerWidth / dimension) * j,
+            x: (window.innerWidth / dimension) * j - 175,
             // hack-y fix
-            y: ((window.innerHeight - 120) / dimension) * i
+            y: (window.innerHeight / dimension) * i
           }
         );
       }
@@ -221,7 +224,7 @@ class Sandbox extends Component {
         onMouseUp={() => (mouseDown = false)}
         onMouseLeave={() => (mouseDown = false)}
       >
-        <Stage width={window.innerWidth} height={window.innerHeight}>
+        <Stage width={window.innerWidth - 175} height={window.innerHeight}>
           <Layer>{renderedGrid}</Layer>
         </Stage>
       </Div>
