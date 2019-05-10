@@ -102,6 +102,8 @@ class Toolbox extends Component {
     const elementButton = el => {
       return (
         <button
+          type="button"
+          name="elementButton"
           disabled={this.state.SelectedElement === el}
           onClick={this.handleTypeChange}
           id={el}
@@ -127,6 +129,7 @@ class Toolbox extends Component {
               {elementButton('Sand')}
               {elementButton('Water')}
               {elementButton('Fire')}
+              {elementButton('Plant')}
             </ButtonDiv>
           </ElementDiv>
           <SizeDiv>
@@ -165,8 +168,8 @@ class Toolbox extends Component {
 }
 Toolbox.propTypes = {
   selected: PropTypes.func.isRequired,
-  toFill: PropTypes.func.isRequired,
-  fill: PropTypes.bool.isRequired
+  toFill: PropTypes.func,
+  fill: PropTypes.bool
 };
 
 export default Toolbox;
