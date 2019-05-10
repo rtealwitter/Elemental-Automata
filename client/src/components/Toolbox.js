@@ -158,7 +158,7 @@ class Toolbox extends Component {
               >
                 -
               </button>
-              <button disabled={true}>{this.state.BrushSize}</button>
+              <button disabled>{this.state.BrushSize}</button>
               <button
                 onClick={this.handleSizeChange}
                 value={parseInt(this.state.BrushSize) + 1}
