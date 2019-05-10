@@ -126,18 +126,24 @@ function logic(grid, dimension) {
     setTimeout(() => {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
     }, 200); // tried to have it last longer but this # is limited by the update speed
-    const maxJumpI = dimension - j; // this doesn't make sense
-    const maxJumpJ = dimension - i;
-    const jumpI = Math.floor(Math.random() * maxJumpI);
-    const jumpJ = Math.floor(Math.random() * maxJumpJ);
-    if (elementAt(i, j - jumpJ) === 'Void') {
+    const maxJump = 10;
+    const jumpI = Math.floor(Math.random() * maxJump);
+    const jumpJ = Math.floor(Math.random() * maxJump);
+    if (
+      (elementAt(i, j - Math.floor(jumpJ / 2)) === 'Void' ||
+        elementAt(i, j - Math.floor(jumpJ / 2)) === 'Wood') &&
+      (elementAt(i, j - Math.floor(jumpJ / 4)) === 'Void' ||
+        elementAt(i, j - Math.floor(jumpJ / 4)) === 'Wood')
+    ) {
       Math.random() >= 0.5
         ? trade(i, j - Math.floor(jumpJ / 2), newCurrent)
         : trade(i, j - Math.floor(jumpJ / 4), newCurrent);
     }
     if (
-      elementAt(i - jumpI, j) === 'Void' &&
-      elementAt(i + jumpI, j) === 'Void'
+      (elementAt(i - Math.floor(jumpI / 4), j) === 'Void' ||
+        elementAt(i - Math.floor(jumpI / 4), j) === 'Wood') &&
+      (elementAt(i + Math.floor(jumpI / 4), j) === 'Void' ||
+        elementAt(i + Math.floor(jumpI / 4), j) === 'Wood')
     ) {
       Math.random() >= 0.5
         ? trade(i - Math.floor(jumpI / 4), j, newCurrent)
