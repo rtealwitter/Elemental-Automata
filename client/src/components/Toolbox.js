@@ -62,7 +62,7 @@ class Toolbox extends Component {
     this.set = this.set.bind(this);
   }
   handleSizeChange(field, event) {
-    let newSize = event.target.id;
+    let newSize = event.target.value;
     if (newSize <= 0) {
       newSize = 1;
     }
@@ -73,8 +73,8 @@ class Toolbox extends Component {
     this.props.selected(field, newSize);
   }
   handleTypeChange(field, event) {
-    this.setState({ [field]: event.target.id });
-    this.props.selected(field, event.target.id);
+    this.setState({ [field]: event.target.value });
+    this.props.selected(field, event.target.value);
     // this is where we update the props
   }
   handleClear() {
@@ -101,7 +101,8 @@ class Toolbox extends Component {
           name="elementButton"
           disabled={this.state.SelectedElement === el}
           onClick={this.handleTypeChange}
-          id={el}
+          key={el}
+          value={el}
         >
           {el}
         </button>
@@ -153,14 +154,14 @@ class Toolbox extends Component {
             <BrushSizes>
               <button
                 onClick={this.handleSizeChange}
-                id={parseInt(this.state.BrushSize) - 1}
+                value={parseInt(this.state.BrushSize) - 1}
               >
                 -
               </button>
               <button disabled={true}>{this.state.BrushSize}</button>
               <button
                 onClick={this.handleSizeChange}
-                id={parseInt(this.state.BrushSize) + 1}
+                value={parseInt(this.state.BrushSize) + 1}
               >
                 +
               </button>
@@ -194,12 +195,12 @@ class Toolbox extends Component {
 }
 Toolbox.propTypes = {
   selected: PropTypes.func.isRequired,
-  fill: PropTypes.bool.isRequired,
+  fill: PropTypes.bool,
   toFill: PropTypes.func.isRequired,
-  step: PropTypes.func.isRequired,
-  play: PropTypes.func.isRequired,
-  playState: PropTypes.bool.isRequired,
-  saveMode: PropTypes.func.isRequired
+  step: PropTypes.func,
+  play: PropTypes.func,
+  playState: PropTypes.bool,
+  saveMode: PropTypes.func
 };
 
 export default Toolbox;

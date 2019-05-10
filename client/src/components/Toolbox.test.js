@@ -28,7 +28,7 @@ describe('Toolbox Test', () => {
       expect(button.exists()).toBe(true);
     });
     test('Clicking element button invokes callback', () => {
-      const button = findButton(toolbox, /rock/i);
+      const button = findButton(toolbox, /sand/i);
       button.simulate('click');
       expect(completeCallback).toHaveBeenCalledTimes(1);
     });
