@@ -1,7 +1,7 @@
 # Travis CI Badge
 [![Build Status](https://travis-ci.com/csci312a-s19/fp-automata.svg?token=Vppsohpjy84DqDDTyGDZ&branch=master)](https://travis-ci.com/csci312a-s19/fp-automata)
 # Heroku Build
-https://fp-automata.herokuapp.com
+https://elemental-automata.herokuapp.com/
 # Need We Address
 Need in the gaming community for online elemental automata with community sharing functionality.
 

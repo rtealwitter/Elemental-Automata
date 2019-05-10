@@ -8,9 +8,12 @@ import change from './change.js';
 
 const Div = styled.div`
   display: inline-block;
+  position: fixed;
+  left: 0;
+  top: 0;
 `;
 
-const Void = { name: 'Void', color: ['#FFFFFF', '#FFFFFF', '#FFFFFF'] };
+const Void = { name: 'Void', color: ['#ffffff', '#ffffff', '#ffffff'] };
 const Rock = { name: 'Rock', color: ['#b9b9b9', '#aaaaaa', '#9b9b9b'] };
 const Water = { name: 'Water', color: ['#2391e1', '#2383d2', '#217ac3'] };
 const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] };
@@ -24,25 +27,6 @@ let mouseDown = false;
 
 const speed = 250; //milliseconds between updates
 
-function assignDimensions(dimension, grid) {
-  const newGrid = [];
-  for (let i = 0; i < dimension; i++) {
-    const newRow = [];
-    for (let j = 0; j < dimension; j++) {
-      newRow[j] = Object.assign(
-        grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
-        {
-          x: (window.innerWidth / dimension) * j,
-          // hack-y fix
-          y: ((window.innerHeight - 120) / dimension) * i
-        }
-      );
-    }
-    newGrid[i] = newRow;
-  }
-  return newGrid;
-}
-
 class Sandbox extends Component {
   constructor() {
     super();
@@ -51,10 +35,12 @@ class Sandbox extends Component {
     this.fill = this.fill.bind(this);
     this.changeElement = this.changeElement.bind(this);
     this.randColor = this.randColor.bind(this);
+    this.loadScenariosGrid = this.loadScenariosGrid.bind(this);
 
     this.state = {
       dimension: 20,
-      grid: []
+      grid: [],
+      hasBeenSet: false
     };
   }
 
@@ -69,9 +55,9 @@ class Sandbox extends Component {
         newRow[j] = Object.assign(
           grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
           {
-            x: (window.innerWidth / dimension) * j,
+            x: (window.innerWidth / dimension) * j - 175,
             // hack-y fix
-            y: ((window.innerHeight - 120) / dimension) * i
+            y: (window.innerHeight / dimension) * i
           }
         );
       }
@@ -84,25 +70,10 @@ class Sandbox extends Component {
 
   //handles resize of windows and time in the world
   componentDidMount() {
-    if (window.location.pathname !== '/') {
-      fetch('/api/scenarios' + window.location.pathname) // eslint-disable-line prefer-template
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error(response.statusText);
-        })
-        .then(data => {
-          const newGrid = JSON.parse(data[0].sandbox);
-          this.setState({
-            dimension: newGrid.length,
-            grid: assignDimensions(newGrid.length, newGrid)
-          });
-        })
-        .catch(err => console.log(err)); // eslint-disable-line no-console
-    }
+    this.setState({ hasBeenSet: false });
 
     this.updateDimensions();
+
     window.addEventListener('resize', this.updateDimensions);
     this.interval = setInterval(() => {
       if (this.props.play || this.props.step) {
@@ -119,29 +90,6 @@ class Sandbox extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  // saveGrid() {
-  //   if (this.props.save) {
-  //     // // Handle 'edited' field
-  //     const getCurDate = () => {
-  //       const today = new Date();
-  //       return today.toISOString();
-  //     };
-  //     const saveDate = getCurDate();
-  //     const jsonGrid = JSON.stringify(this.state.grid);
-  //     const newRecord = {
-  //       title: 'test',
-  //       author: 'Mr. JSON',
-  //       edited: saveDate,
-  //       sandbox: jsonGrid
-  //     };
-  //     fetch('/api/scenarios/', {
-  //       method: 'POST',
-  //       body: JSON.stringify(newRecord),
-  //       headers: new Headers({ 'Content-type': 'application/json' })
-  //     });
-  //     this.props.unSave();
-  //   }
-  // }
   fill() {
     const { dimension, grid } = this.state;
     const newGrid = Array.from(grid);
@@ -161,18 +109,54 @@ class Sandbox extends Component {
     const { size, element } = this.props;
     const newGrid = change(row, col, grid, size, dimension, element, mouseDown);
     this.setState({ grid: newGrid });
+    this.updateDimensions();
   }
 
   randColor(element) {
     return element.color[Math.floor(Math.random() * 3)];
   }
 
+  loadScenariosGrid() {
+    const { newGrid } = this.props;
+    const newestGrid = JSON.parse(newGrid.sandbox);
+    this.setState({
+      grid: newestGrid,
+      dimension: newestGrid.length,
+      hasBeenSet: true
+    });
+  }
+
   render() {
-    const { dimension, grid } = this.state;
+    const { dimension, grid, hasBeenSet } = this.state;
     if (this.props.fill && grid) {
       this.fill();
     }
 
+    if (this.props.newGrid && !hasBeenSet) {
+      this.loadScenariosGrid();
+    }
+
+    if (this.props.saveGrid && grid) {
+      console.log('saving grid');
+      const getCurDate = () => {
+        const today = new Date();
+        return today.toISOString();
+      };
+      const saveDate = getCurDate();
+      const jsonGrid = JSON.stringify(grid);
+      const newRecord = {
+        title: this.props.scenarioName,
+        author: this.props.authorName,
+        edited: saveDate,
+        sandbox: jsonGrid
+      };
+      fetch('/api/scenarios/', {
+        method: 'POST',
+        body: JSON.stringify(newRecord),
+        headers: new Headers({ 'Content-type': 'application/json' })
+      });
+      this.props.unSaveGrid();
+    }
     const renderedGrid = grid.map(row =>
       row.map(cell => (
         <Cell
@@ -197,7 +181,7 @@ class Sandbox extends Component {
         onMouseUp={() => (mouseDown = false)}
         onMouseLeave={() => (mouseDown = false)}
       >
-        <Stage width={window.innerWidth} height={window.innerHeight}>
+        <Stage width={window.innerWidth - 175} height={window.innerHeight}>
           <Layer>{renderedGrid}</Layer>
         </Stage>
       </Div>
@@ -209,6 +193,14 @@ Sandbox.propTypes = {
   element: PropTypes.string.isRequired,
   size: PropTypes.string.isRequired,
   fill: PropTypes.bool.isRequired,
-  filled: PropTypes.func.isRequired
+  filled: PropTypes.func.isRequired,
+  step: PropTypes.bool.isRequired,
+  unStep: PropTypes.func.isRequired,
+  play: PropTypes.bool.isRequired,
+  newGrid: PropTypes.object,
+  saveGrid: PropTypes.bool.isRequired,
+  unSaveGrid: PropTypes.func.isRequired,
+  scenarioName: PropTypes.string.isRequired,
+  authorName: PropTypes.string.isRequired
 };
 export default Sandbox;
