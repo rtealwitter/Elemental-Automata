@@ -8,14 +8,14 @@ import {
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
+  FormFeedback
 } from 'reactstrap';
 import Toolbox from './components/Toolbox';
 import Sandbox from './components/Sandbox.js';
 import GlobalStyle from './assets/globalStyle.js';
 import styled from 'styled-components';
 import logo from './assets/automata.png';
-import FormFeedback from 'reactstrap/es/FormFeedback';
 
 /* eslint-disable react/prefer-stateless-function, no-unused-vars */
 class App extends Component {
