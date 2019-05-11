@@ -21,6 +21,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
+    "boostrap": "^2.0.0",
     "bootstrap": "^4.3.1",
     "konva": "^3.2.5",
     "react": "^16.8.1",
