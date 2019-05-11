@@ -129,23 +129,19 @@ function logic(grid, dimension) {
     return false;
   }
 
-  function burnNeighbors(i, j, current, newCurrent) {
+  function burnNeighbors(i, j, current) {
     //if neighbors are flammable, turn them into fire
     const flammable = ['Wood', 'Plant', 'Oil', 'Flower'];
     if (flammable.includes(elementAt(i + 1, j))) {
-      //trade(i + 1, j, Object.assign(newCurrent, { element: 'Fire' }));
       Object.assign(newGrid[j][i + 1], { element: 'Fire' });
     }
     if (flammable.includes(elementAt(i - 1, j))) {
-      //trade(i - 1, j, Object.assign(newCurrent, { element: 'Fire' }));
       Object.assign(newGrid[j][i - 1], { element: 'Fire' });
     }
     if (flammable.includes(elementAt(i, j + 1))) {
-      //trade(i, j + 1, Object.assign(newCurrent, { element: 'Fire' }));
       Object.assign(newGrid[j + 1][i], { element: 'Fire' });
     }
     if (flammable.includes(elementAt(i, j - 1))) {
-      //trade(i, j - 1, Object.assign(newCurrent, { element: 'Fire' }));
       Object.assign(newGrid[j - 1][i], { element: 'Fire' });
     }
   }
@@ -155,7 +151,7 @@ function logic(grid, dimension) {
     if (checkNeighbors(i, j, current, 'Water')) {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
     } else {
-      burnNeighbors(i, j, current, newCurrent);
+      burnNeighbors(i, j, current);
     }
     //    Object.assign(newCurrent, { shouldUpdate: false });
     // disappears after set time if no element conducive to fire (wood, oil) is neighboring
@@ -189,10 +185,10 @@ function logic(grid, dimension) {
 
   function drinkWater(i, j, newCurrent, canGrow) {
     if (elementAt(i + 1, j) === 'Water' && canGrow) {
-      trade(i + 1, j, Object.assign(newCurrent, { element: 'Void' }));
+      Object.assign(newGrid[j][i + 1], { element: 'Void' });
       return true;
     } else if (elementAt(i - 1, j) === 'Water') {
-      trade(i - 1, j, Object.assign(newCurrent, { element: 'Void' }));
+      Object.assign(newGrid[j][i - 1], { element: 'Void' });
       return true;
     } else {
       return false;
@@ -225,7 +221,7 @@ function logic(grid, dimension) {
   }
 
   function sprout(i, j, newCurrent) {
-    trade(i, j - 1, Object.assign(newCurrent, { element: 'Flower' }));
+    Object.assign(newGrid[j - 1][i], { element: 'Flower' });
   }
 
   function plant(i, j, current, newCurrent) {
@@ -253,8 +249,8 @@ function logic(grid, dimension) {
         grid[j - 1][i].element === 'Water' ||
         grid[j - 1][i].element === 'Flower'
       ) {
-        trade(i, j - 1, Object.assign(newCurrent, { element: 'Flower' }));
-        trade(i, j, Object.assign(newCurrent, { element: 'Plant' }));
+        Object.assign(newGrid[j - 1][i], { element: 'Flower' });
+        Object.assign(newGrid[j][i], { element: 'Plant' });
       }
     }
   }
@@ -273,6 +269,7 @@ function logic(grid, dimension) {
 
       // do nothing for void
       // do nothing for rock
+      // do nothing for wood
       if (current.element === 'Sand') {
         pile(i, j, current, newCurrent);
       } else if (current.element === 'Water') {
