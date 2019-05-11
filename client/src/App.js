@@ -8,7 +8,8 @@ import {
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
+  FormFeedback
 } from 'reactstrap';
 import Toolbox from './components/Toolbox';
 import Sandbox from './components/Sandbox.js';
@@ -171,7 +172,9 @@ class App extends Component {
                 placeholder="Enter a name for the scenario"
                 value={this.state.scenarioName}
                 onChange={this.setScenarioName}
+                invalid={!this.state.scenarioName}
               />
+              <FormFeedback>Enter a title!</FormFeedback>
             </FormGroup>
             <FormGroup>
               <Label for="authorName">Author Name</Label>
@@ -183,7 +186,9 @@ class App extends Component {
                 placeholder="Enter your name"
                 value={this.state.authorName}
                 onChange={this.setAuthorName}
+                invalid={!this.state.authorName}
               />
+              <FormFeedback>Enter a name!</FormFeedback>
             </FormGroup>
           </Form>
         </ModalBody>
