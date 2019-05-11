@@ -108,7 +108,15 @@ class Toolbox extends Component {
         </button>
       );
     };
-    const elementList = ['Void', 'Rock', 'Sand', 'Water', 'Fire', 'Plant']; // Put new elements here
+    const elementList = [
+      'Void',
+      'Rock',
+      'Sand',
+      'Water',
+      'Fire',
+      'Plant',
+      'Oil'
+    ]; // Put new elements here
     const buttonList = elementList.map(el => {
       return elementButton(el);
     });

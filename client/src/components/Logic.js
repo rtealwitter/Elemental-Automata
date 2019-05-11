@@ -26,19 +26,28 @@ function logic(grid, dimension) {
       return (
         grid[j][i].element === 'Void' ||
         (current.element === 'Sand' && grid[j][i].element === 'Water') ||
-        (current.element === 'Plant' && grid[j][i].element === 'Water')
+        (current.element === 'Plant' && grid[j][i].element === 'Water') ||
+        (current.element === 'Water' && grid[j][i].element === 'Oil')
       );
     }
     return element;
   }
 
+  function oilBelowWater(i, j, current) {
+    const element = elementAt(i, j);
+    if (element) {
+      return grid[j][i].element === 'Oil' && current.element === 'Water';
+    }
+  }
+
   function searchFor(search, direction, i, j, newCurrent) {
     // Looks for lower elevation at i, j
     const element = elementAt(i + search, j + 1);
+    const currElement = newCurrent.element;
     if (element === 'Void') {
       trade(i + search, j + 1, newCurrent);
       search = false;
-    } else if (element === 'Water') {
+    } else if (element === currElement) {
       search += direction;
     } else {
       search = false;
@@ -70,7 +79,8 @@ function logic(grid, dimension) {
     while (
       newElement === 'Water' ||
       newElement === 'Sand' ||
-      newElement === 'Plant'
+      newElement === 'Plant' ||
+      newElement === 'Oil'
     ) {
       newJ += 1;
       newElement = elementAt(i, newJ);
@@ -98,7 +108,7 @@ function logic(grid, dimension) {
       trade(i - 1, j + 1, newCurrent);
     } else if (isEmpty(i + 1, j + 1, current)) {
       trade(i + 1, j + 1, newCurrent);
-    } else if (current.element === 'Water') {
+    } else if (current.element === 'Water' || current.element === 'Oil') {
       flattenWater(i, j, current, newCurrent);
     }
   }
@@ -232,12 +242,22 @@ function logic(grid, dimension) {
 
       // do nothing for void
       // do nothing for rock
-      if (current.element === 'Sand' || current.element === 'Water') {
+      if (current.element === 'Sand') {
         pile(i, j, current, newCurrent);
+      } else if (current.element === 'Water') {
+        if (oilBelowWater(i, j + 1, current)) {
+          console.log('poo');
+          trade(i, j + 1, newCurrent);
+        } else {
+          pile(i, j, current, newCurrent);
+        }
       } else if (current.element === 'Fire') {
         fire(i, j, current, newCurrent);
       } else if (current.element === 'Plant' || current.element === 'Flower') {
         plant(i, j, current, newCurrent);
+      } else if (current.element === 'Oil') {
+        console.log('Im oil');
+        pile(i, j, current, newCurrent);
       }
     }
   }
