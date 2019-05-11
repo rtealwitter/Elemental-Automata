@@ -11,7 +11,6 @@ function logic(grid, dimension) {
 
   function trade(i, j, newCurrent) {
     // Trades elements
-    console.log('gonna trade');
     const newElement = newCurrent.element;
     Object.assign(newCurrent, {
       element: grid[j][i].element
@@ -97,7 +96,6 @@ function logic(grid, dimension) {
   function pile(i, j, current, newCurrent) {
     // Creates pile of element
     if (isEmpty(i, j + 1, current)) {
-      console.log('trade1');
       trade(i, j + 1, newCurrent);
     } else if (isFalling(i, j)) {
       console.log('falling');
@@ -105,16 +103,12 @@ function logic(grid, dimension) {
       isEmpty(i - 1, j + 1, current) &&
       isEmpty(i + 1, j + 1, current)
     ) {
-      console.log('trade2');
       Math.random() >= 0.5
         ? trade(i - 1, j + 1, newCurrent)
         : trade(i + 1, j + 1, newCurrent);
     } else if (isEmpty(i - 1, j + 1, current)) {
-      console.log('trade3');
       trade(i - 1, j + 1, newCurrent);
     } else if (isEmpty(i + 1, j + 1, current)) {
-      console.log('trade4');
-      console.log('i: ', i, 'j: ', j);
       trade(i + 1, j + 1, newCurrent);
     } else if (current.element === 'Water' || current.element === 'Oil') {
       //console.log('flattenproblem');
@@ -170,8 +164,8 @@ function logic(grid, dimension) {
     }
   }
 
-  function drinkWater(i, j, newCurrent) {
-    if (elementAt(i + 1, j) === 'Water') {
+  function drinkWater(i, j, newCurrent, canGrow) {
+    if (elementAt(i + 1, j) === 'Water' && canGrow) {
       trade(i + 1, j, Object.assign(newCurrent, { element: 'Void' }));
       return true;
     } else if (elementAt(i - 1, j) === 'Water') {
@@ -185,12 +179,16 @@ function logic(grid, dimension) {
   function shouldGrow(i, j, current) {
     //looks to see if water is touching the Plant
     //only runs for top block of plant
+    let canGrow = true;
+    if (j - 1 === 1) {
+      canGrow = false;
+    }
     let currentJ = j;
     while (
       elementAt(i, currentJ) === 'Plant' ||
       elementAt(i, currentJ) === 'Flower'
     ) {
-      if (drinkWater(i, currentJ, current)) {
+      if (drinkWater(i, currentJ, current, canGrow)) {
         return true;
       } else {
         if (j < dimension - 1) {
@@ -256,10 +254,8 @@ function logic(grid, dimension) {
         pile(i, j, current, newCurrent);
       } else if (current.element === 'Water') {
         if (oilBelowWater(i, j + 1, current)) {
-          console.log('oilBelowMe');
           trade(i, j + 1, newCurrent);
         } else {
-          console.log('regular water');
           pile(i, j, current, newCurrent);
         }
       } else if (current.element === 'Fire') {
@@ -267,7 +263,6 @@ function logic(grid, dimension) {
       } else if (current.element === 'Plant' || current.element === 'Flower') {
         plant(i, j, current, newCurrent);
       } else if (current.element === 'Oil') {
-        console.log('Im oil');
         pile(i, j, current, newCurrent);
       }
     }
