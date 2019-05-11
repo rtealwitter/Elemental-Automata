@@ -287,3 +287,22 @@ describe('Plant tests', () => {
     ]);
   });
 });
+
+describe('Fire tests', () => {
+  test('Fire burns neighbors', () => {
+    expect(
+      logic(
+        [
+          [{ element: 'Rock' }, { element: 'Wood' }, { element: 'Rock' }],
+          [{ element: 'Flower' }, { element: 'Fire' }, { element: 'Plant' }],
+          [{ element: 'Rock' }, { element: 'Oil' }, { element: 'Rock' }]
+        ],
+        3
+      )
+    ).toEqual([
+      [{ element: 'Rock' }, { element: 'Fire' }, { element: 'Rock' }],
+      [{ element: 'Fire' }, { element: 'Fire' }, { element: 'Fire' }],
+      [{ element: 'Rock' }, { element: 'Fire' }, { element: 'Rock' }]
+    ]);
+  });
+});
