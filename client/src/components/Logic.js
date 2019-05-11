@@ -145,18 +145,24 @@ function logic(grid, dimension) {
     setTimeout(() => {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
     }, 200); // tried to have it last longer but this # is limited by the update speed
-    const maxJumpI = dimension - j; // this doesn't make sense
-    const maxJumpJ = dimension - i;
-    const jumpI = Math.floor(Math.random() * maxJumpI);
-    const jumpJ = Math.floor(Math.random() * maxJumpJ);
-    if (elementAt(i, j - jumpJ) === 'Void') {
+    const maxJump = 10;
+    const jumpI = Math.floor(Math.random() * maxJump);
+    const jumpJ = Math.floor(Math.random() * maxJump);
+    if (
+      (elementAt(i, j - Math.floor(jumpJ / 2)) === 'Void' ||
+        elementAt(i, j - Math.floor(jumpJ / 2)) === 'Wood') &&
+      (elementAt(i, j - Math.floor(jumpJ / 4)) === 'Void' ||
+        elementAt(i, j - Math.floor(jumpJ / 4)) === 'Wood')
+    ) {
       Math.random() >= 0.5
         ? trade(i, j - Math.floor(jumpJ / 2), newCurrent)
         : trade(i, j - Math.floor(jumpJ / 4), newCurrent);
     }
     if (
-      elementAt(i - jumpI, j) === 'Void' &&
-      elementAt(i + jumpI, j) === 'Void'
+      (elementAt(i - Math.floor(jumpI / 4), j) === 'Void' ||
+        elementAt(i - Math.floor(jumpI / 4), j) === 'Wood') &&
+      (elementAt(i + Math.floor(jumpI / 4), j) === 'Void' ||
+        elementAt(i + Math.floor(jumpI / 4), j) === 'Wood')
     ) {
       Math.random() >= 0.5
         ? trade(i - Math.floor(jumpI / 4), j, newCurrent)
@@ -184,7 +190,7 @@ function logic(grid, dimension) {
       elementAt(i, currentJ) === 'Plant' ||
       elementAt(i, currentJ) === 'Flower'
     ) {
-      if (drinkWater(i, currentJ, current, 'Water')) {
+      if (drinkWater(i, currentJ, current)) {
         return true;
       } else {
         if (j < dimension - 1) {
@@ -198,14 +204,8 @@ function logic(grid, dimension) {
   }
 
   function sprout(i, j, newCurrent) {
-    trade(i, j, Object.assign(newCurrent, { element: 'Flower' }));
+    trade(i, j - 1, Object.assign(newCurrent, { element: 'Flower' }));
   }
-
-  // function sproutLeaf(i, j, newCurrent) {
-  //   Math.random() >= 0.5
-  //     ? trade(i - 1, j, Object.assign(newCurrent, { element: 'Plant' }))
-  //     : trade(i + 1, j, Object.assign(newCurrent, { element: 'Plant' }));
-  // }
 
   function plant(i, j, current, newCurrent) {
     //should fall if void is below
@@ -213,27 +213,28 @@ function logic(grid, dimension) {
       trade(i, j + 1, newCurrent);
     }
     //should have a flower at the top
-    else if (
-      current.element === 'Plant' &&
-      (grid[j - 1][i].element === 'Void' ||
-        grid[j - 1][i].element === 'Water') &&
-      !isFalling(i, j) &&
-      j > 0
-    ) {
-      sprout(i, j - 1, current, newCurrent);
+    else if (current.element === 'Plant' && !isFalling(i, j) && j > 0) {
+      if (
+        grid[j - 1][i].element === 'Void' ||
+        grid[j - 1][i].element === 'Water'
+      ) {
+        sprout(i, j, current, newCurrent);
+      }
     }
     //should  grow one block per turn if water is touching the plant and there is room to grow, and drink water
     else if (
       current.element === 'Flower' &&
       shouldGrow(i, j + 1, current) &&
-      (grid[j - 1][i].element === 'Void' ||
-        grid[j - 1][i].element === 'Water') &&
       j > 1
     ) {
-      trade(i, j - 1, Object.assign(newCurrent, { element: 'Flower' }));
-      Object.assign(newCurrent, { element: 'Plant' });
-
-      //should have chance to grow leaf
+      if (
+        grid[j - 1][i].element === 'Void' ||
+        grid[j - 1][i].element === 'Water' ||
+        grid[j - 1][i].element === 'Flower'
+      ) {
+        trade(i, j - 1, Object.assign(newCurrent, { element: 'Flower' }));
+        trade(i, j, Object.assign(newCurrent, { element: 'Plant' }));
+      }
     }
   }
 

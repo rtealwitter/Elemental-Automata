@@ -7,8 +7,9 @@ const GlobalStyle = createGlobalStyle`
   body {
     padding: 0;
     margin: 0;
-    font-family: ${props => (props.start ? 'ArcadeClassic' : 'Minecraft')};
-    text-align: center;
+    font-family: ${props =>
+      props.mode === 'start' ? 'ArcadeClassic' : 'Minecraft'};
+    text-align: center;    
   }
   button {
     font-family: Minecraft, sans-serif;
@@ -16,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
     align-items: center;
     padding-top: 0.25em;
     background: transparent;
-    color: white;
+    color: ${props => (props.mode === 'scenario' ? 'black' : 'white')};
   }
   @font-face {
     font-family: ArcadeClassic;

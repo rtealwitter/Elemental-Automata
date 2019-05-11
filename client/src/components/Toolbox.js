@@ -23,7 +23,7 @@ const ElementDiv = styled.div`
   top: 0;
   margin: 1em 0;
   width: 12em;
-  height: 5em;
+  height: 7em;
 `;
 const ElementTitle = styled.h1`
   font-size: 20px;
@@ -115,7 +115,9 @@ class Toolbox extends Component {
       'Water',
       'Fire',
       'Plant',
-      'Oil'
+      'Oil',
+      'Wood'
+
     ]; // Put new elements here
     const buttonList = elementList.map(el => {
       return elementButton(el);

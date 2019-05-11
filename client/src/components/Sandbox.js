@@ -21,8 +21,9 @@ const Fire = { name: 'Fire', color: ['#e21500', '#e15100', '#c30600'] };
 const Plant = { name: 'Plant', color: ['#228B22', '#008000', '#006400'] };
 const Flower = { name: 'Flower', color: ['#FF00FF', '#F08080', '#FFD700'] };
 const Oil = { name: 'Oil', color: ['#000000', '#040207', '#07040F'] };
+const Wood = { name: 'Wood', color: ['#5F3106', '#733E06', '#904D00'] };
 
-const ElementArray = [Void, Rock, Water, Sand, Fire, Plant, Flower, Oil];
+const ElementArray = [Void, Rock, Water, Sand, Fire, Plant, Flower, Oil, Wood];
 
 let mouseDown = false;
 
