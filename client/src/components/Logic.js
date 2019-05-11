@@ -164,8 +164,8 @@ function logic(grid, dimension) {
     }
   }
 
-  function drinkWater(i, j, newCurrent) {
-    if (elementAt(i + 1, j) === 'Water') {
+  function drinkWater(i, j, newCurrent, canGrow) {
+    if (elementAt(i + 1, j) === 'Water' && canGrow) {
       trade(i + 1, j, Object.assign(newCurrent, { element: 'Void' }));
       return true;
     } else if (elementAt(i - 1, j) === 'Water') {
@@ -179,12 +179,16 @@ function logic(grid, dimension) {
   function shouldGrow(i, j, current) {
     //looks to see if water is touching the Plant
     //only runs for top block of plant
+    let canGrow = true;
+    if (j - 1 === 1) {
+      canGrow = false;
+    }
     let currentJ = j;
     while (
       elementAt(i, currentJ) === 'Plant' ||
       elementAt(i, currentJ) === 'Flower'
     ) {
-      if (drinkWater(i, currentJ, current)) {
+      if (drinkWater(i, currentJ, current, canGrow)) {
         return true;
       } else {
         if (j < dimension - 1) {
