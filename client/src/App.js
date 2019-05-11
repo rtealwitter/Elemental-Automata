@@ -15,6 +15,7 @@ import Sandbox from './components/Sandbox.js';
 import GlobalStyle from './assets/globalStyle.js';
 import styled from 'styled-components';
 import logo from './assets/automata.png';
+import FormFeedback from 'reactstrap/es/FormFeedback';
 
 /* eslint-disable react/prefer-stateless-function, no-unused-vars */
 class App extends Component {
@@ -171,7 +172,9 @@ class App extends Component {
                 placeholder="Enter a name for the scenario"
                 value={this.state.scenarioName}
                 onChange={this.setScenarioName}
+                invalid={!this.state.scenarioName}
               />
+              <FormFeedback>Enter a title!</FormFeedback>
             </FormGroup>
             <FormGroup>
               <Label for="authorName">Author Name</Label>
@@ -183,7 +186,9 @@ class App extends Component {
                 placeholder="Enter your name"
                 value={this.state.authorName}
                 onChange={this.setAuthorName}
+                invalid={!this.state.authorName}
               />
+              <FormFeedback>Enter a name!</FormFeedback>
             </FormGroup>
           </Form>
         </ModalBody>
