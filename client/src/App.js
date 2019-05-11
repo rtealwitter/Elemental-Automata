@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import {
   Button,
   Modal,
@@ -37,7 +36,8 @@ class App extends Component {
       scenarios: undefined,
       scenarioMode: undefined,
       newGrid: undefined,
-      saveGrid: false
+      saveGrid: false,
+      savePrivacy: 'Public'
     };
     this.getScenarios = this.getScenarios.bind(this);
     this.changeGrid = this.changeGrid.bind(this);
@@ -53,6 +53,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.unSaveGrid = this.unSaveGrid.bind(this);
     this.handleExplore = this.handleExplore.bind(this);
+    this.setSaveOption = this.setSaveOption.bind(this);
   }
   handleSave() {
     this.setState({ saveMode: !this.state.saveMode });
@@ -121,6 +122,9 @@ class App extends Component {
   handleExplore() {
     this.setState({ scenarioMode: true, start: false });
   }
+  setSaveOption(evt) {
+    this.setState({ savePrivacy: evt.target.value });
+  }
   render() {
     const Div = styled.div`
       width: 100%;
@@ -181,10 +185,28 @@ class App extends Component {
                 onChange={this.setAuthorName}
               />
             </FormGroup>
-            <Button type="submit">Submit</Button>
           </Form>
         </ModalBody>
         <ModalFooter>
+          <Label for="Public">
+            Public{' '}
+            <input
+              type="radio"
+              value="Public"
+              checked={this.state.savePrivacy === 'Public'}
+              onChange={this.setSaveOption}
+            />
+          </Label>{' '}
+          <Label for="Private">
+            Private{' '}
+            <input
+              type="radio"
+              value="Private"
+              checked={this.state.savePrivacy === 'Private'}
+              onChange={this.setSaveOption}
+            />
+          </Label>{' '}
+          <Button type="submit">Submit</Button>
           <Button onClick={this.handleSave}>Cancel</Button>
         </ModalFooter>
       </Modal>
