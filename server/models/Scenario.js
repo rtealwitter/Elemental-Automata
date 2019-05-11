@@ -19,7 +19,9 @@ class Scenario extends Model {
         title: { type: 'string' },
         author: { type: 'string' },
         edited: { type: 'string' },
-        sandbox: { type: 'JSON' }
+        sandbox: { type: 'JSON' },
+        share: { type: 'boolean' },
+        link: { type: 'string' }
       }
     };
   }
