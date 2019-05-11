@@ -240,6 +240,7 @@ class App extends Component {
         play={this.handlePlay}
         playState={this.state.play}
         saveMode={this.handleSave}
+        saveModeState={this.state.saveMode}
       />
     );
 
