@@ -27,6 +27,25 @@ let mouseDown = false;
 
 const speed = 250; //milliseconds between updates
 
+function assignDimensions(dimension, grid) {
+  const newGrid = [];
+  for (let i = 0; i < dimension; i++) {
+    const newRow = [];
+    for (let j = 0; j < dimension; j++) {
+      newRow[j] = Object.assign(
+        grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
+        {
+          x: ((window.innerWidth - 180) / dimension) * j,
+          // hack-y fix
+          y: (window.innerHeight / dimension) * i
+        }
+      );
+    }
+    newGrid[i] = newRow;
+  }
+  return newGrid;
+}
+
 class Sandbox extends Component {
   constructor() {
     super();
@@ -48,21 +67,7 @@ class Sandbox extends Component {
   updateDimensions() {
     const { dimension, grid } = this.state;
     //console.log(grid !== []);
-    const newGrid = [];
-    for (let i = 0; i < dimension; i++) {
-      const newRow = [];
-      for (let j = 0; j < dimension; j++) {
-        newRow[j] = Object.assign(
-          grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
-          {
-            x: (window.innerWidth / dimension) * j - 175,
-            // hack-y fix
-            y: (window.innerHeight / dimension) * i
-          }
-        );
-      }
-      newGrid[i] = newRow;
-    }
+    const newGrid = assignDimensions(dimension, grid);
     this.setState({
       grid: newGrid
     });
@@ -107,9 +112,10 @@ class Sandbox extends Component {
   changeElement(row, col) {
     const { dimension, grid } = this.state;
     const { size, element } = this.props;
-    const newGrid = change(row, col, grid, size, dimension, element, mouseDown);
-    this.setState({ grid: newGrid });
-    this.updateDimensions();
+    if (mouseDown) {
+      const newGrid = change(row, col, grid, size, dimension, element);
+      this.setState({ grid: newGrid });
+    }
   }
 
   randColor(element) {
@@ -119,8 +125,9 @@ class Sandbox extends Component {
   loadScenariosGrid() {
     const { newGrid } = this.props;
     const newestGrid = JSON.parse(newGrid.sandbox);
+    const newesterGrid = assignDimensions(newestGrid.length, newestGrid);
     this.setState({
-      grid: newestGrid,
+      grid: newesterGrid,
       dimension: newestGrid.length,
       hasBeenSet: true
     });

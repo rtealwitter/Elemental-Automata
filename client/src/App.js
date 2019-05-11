@@ -27,7 +27,7 @@ class App extends Component {
       authorName: '',
       x: 0,
       y: 0,
-      SelectedElement: 'Void',
+      SelectedElement: 'Rock',
       BrushSize: '1',
       fill: false,
       play: false,
