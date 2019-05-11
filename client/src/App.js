@@ -88,7 +88,11 @@ class App extends Component {
         return response.json();
       })
       .then(data => {
-        this.setState({ scenarios: data });
+        let publicScenarios = data;
+        if (data[data.length - 1].share !== undefined) {
+          publicScenarios = data.filter(scenario => scenario.share);
+        }
+        this.setState({ scenarios: publicScenarios });
       })
       .catch(err => console.log(err)); // eslint-disable-line no-conso   le
   }
