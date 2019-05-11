@@ -37,7 +37,7 @@ class App extends Component {
       scenarioMode: undefined,
       newGrid: undefined,
       saveGrid: false,
-      savePrivacy: 'Public'
+      savePrivacy: true
     };
     this.getScenarios = this.getScenarios.bind(this);
     this.changeGrid = this.changeGrid.bind(this);
@@ -123,7 +123,7 @@ class App extends Component {
     this.setState({ scenarioMode: true, start: false });
   }
   setSaveOption(evt) {
-    this.setState({ savePrivacy: evt.target.value });
+    this.setState({ savePrivacy: !this.state.savePrivacy });
   }
   render() {
     const Div = styled.div`
@@ -193,7 +193,7 @@ class App extends Component {
             <input
               type="radio"
               value="Public"
-              checked={this.state.savePrivacy === 'Public'}
+              checked={this.state.savePrivacy}
               onChange={this.setSaveOption}
             />
           </Label>{' '}
@@ -202,7 +202,7 @@ class App extends Component {
             <input
               type="radio"
               value="Private"
-              checked={this.state.savePrivacy === 'Private'}
+              checked={!this.state.savePrivacy}
               onChange={this.setSaveOption}
             />
           </Label>{' '}
@@ -228,6 +228,7 @@ class App extends Component {
         unSaveGrid={this.unSaveGrid}
         scenarioName={this.state.scenarioName}
         authorName={this.state.authorName}
+        share={this.state.savePrivacy}
       />
     );
 

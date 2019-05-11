@@ -155,9 +155,13 @@ class Sandbox extends Component {
       const newRecord = {
         title: this.props.scenarioName,
         author: this.props.authorName,
+        //        share: this.props.share,
+        //        link: Math.random().toString(36).substr(2, 5),
         edited: saveDate,
         sandbox: jsonGrid
       };
+      console.log(newRecord.share);
+      console.log(newRecord.link);
       fetch('/api/scenarios/', {
         method: 'POST',
         body: JSON.stringify(newRecord),
@@ -209,6 +213,7 @@ Sandbox.propTypes = {
   saveGrid: PropTypes.bool.isRequired,
   unSaveGrid: PropTypes.func.isRequired,
   scenarioName: PropTypes.string.isRequired,
-  authorName: PropTypes.string.isRequired
+  authorName: PropTypes.string.isRequired,
+  share: PropTypes.bool.isRequired
 };
 export default Sandbox;
