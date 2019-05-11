@@ -115,7 +115,9 @@ class Toolbox extends Component {
       'Water',
       'Fire',
       'Plant',
+      'Oil',
       'Wood'
+
     ]; // Put new elements here
     const buttonList = elementList.map(el => {
       return elementButton(el);
