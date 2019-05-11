@@ -37,7 +37,7 @@ function assignDimensions(dimension, grid) {
       newRow[j] = Object.assign(
         grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
         {
-          x: ((window.innerWidth - 180) / dimension) * j,
+          x: ((window.innerWidth - 175) / dimension) * j,
           // hack-y fix
           y: (window.innerHeight / dimension) * i
         }
