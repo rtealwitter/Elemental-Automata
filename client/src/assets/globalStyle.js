@@ -18,6 +18,14 @@ const GlobalStyle = createGlobalStyle`
     background: transparent;
     color: white;
   }
+  button:disabled {
+    opacity: 0.75;
+  }
+  
+  label:hover {
+
+  }
+  
   @font-face {
     font-family: ArcadeClassic;
     src: url(${Arcade});
