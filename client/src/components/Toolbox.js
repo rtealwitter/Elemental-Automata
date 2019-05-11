@@ -91,7 +91,7 @@ class Toolbox extends Component {
     this.setState(state);
   }
   render() {
-    const { play, step, toFill, selected } = this.props;
+    const { play, step, toFill, selected, saveModeState } = this.props;
     const { handleClear, set } = this;
 
     const elementButton = el => {
@@ -129,24 +129,26 @@ class Toolbox extends Component {
     }
 
     document.onkeypress = function(e) {
-      if (['p', 'P'].includes(e.key)) {
-        play();
-      }
-      if (['s', 'S'].includes(e.key)) {
-        step();
-      }
-      if (['f', 'F'].includes(e.key)) {
-        toFill('fill');
-      }
-      if (['c', 'C'].includes(e.key)) {
-        handleClear();
-        set({ SelectedElement: 'Void' });
-      }
-      if (Number.isInteger(parseInt(e.key))) {
-        const index = parseInt(e.key);
-        if (index < elementList.length) {
-          set({ SelectedElement: elementList[index] });
-          selected('SelectedElement', elementList[index]);
+      if (!saveModeState) {
+        if (['p', 'P'].includes(e.key)) {
+          play();
+        }
+        if (['s', 'S'].includes(e.key)) {
+          step();
+        }
+        if (['f', 'F'].includes(e.key)) {
+          toFill('fill');
+        }
+        if (['c', 'C'].includes(e.key)) {
+          handleClear();
+          set({ SelectedElement: 'Void' });
+        }
+        if (Number.isInteger(parseInt(e.key))) {
+          const index = parseInt(e.key);
+          if (index < elementList.length) {
+            set({ SelectedElement: elementList[index] });
+            selected('SelectedElement', elementList[index]);
+          }
         }
       }
     };
@@ -208,7 +210,8 @@ Toolbox.propTypes = {
   step: PropTypes.func,
   play: PropTypes.func,
   playState: PropTypes.bool,
-  saveMode: PropTypes.func
+  saveMode: PropTypes.func,
+  saveModeState: PropTypes.bool
 };
 
 export default Toolbox;
