@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import {
   Button,
   Modal,
@@ -37,7 +36,8 @@ class App extends Component {
       scenarios: undefined,
       scenarioMode: undefined,
       newGrid: undefined,
-      saveGrid: false
+      saveGrid: false,
+      savePrivacy: true
     };
     this.getScenarios = this.getScenarios.bind(this);
     this.changeGrid = this.changeGrid.bind(this);
@@ -53,6 +53,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.unSaveGrid = this.unSaveGrid.bind(this);
     this.handleExplore = this.handleExplore.bind(this);
+    this.setSaveOption = this.setSaveOption.bind(this);
   }
   handleSave() {
     this.setState({ saveMode: !this.state.saveMode });
@@ -121,6 +122,9 @@ class App extends Component {
   handleExplore() {
     this.setState({ scenarioMode: true, start: false });
   }
+  setSaveOption(evt) {
+    this.setState({ savePrivacy: !this.state.savePrivacy });
+  }
   render() {
     const Div = styled.div`
       width: 100%;
@@ -181,10 +185,30 @@ class App extends Component {
                 onChange={this.setAuthorName}
               />
             </FormGroup>
-            <Button type="submit">Submit</Button>
           </Form>
         </ModalBody>
         <ModalFooter>
+          <Label for="Public">
+            Public{' '}
+            <input
+              type="radio"
+              value="Public"
+              checked={this.state.savePrivacy}
+              onChange={this.setSaveOption}
+            />
+          </Label>{' '}
+          <Label for="Private">
+            Private{' '}
+            <input
+              type="radio"
+              value="Private"
+              checked={!this.state.savePrivacy}
+              onChange={this.setSaveOption}
+            />
+          </Label>{' '}
+          <Button onClick={this.handleSubmit} type="submit">
+            Submit
+          </Button>
           <Button onClick={this.handleSave}>Cancel</Button>
         </ModalFooter>
       </Modal>
@@ -204,6 +228,7 @@ class App extends Component {
         unSaveGrid={this.unSaveGrid}
         scenarioName={this.state.scenarioName}
         authorName={this.state.authorName}
+        share={this.state.savePrivacy}
       />
     );
 
@@ -216,6 +241,7 @@ class App extends Component {
         play={this.handlePlay}
         playState={this.state.play}
         saveMode={this.handleSave}
+        saveModeState={this.state.saveMode}
       />
     );
 
@@ -234,7 +260,7 @@ class App extends Component {
     if (this.state.start) {
       return (
         <Div className="App">
-          <GlobalStyle start />
+          <GlobalStyle mode="start" />
           <img src={logo} alt="elemental automata" />{' '}
           <Start onClick={this.handleStart}>START</Start>
           <Start onClick={this.handleExplore}>EXPLORE</Start>
@@ -243,7 +269,7 @@ class App extends Component {
     } else if (inScenarioView) {
       return (
         <Div className="App">
-          <GlobalStyle start />
+          <GlobalStyle mode="scenario" />
           {scenarioView}
         </Div>
       );

@@ -135,105 +135,52 @@ describe('Sand tests', () => {
   });
 });
 
-describe('Plant tests', () => {
-  test('Plant falls', () => {
+describe('Oil tests', () => {
+  test('Oil rises in water', () => {
     expect(
       logic(
         [
-          [{ element: 'Plant' }, { element: 'Void' }],
-          [{ element: 'Void' }, { element: 'Void' }]
+          [{ element: 'Water' }, { element: 'Void' }],
+          [{ element: 'Oil' }, { element: 'Void' }]
         ],
         2
       )
     ).toEqual([
-      [{ element: 'Void' }, { element: 'Void' }],
-      [{ element: 'Plant' }, { element: 'Void' }]
+      [{ element: 'Oil' }, { element: 'Void' }],
+      [{ element: 'Water' }, { element: 'Void' }]
     ]);
   });
-  test('Plant blooms', () => {
+
+  test('Water piles in oil', () => {
     expect(
       logic(
         [
-          [{ element: 'Void' }, { element: 'Void' }],
-          [{ element: 'Plant' }, { element: 'Void' }]
+          [{ element: 'Oil' }, { element: 'Oil' }, { element: 'Oil' }],
+          [{ element: 'Oil' }, { element: 'Water' }, { element: 'Oil' }],
+          [{ element: 'Water' }, { element: 'Water' }, { element: 'Oil' }]
         ],
-        2
+        3
       )
     ).toEqual([
-      [{ element: 'Flower' }, { element: 'Void' }],
-      [{ element: 'Plant' }, { element: 'Void' }]
+      [{ element: 'Oil' }, { element: 'Oil' }, { element: 'Oil' }],
+      [{ element: 'Oil' }, { element: 'Oil' }, { element: 'Oil' }],
+      [{ element: 'Water' }, { element: 'Water' }, { element: 'Water' }]
     ]);
   });
-  test('Plant grows and drinks water', () => {
+  test('Oil piles upside-down in water', () => {
     expect(
       logic(
         [
-          [
-            { element: 'Void' },
-            { element: 'Void' },
-            { element: 'Void' },
-            { element: 'Void' }
-          ],
-          [
-            { element: 'Void' },
-            { element: 'Void' },
-            { element: 'Void' },
-            { element: 'Void' }
-          ],
-          [
-            { element: 'Flower' },
-            { element: 'Void' },
-            { element: 'Void' },
-            { element: 'Void' }
-          ],
-          [
-            { element: 'Plant' },
-            { element: 'Water' },
-            { element: 'Void' },
-            { element: 'Void' }
-          ]
+          [{ element: 'Water' }, { element: 'Oil' }, { element: 'Water' }],
+          [{ element: 'Water' }, { element: 'Oil' }, { element: 'Water' }],
+          [{ element: 'Water' }, { element: 'Water' }, { element: 'Water' }]
         ],
-        4
+        3
       )
     ).toEqual([
-      [
-        { element: 'Void' },
-        { element: 'Void' },
-        { element: 'Void' },
-        { element: 'Void' }
-      ],
-      [
-        { element: 'Flower' },
-        { element: 'Void' },
-        { element: 'Void' },
-        { element: 'Void' }
-      ],
-      [
-        { element: 'Plant' },
-        { element: 'Void' },
-        { element: 'Void' },
-        { element: 'Void' }
-      ],
-      [
-        { element: 'Plant' },
-        { element: 'Void' },
-        { element: 'Void' },
-        { element: 'Void' }
-      ]
-    ]);
-  });
-  test('Plant doesnt grow too high', () => {
-    expect(
-      logic(
-        [
-          [{ element: 'Flower' }, { element: 'Void' }],
-          [{ element: 'Plant' }, { element: 'Water' }]
-        ],
-        2
-      )
-    ).toEqual([
-      [{ element: 'Flower' }, { element: 'Void' }],
-      [{ element: 'Plant' }, { element: 'Void' }]
+      [{ element: 'Oil' }, { element: 'Oil' }, { element: 'Oil' }],
+      [{ element: 'Water' }, { element: 'Water' }, { element: 'Water' }],
+      [{ element: 'Water' }, { element: 'Water' }, { element: 'Water' }]
     ]);
   });
 });

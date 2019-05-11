@@ -20,8 +20,10 @@ const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] };
 const Fire = { name: 'Fire', color: ['#e21500', '#e15100', '#c30600'] };
 const Plant = { name: 'Plant', color: ['#228B22', '#008000', '#006400'] };
 const Flower = { name: 'Flower', color: ['#FF00FF', '#F08080', '#FFD700'] };
+const Oil = { name: 'Oil', color: ['#000000', '#040207', '#07040F'] };
+const Wood = { name: 'Wood', color: ['#5F3106', '#733E06', '#904D00'] };
 
-const ElementArray = [Void, Rock, Water, Sand, Fire, Plant, Flower];
+const ElementArray = [Void, Rock, Water, Sand, Fire, Plant, Flower, Oil, Wood];
 
 let mouseDown = false;
 
@@ -154,9 +156,13 @@ class Sandbox extends Component {
       const newRecord = {
         title: this.props.scenarioName,
         author: this.props.authorName,
+        //        share: this.props.share,
+        //        link: Math.random().toString(36).substr(2, 5),
         edited: saveDate,
         sandbox: jsonGrid
       };
+      console.log(newRecord.share);
+      console.log(newRecord.link);
       fetch('/api/scenarios/', {
         method: 'POST',
         body: JSON.stringify(newRecord),
@@ -208,6 +214,7 @@ Sandbox.propTypes = {
   saveGrid: PropTypes.bool.isRequired,
   unSaveGrid: PropTypes.func.isRequired,
   scenarioName: PropTypes.string.isRequired,
-  authorName: PropTypes.string.isRequired
+  authorName: PropTypes.string.isRequired,
+  share: PropTypes.bool.isRequired
 };
 export default Sandbox;

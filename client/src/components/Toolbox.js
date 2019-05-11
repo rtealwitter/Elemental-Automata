@@ -23,7 +23,7 @@ const ElementDiv = styled.div`
   top: 0;
   margin: 1em 0;
   width: 12em;
-  height: 5em;
+  height: 7em;
 `;
 const ElementTitle = styled.h1`
   font-size: 20px;
@@ -91,7 +91,7 @@ class Toolbox extends Component {
     this.setState(state);
   }
   render() {
-    const { play, step, toFill, selected } = this.props;
+    const { play, step, toFill, selected, saveModeState } = this.props;
     const { handleClear, set } = this;
 
     const elementButton = el => {
@@ -108,7 +108,17 @@ class Toolbox extends Component {
         </button>
       );
     };
-    const elementList = ['Void', 'Rock', 'Sand', 'Water', 'Fire', 'Plant']; // Put new elements here
+    const elementList = [
+      'Void',
+      'Rock',
+      'Sand',
+      'Water',
+      'Fire',
+      'Plant',
+      'Oil',
+      'Wood'
+
+    ]; // Put new elements here
     const buttonList = elementList.map(el => {
       return elementButton(el);
     });
@@ -121,24 +131,26 @@ class Toolbox extends Component {
     }
 
     document.onkeypress = function(e) {
-      if (['p', 'P'].includes(e.key)) {
-        play();
-      }
-      if (['s', 'S'].includes(e.key)) {
-        step();
-      }
-      if (['f', 'F'].includes(e.key)) {
-        toFill('fill');
-      }
-      if (['c', 'C'].includes(e.key)) {
-        handleClear();
-        set({ SelectedElement: 'Void' });
-      }
-      if (Number.isInteger(parseInt(e.key))) {
-        const index = parseInt(e.key);
-        if (index < elementList.length) {
-          set({ SelectedElement: elementList[index] });
-          selected('SelectedElement', elementList[index]);
+      if (!saveModeState) {
+        if (['p', 'P'].includes(e.key)) {
+          play();
+        }
+        if (['s', 'S'].includes(e.key)) {
+          step();
+        }
+        if (['f', 'F'].includes(e.key)) {
+          toFill('fill');
+        }
+        if (['c', 'C'].includes(e.key)) {
+          handleClear();
+          set({ SelectedElement: 'Void' });
+        }
+        if (Number.isInteger(parseInt(e.key))) {
+          const index = parseInt(e.key);
+          if (index < elementList.length) {
+            set({ SelectedElement: elementList[index] });
+            selected('SelectedElement', elementList[index]);
+          }
         }
       }
     };
@@ -200,7 +212,8 @@ Toolbox.propTypes = {
   step: PropTypes.func,
   play: PropTypes.func,
   playState: PropTypes.bool,
-  saveMode: PropTypes.func
+  saveMode: PropTypes.func,
+  saveModeState: PropTypes.bool
 };
 
 export default Toolbox;

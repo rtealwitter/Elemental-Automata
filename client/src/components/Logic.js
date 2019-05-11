@@ -26,19 +26,30 @@ function logic(grid, dimension) {
       return (
         grid[j][i].element === 'Void' ||
         (current.element === 'Sand' && grid[j][i].element === 'Water') ||
-        (current.element === 'Plant' && grid[j][i].element === 'Water')
+        (current.element === 'Plant' && grid[j][i].element === 'Water') ||
+        (current.element === 'Water' && grid[j][i].element === 'Oil') ||
+        (current.element === 'Plant' && grid[j][i].element === 'Oil') ||
+        (current.element === 'Sand' && grid[j][i].element === 'Oil')
       );
     }
     return element;
   }
 
+  function oilBelowWater(i, j, current) {
+    const element = elementAt(i, j);
+    if (element) {
+      return grid[j][i].element === 'Oil' && current.element === 'Water';
+    }
+  }
+
   function searchFor(search, direction, i, j, newCurrent) {
     // Looks for lower elevation at i, j
     const element = elementAt(i + search, j + 1);
+    const currElement = newCurrent.element;
     if (element === 'Void') {
       trade(i + search, j + 1, newCurrent);
       search = false;
-    } else if (element === 'Water') {
+    } else if (element === currElement) {
       search += direction;
     } else {
       search = false;
@@ -70,7 +81,8 @@ function logic(grid, dimension) {
     while (
       newElement === 'Water' ||
       newElement === 'Sand' ||
-      newElement === 'Plant'
+      newElement === 'Plant' ||
+      newElement === 'Oil'
     ) {
       newJ += 1;
       newElement = elementAt(i, newJ);
@@ -98,7 +110,8 @@ function logic(grid, dimension) {
       trade(i - 1, j + 1, newCurrent);
     } else if (isEmpty(i + 1, j + 1, current)) {
       trade(i + 1, j + 1, newCurrent);
-    } else if (current.element === 'Water') {
+    } else if (current.element === 'Water' || current.element === 'Oil') {
+      //console.log('flattenproblem');
       flattenWater(i, j, current, newCurrent);
     }
   }
@@ -126,18 +139,24 @@ function logic(grid, dimension) {
     setTimeout(() => {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
     }, 200); // tried to have it last longer but this # is limited by the update speed
-    const maxJumpI = dimension - j; // this doesn't make sense
-    const maxJumpJ = dimension - i;
-    const jumpI = Math.floor(Math.random() * maxJumpI);
-    const jumpJ = Math.floor(Math.random() * maxJumpJ);
-    if (elementAt(i, j - jumpJ) === 'Void') {
+    const maxJump = 10;
+    const jumpI = Math.floor(Math.random() * maxJump);
+    const jumpJ = Math.floor(Math.random() * maxJump);
+    if (
+      (elementAt(i, j - Math.floor(jumpJ / 2)) === 'Void' ||
+        elementAt(i, j - Math.floor(jumpJ / 2)) === 'Wood') &&
+      (elementAt(i, j - Math.floor(jumpJ / 4)) === 'Void' ||
+        elementAt(i, j - Math.floor(jumpJ / 4)) === 'Wood')
+    ) {
       Math.random() >= 0.5
         ? trade(i, j - Math.floor(jumpJ / 2), newCurrent)
         : trade(i, j - Math.floor(jumpJ / 4), newCurrent);
     }
     if (
-      elementAt(i - jumpI, j) === 'Void' &&
-      elementAt(i + jumpI, j) === 'Void'
+      (elementAt(i - Math.floor(jumpI / 4), j) === 'Void' ||
+        elementAt(i - Math.floor(jumpI / 4), j) === 'Wood') &&
+      (elementAt(i + Math.floor(jumpI / 4), j) === 'Void' ||
+        elementAt(i + Math.floor(jumpI / 4), j) === 'Wood')
     ) {
       Math.random() >= 0.5
         ? trade(i - Math.floor(jumpI / 4), j, newCurrent)
@@ -145,8 +164,8 @@ function logic(grid, dimension) {
     }
   }
 
-  function drinkWater(i, j, newCurrent) {
-    if (elementAt(i + 1, j) === 'Water') {
+  function drinkWater(i, j, newCurrent, canGrow) {
+    if (elementAt(i + 1, j) === 'Water' && canGrow) {
       trade(i + 1, j, Object.assign(newCurrent, { element: 'Void' }));
       return true;
     } else if (elementAt(i - 1, j) === 'Water') {
@@ -160,12 +179,16 @@ function logic(grid, dimension) {
   function shouldGrow(i, j, current) {
     //looks to see if water is touching the Plant
     //only runs for top block of plant
+    let canGrow = true;
+    if (j - 1 === 1) {
+      canGrow = false;
+    }
     let currentJ = j;
     while (
       elementAt(i, currentJ) === 'Plant' ||
       elementAt(i, currentJ) === 'Flower'
     ) {
-      if (drinkWater(i, currentJ, current)) {
+      if (drinkWater(i, currentJ, current, canGrow)) {
         return true;
       } else {
         if (j < dimension - 1) {
@@ -227,12 +250,20 @@ function logic(grid, dimension) {
 
       // do nothing for void
       // do nothing for rock
-      if (current.element === 'Sand' || current.element === 'Water') {
+      if (current.element === 'Sand') {
         pile(i, j, current, newCurrent);
+      } else if (current.element === 'Water') {
+        if (oilBelowWater(i, j + 1, current)) {
+          trade(i, j + 1, newCurrent);
+        } else {
+          pile(i, j, current, newCurrent);
+        }
       } else if (current.element === 'Fire') {
         fire(i, j, current, newCurrent);
       } else if (current.element === 'Plant' || current.element === 'Flower') {
         plant(i, j, current, newCurrent);
+      } else if (current.element === 'Oil') {
+        pile(i, j, current, newCurrent);
       }
     }
   }
