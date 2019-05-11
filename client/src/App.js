@@ -206,7 +206,9 @@ class App extends Component {
               onChange={this.setSaveOption}
             />
           </Label>{' '}
-          <Button type="submit">Submit</Button>
+          <Button onClick={this.handleSubmit} type="submit">
+            Submit
+          </Button>
           <Button onClick={this.handleSave}>Cancel</Button>
         </ModalFooter>
       </Modal>
