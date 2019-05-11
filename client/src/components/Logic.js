@@ -11,6 +11,7 @@ function logic(grid, dimension) {
 
   function trade(i, j, newCurrent) {
     // Trades elements
+    console.log('gonna trade');
     const newElement = newCurrent.element;
     Object.assign(newCurrent, {
       element: grid[j][i].element
@@ -27,7 +28,9 @@ function logic(grid, dimension) {
         grid[j][i].element === 'Void' ||
         (current.element === 'Sand' && grid[j][i].element === 'Water') ||
         (current.element === 'Plant' && grid[j][i].element === 'Water') ||
-        (current.element === 'Water' && grid[j][i].element === 'Oil')
+        (current.element === 'Water' && grid[j][i].element === 'Oil') ||
+        (current.element === 'Plant' && grid[j][i].element === 'Oil') ||
+        (current.element === 'Sand' && grid[j][i].element === 'Oil')
       );
     }
     return element;
@@ -94,6 +97,7 @@ function logic(grid, dimension) {
   function pile(i, j, current, newCurrent) {
     // Creates pile of element
     if (isEmpty(i, j + 1, current)) {
+      console.log('trade1');
       trade(i, j + 1, newCurrent);
     } else if (isFalling(i, j)) {
       console.log('falling');
@@ -101,14 +105,19 @@ function logic(grid, dimension) {
       isEmpty(i - 1, j + 1, current) &&
       isEmpty(i + 1, j + 1, current)
     ) {
+      console.log('trade2');
       Math.random() >= 0.5
         ? trade(i - 1, j + 1, newCurrent)
         : trade(i + 1, j + 1, newCurrent);
     } else if (isEmpty(i - 1, j + 1, current)) {
+      console.log('trade3');
       trade(i - 1, j + 1, newCurrent);
     } else if (isEmpty(i + 1, j + 1, current)) {
+      console.log('trade4');
+      console.log('i: ', i, 'j: ', j);
       trade(i + 1, j + 1, newCurrent);
     } else if (current.element === 'Water' || current.element === 'Oil') {
+      //console.log('flattenproblem');
       flattenWater(i, j, current, newCurrent);
     }
   }
@@ -246,9 +255,10 @@ function logic(grid, dimension) {
         pile(i, j, current, newCurrent);
       } else if (current.element === 'Water') {
         if (oilBelowWater(i, j + 1, current)) {
-          console.log('poo');
+          console.log('oilBelowMe');
           trade(i, j + 1, newCurrent);
         } else {
+          console.log('regular water');
           pile(i, j, current, newCurrent);
         }
       } else if (current.element === 'Fire') {
