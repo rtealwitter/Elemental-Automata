@@ -7,6 +7,8 @@ exports.up = function(knex, Promise) {
     table.string('author').notNullable();
     table.date('edited').notNullable();
     table.json('sandbox').notNullable();
+    table.boolean('share').notNullable();
+    table.string('link');
     // table.blob('image'); // to be used if we include image previews
   });
 };
