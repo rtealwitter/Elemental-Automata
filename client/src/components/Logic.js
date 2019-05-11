@@ -129,10 +129,33 @@ function logic(grid, dimension) {
     return false;
   }
 
+  function burnNeighbors(i, j, current, newCurrent) {
+    //if neighbors are flammable, turn them into fire
+    const flammable = ['Wood', 'Plant', 'Oil', 'Flower'];
+    if (flammable.includes(elementAt(i + 1, j))) {
+      //trade(i + 1, j, Object.assign(newCurrent, { element: 'Fire' }));
+      Object.assign(newGrid[j][i + 1], { element: 'Fire' });
+    }
+    if (flammable.includes(elementAt(i - 1, j))) {
+      //trade(i - 1, j, Object.assign(newCurrent, { element: 'Fire' }));
+      Object.assign(newGrid[j][i - 1], { element: 'Fire' });
+    }
+    if (flammable.includes(elementAt(i, j + 1))) {
+      //trade(i, j + 1, Object.assign(newCurrent, { element: 'Fire' }));
+      Object.assign(newGrid[j + 1][i], { element: 'Fire' });
+    }
+    if (flammable.includes(elementAt(i, j - 1))) {
+      //trade(i, j - 1, Object.assign(newCurrent, { element: 'Fire' }));
+      Object.assign(newGrid[j - 1][i], { element: 'Fire' });
+    }
+  }
+
   function fire(i, j, current, newCurrent) {
     // if water is touching, fire disappears
     if (checkNeighbors(i, j, current, 'Water')) {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
+    } else {
+      burnNeighbors(i, j, current, newCurrent);
     }
     //    Object.assign(newCurrent, { shouldUpdate: false });
     // disappears after set time if no element conducive to fire (wood, oil) is neighboring
