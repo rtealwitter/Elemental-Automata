@@ -39,7 +39,10 @@ class App extends Component {
       newGrid: undefined,
       saveGrid: false,
       savePrivacy: true,
-      search: ''
+      search: '',
+      link: Math.random()
+        .toString(36)
+        .substr(2, 5)
     };
     this.getScenarios = this.getScenarios.bind(this);
     this.changeGrid = this.changeGrid.bind(this);
@@ -203,6 +206,9 @@ class App extends Component {
               />
               <FormFeedback>Enter a name!</FormFeedback>
             </FormGroup>
+            <FormGroup>
+              <Label for="id">Scenario ID: {this.state.link}</Label>
+            </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
@@ -247,6 +253,7 @@ class App extends Component {
         scenarioName={this.state.scenarioName}
         authorName={this.state.authorName}
         share={this.state.savePrivacy}
+        link={this.state.link}
       />
     );
 
