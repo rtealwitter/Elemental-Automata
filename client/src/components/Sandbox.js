@@ -146,6 +146,7 @@ class Sandbox extends Component {
     }
 
     if (this.props.saveGrid && grid) {
+      const { scenarioName, authorName, share, link } = this.props;
       console.log('saving grid');
       const getCurDate = () => {
         const today = new Date();
@@ -154,12 +155,10 @@ class Sandbox extends Component {
       const saveDate = getCurDate();
       const jsonGrid = JSON.stringify(grid);
       const newRecord = {
-        title: this.props.scenarioName,
-        author: this.props.authorName,
-        share: this.props.share,
-        link: Math.random()
-          .toString(36)
-          .substr(2, 5),
+        title: scenarioName,
+        author: authorName,
+        share: share,
+        link: link,
         edited: saveDate,
         sandbox: jsonGrid
       };
@@ -217,6 +216,7 @@ Sandbox.propTypes = {
   unSaveGrid: PropTypes.func.isRequired,
   scenarioName: PropTypes.string.isRequired,
   authorName: PropTypes.string.isRequired,
-  share: PropTypes.bool.isRequired
+  share: PropTypes.bool.isRequired,
+  link: PropTypes.string.isRequired
 };
 export default Sandbox;
