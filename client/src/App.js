@@ -38,11 +38,13 @@ class App extends Component {
       scenarioMode: undefined,
       newGrid: undefined,
       saveGrid: false,
-      savePrivacy: true
+      savePrivacy: true,
+      search: ''
     };
     this.getScenarios = this.getScenarios.bind(this);
     this.changeGrid = this.changeGrid.bind(this);
-
+    this.changeGridByLink = this.changeGridByLink.bind(this);
+    this.handleSearch = this.handleTextUpdate.bind(this, 'search');
     this.selectElement = this.selectElement.bind(this);
     this.handleFill = this.handleFill.bind(this);
     this.handleStep = this.handleStep.bind(this, 'step');
@@ -56,6 +58,11 @@ class App extends Component {
     this.handleExplore = this.handleExplore.bind(this);
     this.setSaveOption = this.setSaveOption.bind(this);
   }
+
+  handleTextUpdate(field, event) {
+    this.setState({ [field]: event.target.value });
+  }
+
   handleSave() {
     this.setState({ saveMode: !this.state.saveMode });
   }
@@ -88,10 +95,7 @@ class App extends Component {
         return response.json();
       })
       .then(data => {
-        const publicScenarios = data.filter(scenario => {
-          return scenario.share === undefined || scenario.share;
-        });
-        this.setState({ scenarios: publicScenarios });
+        this.setState({ scenarios: data });
       })
       .catch(err => console.log(err)); // eslint-disable-line no-conso   le
   }
@@ -99,6 +103,12 @@ class App extends Component {
   changeGrid(id) {
     const { scenarios } = this.state;
     const result = scenarios.find(scenario => scenario.id === id);
+    this.setState({ newGrid: result, scenarioMode: false });
+  }
+
+  changeGridByLink() {
+    const { scenarios, search } = this.state;
+    const result = scenarios.find(scenario => scenario.link === search);
     this.setState({ newGrid: result, scenarioMode: false });
   }
 
@@ -256,7 +266,10 @@ class App extends Component {
     const inScenarioView = scenarioMode && scenarios !== undefined;
     let scenarioView = <p>Loading scenarios... </p>;
     if (scenarios) {
-      scenarioView = scenarios.map(scenario => (
+      const publicScenarios = scenarios.filter(scenario => {
+        return scenario.share === undefined || scenario.share;
+      });
+      scenarioView = publicScenarios.map(scenario => (
         <p key={scenario.id}>
           <button onClick={() => this.changeGrid(scenario.id)}>
             {scenario.title} by {scenario.author}
@@ -278,6 +291,16 @@ class App extends Component {
       return (
         <Div className="App">
           <GlobalStyle mode="scenario" />
+          <Form>
+            <FormGroup>
+              <Input
+                id="search"
+                value={this.state.search}
+                onChange={this.handleSearch}
+              />{' '}
+              <Button onClick={this.changeGridByLink} />
+            </FormGroup>
+          </Form>
           {scenarioView}
         </Div>
       );
