@@ -129,7 +129,7 @@ function logic(grid, dimension) {
     return false;
   }
 
-  function burnNeighbors(i, j, current) {
+  function burnNeighbors(i, j) {
     //if neighbors are flammable, turn them into fire
     const flammable = ['Wood', 'Plant', 'Oil', 'Flower'];
     if (flammable.includes(elementAt(i + 1, j))) {
@@ -151,7 +151,7 @@ function logic(grid, dimension) {
     if (checkNeighbors(i, j, current, 'Water')) {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
     } else {
-      burnNeighbors(i, j, current);
+      burnNeighbors(i, j);
     }
     //    Object.assign(newCurrent, { shouldUpdate: false });
     // disappears after set time if no element conducive to fire (wood, oil) is neighboring
@@ -220,7 +220,7 @@ function logic(grid, dimension) {
     return false;
   }
 
-  function sprout(i, j, newCurrent) {
+  function sprout(i, j) {
     Object.assign(newGrid[j - 1][i], { element: 'Flower' });
   }
 
@@ -235,7 +235,7 @@ function logic(grid, dimension) {
         grid[j - 1][i].element === 'Void' ||
         grid[j - 1][i].element === 'Water'
       ) {
-        sprout(i, j, current, newCurrent);
+        sprout(i, j);
       }
     }
     //should  grow one block per turn if water is touching the plant and there is room to grow, and drink water
