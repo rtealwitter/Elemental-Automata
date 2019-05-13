@@ -142,13 +142,27 @@ class App extends Component {
       animation: blink 3s linear infinite;
 
       @keyframes blink {
-        25% {
+        0% {
           opacity: 0;
         }
-        70% {
+        60% {
           opacity: 1;
         }
+        100% {
+          opacity: 0;
+        }
       }
+    `;
+    const Img = styled.img`
+      animation: fadein 3s linear;
+      
+      @keyframes fadein {
+        0% {
+          opacity: 0;
+        }
+        60% {
+          opacity: 1;
+        }
     `;
     const { x, y, scenarios, scenarioMode } = this.state;
 
@@ -266,7 +280,7 @@ class App extends Component {
       return (
         <Div className="App">
           <GlobalStyle mode="start" />
-          <img src={logo} alt="elemental automata" />{' '}
+          <Img src={logo} alt="elemental automata" />{' '}
           <Start onClick={this.handleStart}>START</Start>
           <Start onClick={this.handleExplore}>EXPLORE</Start>
         </Div>

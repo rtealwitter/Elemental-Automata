@@ -18,13 +18,13 @@ const GlobalStyle = createGlobalStyle`
     padding-top: 0.25em;
     background: transparent;
     color: ${props => (props.mode === 'scenario' ? 'black' : 'white')};
-  }
-  button:disabled {
-    opacity: 0.75;
+    :disabled {
+      opacity: 0.70;
+    }
   }
   
-  label:hover {
-
+  h1:hover {
+    text-shadow: seagreen 1px 0 10px;
   }
   
   @font-face {
