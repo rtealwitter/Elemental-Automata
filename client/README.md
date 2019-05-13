@@ -1,40 +1,125 @@
-# Project Skeleton Client
+# Travis CI Badge
+[![Build Status](https://travis-ci.com/csci312a-s19/fp-automata.svg?token=Vppsohpjy84DqDDTyGDZ&branch=master)](https://travis-ci.com/csci312a-s19/fp-automata)
+# Heroku Build
+https://elemental-automata.herokuapp.com/
+# Need We Address
+Need in the gaming community for online elemental automata with community sharing functionality.
 
-The client was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) (CRA) and includes all of capabilities provided by CRA. Some built-in functionality of that skeleton was stripped out, specifically the [offline caching](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app).
+# Project Top-level
 
-## Setup
+This repository combines the client and server into a single repository that can be co-developed, tested and ultimately deployed to Heroku.
 
-You should install the dependencies from the "top-level" package as described in its README or via `npm install` in this directory.
+The client was created with [create-react-app](https://github.com/facebookincubator/create-react-app) (CRA) and the server is a separate Node.js application. The client-server integration is based on this [tutorial](https://www.fullstackreact.com/articles/using-create-react-app-with-a-server/) and [repository](https://github.com/fullstackreact/food-lookup-demo). This repository will be referred to as the "top-level" to distinguish it from the client and server.
 
-The development server will attempt to proxy API requests to the server specified in the `package.json` "proxy" field. The application has been configured to proxy requests to the associated server at http://localhost:3001.
+# Final Checkpoint
 
-## Development
+The following instructions are intended to allow this project to be easily shared, extended, and maintained by future developers. The first step in the process is to clone or download this repository.
 
-### Testing
+## Installing (and Adding) Dependencies
 
-The tests use both Jest and Enzyme has described in the [CRA documentation](https://facebook.github.io/create-react-app/docs/running-tests).
-
-Enzyme was installed with:
-
-```
-npm install --save-dev enzyme enzyme-adapter-react-16 react-test-renderer
-```
-
-### Linting
-
-You can run the linter with `npm run lint` or `npx eslint .`. A custom ESLint configuration is provided as described in the top-level README. We the Prettier ESlint configuration to prevent conflicts with that tool.
+The app is structured as three separate packages. That is a "top-level" package and a separate "client" and "server". Thus initially installing dependencies is a 3 step process that runs "install" for each of the packages.
 
 ```
-npm install --save-dev eslint-config-prettier
+npm install
+npm install --prefix client
+npm install --prefix server
 ```
 
-The `.eslintrc.json` configuration is:
+The `--prefix` option treats the supplied path as the package root. In this case it is equivalent to `cd client` then `npm install` then `cd ..`.
+
+**You will typically not need to install any dependencies in the top-level `package.json` file**. Doing so is a common mistake. Most dependencies are needed by the client or the server and should be installed in the respective sub-packages, e.g. to install `reactstrap` for your client application:
 
 ```
-{
-  "extends": ["react-app", "prettier"],
-  "rules": {
-    ... Many rules adapted from AirBnB style guide
-  }
-}
+npm install --save reactstrap --prefix client
 ```
+
+## Running the Application
+
+The combined application, client and server, can be run with `npm start` in the top-level directory. `npm start` launches the CRA development server on <http://localhost:3000> and the backend server on http://localhost:3001. By setting the `proxy` field in the client `package.json`, the client development server will proxy any unrecognized requests to the server. By default this starts the server in hot-reloading mode (like with the client application).
+
+## Testing
+
+The client application can be independently tested as described in the [CRA documentation](https://facebook.github.io/create-react-app/docs/running-tests), i.e.:
+
+```
+npm test --prefix client
+```
+
+The server can be similarly independently tested:
+
+```
+npm test --prefix server
+```
+
+## Linting
+
+Both the client and server can be independently linted via:
+
+```
+npm run lint --prefix client
+```
+
+and
+
+```
+npm run lint --prefix server
+```
+
+To ensure consistent style we use the CRA-recommended [Prettier](https://github.com/prettier/prettier) package. We installed it in the "top-level" package with
+
+```
+npm install --save-dev husky lint-staged prettier
+```
+
+and added the recommended configuration to automatically reformat code during the commit. That is whenever you commit your code, Prettier will automatically reformat your code during the commit process (as a "hook"). The hook is specified in the top-level `package.json` file. The client and server has its own ESLint configuration.
+
+We added custom ESLint rules to capture common errors. To ensure compatibility with Prettier, we also installed the `eslint-config-prettier` package in both the client and server to disable styling rules that conflict with Prettier.
+
+```
+npm install --save-dev eslint-config-prettier --prefix server
+npm install --save-dev eslint-config-prettier --prefix client
+```
+
+and added an `"extends"` entry to `.eslintrc.json`.
+
+## Continuous Integration
+
+The skeleton is setup for CI with Travis-CI. Travis will build the client and test and lint both the client and the server.
+
+## Deploying to Heroku
+
+Your application can be deployed to [Heroku](heroku.com) using the approach demonstrated in this [repository](https://github.com/mars/heroku-cra-node). The key additions to the top-level `package.json` file to enable Heroku deployment:
+
+* Specify the node version in the `engines` field
+* Add a `heroku-postbuild` script field that will install dependencies for the client and server and create the production build of the client application.
+* Specify that `node_modules` should be cached to optimize build time
+
+In addition a `Procfile` was added in the top-level package to start the server.
+
+Assuming that you have a Heroku account, have installed the [Heroku command line tools](https://devcenter.heroku.com/articles/heroku-cli) and committed any changes to the application, to deploy to Heroku:
+
+1. Create the Heroku app, e.g.:
+
+    ```
+    heroku apps:create
+    ```
+
+1. Push to Heroku
+
+    ```
+    git push heroku master
+    ```
+
+To set up the RDBMS database on Heroku, please follow these steps:
+
+1. Set up the database schema with Knex:
+
+    ```
+    heroku run 'cd server && npx knex migrate:latest'
+    ```
+
+2. Seed the database with the default scenarios:
+
+    ```
+    heroku run 'cd server && npx knex seed:run'
+    ```
