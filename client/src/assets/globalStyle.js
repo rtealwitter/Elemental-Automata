@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     font-family: ${props =>
       props.mode === 'start' ? 'ArcadeClassic' : 'Minecraft'};
-    text-align: center;    
+    text-align: center;
   }
   button {
     font-family: Minecraft, sans-serif;
@@ -19,14 +19,14 @@ const GlobalStyle = createGlobalStyle`
     background: transparent;
     color: ${props => (props.mode === 'scenario' ? 'black' : 'white')};
     :disabled {
-      opacity: 0.70;
+      opacity: 0.7;
     }
   }
-  
+
   h1:hover {
     text-shadow: seagreen 1px 0 10px;
   }
-  
+
   @font-face {
     font-family: ArcadeClassic;
     src: url(${Arcade});

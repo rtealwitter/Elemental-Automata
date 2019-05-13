@@ -69,6 +69,7 @@ class Toolbox extends Component {
     if (newSize >= 10) {
       newSize = 10;
     }
+    newSize = newSize.toString();
     this.setState({ [field]: newSize });
     this.props.selected(field, newSize);
   }
@@ -93,6 +94,7 @@ class Toolbox extends Component {
   render() {
     const { play, step, toFill, selected, saveModeState } = this.props;
     const { handleClear, set } = this;
+    const { BrushSize } = this.state;
 
     const elementButton = el => {
       return (
@@ -117,7 +119,6 @@ class Toolbox extends Component {
       'Plant',
       'Oil',
       'Wood'
-
     ]; // Put new elements here
     const buttonList = elementList.map(el => {
       return elementButton(el);
@@ -146,11 +147,35 @@ class Toolbox extends Component {
           set({ SelectedElement: 'Void' });
         }
         if (Number.isInteger(parseInt(e.key))) {
-          const index = parseInt(e.key);
-          if (index < elementList.length) {
+          const index = parseInt(e.key) - 1;
+          if (index < elementList.length && index >= 0) {
             set({ SelectedElement: elementList[index] });
             selected('SelectedElement', elementList[index]);
           }
+        }
+        if (['=', '+'].includes(e.key)) {
+          let newSize = parseInt(BrushSize) + 1;
+          if (newSize <= 0) {
+            newSize = 1;
+          }
+          if (newSize >= 10) {
+            newSize = 10;
+          }
+          newSize = newSize.toString();
+          set({ BrushSize: newSize });
+          selected('BrushSize', newSize);
+        }
+        if (['-', '_'].includes(e.key)) {
+          let newSize = parseInt(BrushSize) - 1;
+          if (newSize <= 0) {
+            newSize = 1;
+          }
+          if (newSize >= 10) {
+            newSize = 10;
+          }
+          newSize = newSize.toString();
+          set({ BrushSize: newSize });
+          selected('BrushSize', newSize);
         }
       }
     };
@@ -167,6 +192,7 @@ class Toolbox extends Component {
               <button
                 onClick={this.handleSizeChange}
                 value={parseInt(this.state.BrushSize) - 1}
+                disabled={parseInt(this.state.BrushSize) === 1}
               >
                 -
               </button>
@@ -174,14 +200,17 @@ class Toolbox extends Component {
               <button
                 onClick={this.handleSizeChange}
                 value={parseInt(this.state.BrushSize) + 1}
+                disabled={parseInt(this.state.BrushSize) === 10}
               >
                 +
               </button>
               &emsp;
             </BrushSizes>
-            <Button type="button" onClick={this.handleFill} value="fill">
+            &emsp;
+            <button type="button" onClick={this.handleFill} value="fill">
               Fill
-            </Button>
+            </button>
+            &emsp;
           </SizeDiv>
           <SavePlayDiv>
             <Button type="button" onClick={this.props.saveMode}>
