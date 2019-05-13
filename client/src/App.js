@@ -148,7 +148,7 @@ class App extends Component {
       height: 50%;
       text-align: center;
       position: fixed;
-      top: 25%;
+      top: 20%;
     `;
     const Start = styled.h1`
       margin: 1em auto;
@@ -299,6 +299,11 @@ class App extends Component {
       ));
     }
 
+    const ID = styled(Input)`
+      width: 50%;
+      position: relative;
+      margin: 0.5em auto;
+    `;
     if (this.state.start) {
       return (
         <Div className="App">
@@ -312,17 +317,18 @@ class App extends Component {
       return (
         <Div className="App">
           <GlobalStyle mode="scenario" />
+          {scenarioView}
           <Form>
             <FormGroup>
-              <Input
+              <ID
                 id="search"
+                placeholder="Enter a sandbox ID!"
                 value={this.state.search}
                 onChange={this.handleSearch}
               />{' '}
-              <Button onClick={this.changeGridByLink} />
+              <Button onClick={this.changeGridByLink}>Submit</Button>
             </FormGroup>
           </Form>
-          {scenarioView}
         </Div>
       );
     } else {
