@@ -16,6 +16,7 @@ function logic(grid, dimension) {
       element: grid[j][i].element
     });
     Object.assign(newGrid[j][i], { element: newElement });
+    console.log(newCurrent);
   }
 
   function isEmpty(i, j, current) {
@@ -76,7 +77,7 @@ function logic(grid, dimension) {
     // Check whether current element is falling
     let newJ = j + 1;
     let newElement = elementAt(i, newJ);
-    // TO-DO: ADD OTHER FALLING ELEMENTS LIKE OIL
+    // TODO: ADD OTHER FALLING ELEMENTS LIKE OIL
     // TO BELOW CHECK
     while (
       newElement === 'Water' ||
@@ -97,8 +98,6 @@ function logic(grid, dimension) {
     // Creates pile of element
     if (isEmpty(i, j + 1, current)) {
       trade(i, j + 1, newCurrent);
-    } else if (isFalling(i, j)) {
-      console.log('falling');
     } else if (
       isEmpty(i - 1, j + 1, current) &&
       isEmpty(i + 1, j + 1, current)
@@ -111,7 +110,6 @@ function logic(grid, dimension) {
     } else if (isEmpty(i + 1, j + 1, current)) {
       trade(i + 1, j + 1, newCurrent);
     } else if (current.element === 'Water' || current.element === 'Oil') {
-      //console.log('flattenproblem');
       flattenWater(i, j, current, newCurrent);
     }
   }
@@ -129,11 +127,17 @@ function logic(grid, dimension) {
     return false;
   }
 
+  function explode(i, j) {}
+
   function burnNeighbors(i, j) {
-    //if neighbors are flammable, turn them into fire
-    const flammable = ['Wood', 'Plant', 'Oil', 'Flower'];
+    // if neighbors are flammable, turn them into fire
+    const flammable = ['Wood', 'Plant', 'Oil', 'Flower', 'Gunpowder'];
+    const exploding = ['Gunpowder'];
     if (flammable.includes(elementAt(i + 1, j))) {
       Object.assign(newGrid[j][i + 1], { element: 'Fire' });
+      if (exploding.includes(elementAt(i + i, j))) {
+        explode(i, j);
+      }
     }
     if (flammable.includes(elementAt(i - 1, j))) {
       Object.assign(newGrid[j][i - 1], { element: 'Fire' });
@@ -153,7 +157,6 @@ function logic(grid, dimension) {
     } else {
       burnNeighbors(i, j);
     }
-    //    Object.assign(newCurrent, { shouldUpdate: false });
     // disappears after set time if no element conducive to fire (wood, oil) is neighboring
     setTimeout(() => {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
@@ -283,6 +286,8 @@ function logic(grid, dimension) {
       } else if (current.element === 'Plant' || current.element === 'Flower') {
         plant(i, j, current, newCurrent);
       } else if (current.element === 'Oil') {
+        pile(i, j, current, newCurrent);
+      } else if (current.element === 'Gunpowder') {
         pile(i, j, current, newCurrent);
       }
     }
