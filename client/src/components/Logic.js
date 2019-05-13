@@ -16,6 +16,7 @@ function logic(grid, dimension) {
       element: grid[j][i].element
     });
     Object.assign(newGrid[j][i], { element: newElement });
+    console.log(newCurrent);
   }
 
   function isEmpty(i, j, current) {
@@ -76,8 +77,6 @@ function logic(grid, dimension) {
     // Check whether current element is falling
     let newJ = j + 1;
     let newElement = elementAt(i, newJ);
-    // TO-DO: ADD OTHER FALLING ELEMENTS LIKE OIL
-    // TO BELOW CHECK
     while (
       newElement === 'Water' ||
       newElement === 'Sand' ||
@@ -97,8 +96,6 @@ function logic(grid, dimension) {
     // Creates pile of element
     if (isEmpty(i, j + 1, current)) {
       trade(i, j + 1, newCurrent);
-    } else if (isFalling(i, j)) {
-      console.log('falling');
     } else if (
       isEmpty(i - 1, j + 1, current) &&
       isEmpty(i + 1, j + 1, current)
@@ -111,7 +108,6 @@ function logic(grid, dimension) {
     } else if (isEmpty(i + 1, j + 1, current)) {
       trade(i + 1, j + 1, newCurrent);
     } else if (current.element === 'Water' || current.element === 'Oil') {
-      //console.log('flattenproblem');
       flattenWater(i, j, current, newCurrent);
     }
   }
@@ -129,9 +125,71 @@ function logic(grid, dimension) {
     return false;
   }
 
+  function explode(i, j, newCurrent) {
+    // Handles animation for exploding, creates a larger burst than regular fire
+    trade(i, j, Object.assign(newCurrent, { element: 'Fire' }));
+    const maxJump = 10;
+    const jumpI = Math.floor(Math.random() * maxJump);
+    const jumpJ = Math.floor(Math.random() * maxJump);
+    if (
+      elementAt(i - Math.floor(jumpJ / 4), j - Math.floor(jumpJ / 6)) === 'Void'
+    ) {
+      trade(
+        i - Math.floor(jumpI / 4),
+        j - Math.floor(jumpJ / 6),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i - Math.floor(jumpJ / 6), j - Math.floor(jumpJ / 4)) === 'Void'
+    ) {
+      trade(
+        i - Math.floor(jumpI / 6),
+        j - Math.floor(jumpJ / 4),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i - Math.floor(jumpJ / 8), j - Math.floor(jumpJ / 2)) === 'Void'
+    ) {
+      trade(
+        i - Math.floor(jumpI / 8),
+        j - Math.floor(jumpJ / 2),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i + Math.floor(jumpJ / 8), j - Math.floor(jumpJ / 2)) === 'Void'
+    ) {
+      trade(
+        i + Math.floor(jumpI / 8),
+        j - Math.floor(jumpJ / 2),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i + Math.floor(jumpJ / 6), j - Math.floor(jumpJ / 4)) === 'Void'
+    ) {
+      trade(
+        i + Math.floor(jumpI / 6),
+        j - Math.floor(jumpJ / 4),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i + Math.floor(jumpJ / 4), j - Math.floor(jumpJ / 6)) === 'Void'
+    ) {
+      trade(
+        i + Math.floor(jumpI / 4),
+        j - Math.floor(jumpJ / 6),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+  }
+
   function burnNeighbors(i, j) {
-    //if neighbors are flammable, turn them into fire
-    const flammable = ['Wood', 'Plant', 'Oil', 'Flower'];
+    // if neighbors are flammable, turn them into fire
+    const flammable = ['Wood', 'Plant', 'Oil', 'Flower', 'Gunpowder'];
     if (flammable.includes(elementAt(i + 1, j))) {
       Object.assign(newGrid[j][i + 1], { element: 'Fire' });
     }
@@ -151,9 +209,12 @@ function logic(grid, dimension) {
     if (checkNeighbors(i, j, current, 'Water')) {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
     } else {
+      // else burn applicable neighbor cells and call explosion if gunpowder is in the vicinity
       burnNeighbors(i, j);
+      if (checkNeighbors(i, j, current, 'Gunpowder')) {
+        explode(i, j, newCurrent);
+      }
     }
-    //    Object.assign(newCurrent, { shouldUpdate: false });
     // disappears after set time if no element conducive to fire (wood, oil) is neighboring
     setTimeout(() => {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
@@ -283,6 +344,8 @@ function logic(grid, dimension) {
       } else if (current.element === 'Plant' || current.element === 'Flower') {
         plant(i, j, current, newCurrent);
       } else if (current.element === 'Oil') {
+        pile(i, j, current, newCurrent);
+      } else if (current.element === 'Gunpowder') {
         pile(i, j, current, newCurrent);
       }
     }

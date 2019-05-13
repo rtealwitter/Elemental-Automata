@@ -10,7 +10,7 @@ const OuterDiv = styled.div`
   position: fixed;
   top: 0;
   right: 0;
-  width: 14em;
+  width: 14.75em;
   height: 100%;
   margin: 0 auto;
   background: seagreen;
@@ -22,8 +22,8 @@ const ElementDiv = styled.div`
   align-content: center;
   top: 0;
   margin: 1em 0;
-  width: 12em;
-  height: 7em;
+  width: 13em;
+  height: 9em;
 `;
 const ElementTitle = styled.h1`
   font-size: 20px;
@@ -115,10 +115,11 @@ class Toolbox extends Component {
       'Rock',
       'Sand',
       'Water',
-      'Fire',
+      'Wood',
       'Plant',
       'Oil',
-      'Wood'
+      'Fire',
+      'Gunpowder'
     ]; // Put new elements here
     const buttonList = elementList.map(el => {
       return elementButton(el);

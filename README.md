@@ -5,15 +5,19 @@ https://elemental-automata.herokuapp.com/
 # Need We Address
 Need in the gaming community for online elemental automata with community sharing functionality.
 
-# Project Skeleton Top-level
+# Project Top-level
 
 This repository combines the client and server into a single repository that can be co-developed, tested and ultimately deployed to Heroku or basin.cs.middlebury.edu.
 
 The client was created with [create-react-app](https://github.com/facebookincubator/create-react-app) (CRA) and the server is a separate Node.js application. The client-server integration is based on this [tutorial](https://www.fullstackreact.com/articles/using-create-react-app-with-a-server/) and [repository](https://github.com/fullstackreact/food-lookup-demo). This repository will be referred to as the "top-level" to distinguish it from the client and server.
 
+# Final Checkpoint
+
+The following instructions are intended to allow this project to be easily shared, extended, and maintained by future developers. The first step in the process is to clone or download this repository.
+
 ## Installing (and Adding) Dependencies
 
-The skeleton is structured as three separate packages. That is a "top-level" package and a separate "client" and "server". Thus initially installing dependencies is a 3 step process that runs "install" for each of the packages.
+The app is structured as three separate packages. That is a "top-level" package and a separate "client" and "server". Thus initially installing dependencies is a 3 step process that runs "install" for each of the packages.
 
 ```
 npm install
@@ -106,7 +110,19 @@ Assuming that you have a Heroku account, have installed the [Heroku command line
     git push heroku master
     ```
 
-Depending on how you implement your server, you will likely need create "addons" for your database, etc. and migrate then seed your database before you deploy.
+To set up the RDBMS database on Heroku, please follow these steps:
+
+1. Set up the database schema with Knex:
+
+    ```
+    heroku run 'cd server && npx knex migrate:latest'
+    ```
+
+2. Seed the database with the default scenarios:
+
+    ```
+    heroku run 'cd server && npx knex seed:run'
+    ```
 
 ## Deploying to Basin
 

@@ -20,10 +20,25 @@ const Sand = { name: 'Sand', color: ['#ffdb70', '#f5d16f', '#ebc362'] };
 const Fire = { name: 'Fire', color: ['#e21500', '#e15100', '#c30600'] };
 const Plant = { name: 'Plant', color: ['#228B22', '#008000', '#006400'] };
 const Flower = { name: 'Flower', color: ['#FF00FF', '#F08080', '#FFD700'] };
-const Oil = { name: 'Oil', color: ['#000000', '#040207', '#07040F'] };
+const Oil = { name: 'Oil', color: ['#232323', '#141414', '#000000'] };
 const Wood = { name: 'Wood', color: ['#5F3106', '#733E06', '#904D00'] };
+const Gunpowder = {
+  name: 'Gunpowder',
+  color: ['#413e3d', '#3c3939', '#373535']
+};
 
-const ElementArray = [Void, Rock, Water, Sand, Fire, Plant, Flower, Oil, Wood];
+const ElementArray = [
+  Void,
+  Rock,
+  Water,
+  Sand,
+  Fire,
+  Plant,
+  Flower,
+  Oil,
+  Wood,
+  Gunpowder
+];
 
 let mouseDown = false;
 
@@ -37,7 +52,7 @@ function assignDimensions(dimension, grid) {
       newRow[j] = Object.assign(
         grid.length === 0 ? { element: 'Void', row: i, col: j } : grid[i][j],
         {
-          x: ((window.innerWidth - 175) / dimension) * j,
+          x: ((window.innerWidth - 230) / dimension) * j,
           // hack-y fix
           y: (window.innerHeight / dimension) * i
         }
@@ -195,7 +210,7 @@ class Sandbox extends Component {
         onMouseUp={() => (mouseDown = false)}
         onMouseLeave={() => (mouseDown = false)}
       >
-        <Stage width={window.innerWidth - 175} height={window.innerHeight}>
+        <Stage width={window.innerWidth - 230} height={window.innerHeight}>
           <Layer>{renderedGrid}</Layer>
         </Stage>
       </Div>
