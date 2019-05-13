@@ -7,7 +7,7 @@ Need in the gaming community for online elemental automata with community sharin
 
 # Project Top-level
 
-This repository combines the client and server into a single repository that can be co-developed, tested and ultimately deployed to Heroku or basin.cs.middlebury.edu.
+This repository combines the client and server into a single repository that can be co-developed, tested and ultimately deployed to Heroku.
 
 The client was created with [create-react-app](https://github.com/facebookincubator/create-react-app) (CRA) and the server is a separate Node.js application. The client-server integration is based on this [tutorial](https://www.fullstackreact.com/articles/using-create-react-app-with-a-server/) and [repository](https://github.com/fullstackreact/food-lookup-demo). This repository will be referred to as the "top-level" to distinguish it from the client and server.
 
@@ -123,19 +123,3 @@ To set up the RDBMS database on Heroku, please follow these steps:
     ```
     heroku run 'cd server && npx knex seed:run'
     ```
-
-## Deploying to Basin
-
-Your project can be deployed to basin.cs.middlebury.edu (where it is typically run within `screen` on an unused port). As with Heroku you will like need to create and seed your database before you deploy.
-
-1. Build production assets for the client application (from the top-level directory):
-
-    ```
-    npm run heroku-postbuild
-    ```
-
-1. Start the server from the top-level directory (note you will need to pick a different, unused, port):
-
-  	```
-  	NODE_ENV=production PORT=5042 npm run start --prefix server
-  	```
