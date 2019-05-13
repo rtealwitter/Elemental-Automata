@@ -127,17 +127,45 @@ function logic(grid, dimension) {
     return false;
   }
 
-  function explode(i, j) {}
+  function explode(i, j, newCurrent) {
+    trade(i, j, Object.assign(newCurrent, { element: 'Fire' }));
+    const maxJump = 10;
+    const jumpI = Math.floor(Math.random() * maxJump);
+    const jumpJ = Math.floor(Math.random() * maxJump);
+    if (
+      elementAt(i - Math.floor(jumpI / 2), j - Math.floor(jumpJ / 8)) === 'Void'
+    ) {
+      trade(
+        i - Math.floor(jumpI / 2),
+        j - Math.floor(jumpJ / 8),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i - Math.floor(jumpJ / 4), j - Math.floor(jumpJ / 6)) === 'Void'
+    ) {
+      trade(
+        i - Math.floor(jumpI / 4),
+        j - Math.floor(jumpJ / 6),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i - Math.floor(jumpJ / 6), j - Math.floor(jumpJ / 4)) === 'Void'
+    ) {
+      trade(
+        i - Math.floor(jumpI / 6),
+        j - Math.floor(jumpJ / 4),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+  }
 
   function burnNeighbors(i, j) {
     // if neighbors are flammable, turn them into fire
     const flammable = ['Wood', 'Plant', 'Oil', 'Flower', 'Gunpowder'];
-    const exploding = ['Gunpowder'];
     if (flammable.includes(elementAt(i + 1, j))) {
       Object.assign(newGrid[j][i + 1], { element: 'Fire' });
-      if (exploding.includes(elementAt(i + i, j))) {
-        explode(i, j);
-      }
     }
     if (flammable.includes(elementAt(i - 1, j))) {
       Object.assign(newGrid[j][i - 1], { element: 'Fire' });
@@ -154,6 +182,8 @@ function logic(grid, dimension) {
     // if water is touching, fire disappears
     if (checkNeighbors(i, j, current, 'Water')) {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
+    } else if (checkNeighbors(i, j, current, 'Gunpowder')) {
+      explode(i, j, newCurrent);
     } else {
       burnNeighbors(i, j);
     }
