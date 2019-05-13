@@ -30,12 +30,7 @@ const ElementTitle = styled.h1`
   margin: auto;
 `;
 const Button = styled.button`
-  margin: 0 0em;
-  &:disabled {
-    opacity: 0.7;
-    color: black;
-    background: white;
-  }
+  margin: 0 0.2em;
 `;
 const BrushSizes = styled.div`
   position: relative;
@@ -103,7 +98,7 @@ class Toolbox extends Component {
 
     const elementButton = el => {
       return (
-        <Button
+        <button
           type="button"
           name="elementButton"
           disabled={this.state.SelectedElement === el}
@@ -112,7 +107,7 @@ class Toolbox extends Component {
           value={el}
         >
           {el}
-        </Button>
+        </button>
       );
     };
     const elementList = [
@@ -194,40 +189,34 @@ class Toolbox extends Component {
           <SizeDiv>
             &emsp;
             <BrushSizes>
-              <Button
+              <button
                 onClick={this.handleSizeChange}
                 value={parseInt(this.state.BrushSize) - 1}
                 disabled={parseInt(this.state.BrushSize) === 1}
               >
                 -
-              </Button>
+              </button>
               <button disabled>{this.state.BrushSize}</button>
-              <Button
+              <button
                 onClick={this.handleSizeChange}
                 value={parseInt(this.state.BrushSize) + 1}
                 disabled={parseInt(this.state.BrushSize) === 10}
               >
                 +
-              </Button>
+              </button>
               &emsp;
             </BrushSizes>
             &emsp;
-            <Button type="button" onClick={this.handleFill} value="fill">
+            <button type="button" onClick={this.handleFill} value="fill">
               Fill
-            </Button>
+            </button>
             &emsp;
           </SizeDiv>
           <SavePlayDiv>
-            <Button
-              type="button"
-              margin="0 0.2em"
-              onClick={this.props.saveMode}
-            >
+            <Button type="button" onClick={this.props.saveMode}>
               Save
             </Button>
-            <Button type="button" margin="0 0.2em">
-              Share
-            </Button>
+            <Button type="button">Share</Button>
           </SavePlayDiv>
           <SavePlayDiv>
             <Button type="button" onClick={this.props.step}>
