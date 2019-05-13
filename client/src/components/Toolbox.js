@@ -115,10 +115,10 @@ class Toolbox extends Component {
       'Rock',
       'Sand',
       'Water',
-      'Fire',
+      'Wood',
       'Plant',
       'Oil',
-      'Wood',
+      'Fire',
       'Gunpowder'
     ]; // Put new elements here
     const buttonList = elementList.map(el => {

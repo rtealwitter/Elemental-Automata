@@ -77,8 +77,6 @@ function logic(grid, dimension) {
     // Check whether current element is falling
     let newJ = j + 1;
     let newElement = elementAt(i, newJ);
-    // TODO: ADD OTHER FALLING ELEMENTS LIKE OIL
-    // TO BELOW CHECK
     while (
       newElement === 'Water' ||
       newElement === 'Sand' ||
@@ -128,19 +126,11 @@ function logic(grid, dimension) {
   }
 
   function explode(i, j, newCurrent) {
+    // Handles animation for exploding, creates a larger burst than regular fire
     trade(i, j, Object.assign(newCurrent, { element: 'Fire' }));
     const maxJump = 10;
     const jumpI = Math.floor(Math.random() * maxJump);
     const jumpJ = Math.floor(Math.random() * maxJump);
-    if (
-      elementAt(i - Math.floor(jumpI / 2), j - Math.floor(jumpJ / 8)) === 'Void'
-    ) {
-      trade(
-        i - Math.floor(jumpI / 2),
-        j - Math.floor(jumpJ / 8),
-        Object.assign(newCurrent, { element: 'Fire' })
-      );
-    }
     if (
       elementAt(i - Math.floor(jumpJ / 4), j - Math.floor(jumpJ / 6)) === 'Void'
     ) {
@@ -156,6 +146,42 @@ function logic(grid, dimension) {
       trade(
         i - Math.floor(jumpI / 6),
         j - Math.floor(jumpJ / 4),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i - Math.floor(jumpJ / 8), j - Math.floor(jumpJ / 2)) === 'Void'
+    ) {
+      trade(
+        i - Math.floor(jumpI / 8),
+        j - Math.floor(jumpJ / 2),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i + Math.floor(jumpJ / 8), j - Math.floor(jumpJ / 2)) === 'Void'
+    ) {
+      trade(
+        i + Math.floor(jumpI / 8),
+        j - Math.floor(jumpJ / 2),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i + Math.floor(jumpJ / 6), j - Math.floor(jumpJ / 4)) === 'Void'
+    ) {
+      trade(
+        i + Math.floor(jumpI / 6),
+        j - Math.floor(jumpJ / 4),
+        Object.assign(newCurrent, { element: 'Fire' })
+      );
+    }
+    if (
+      elementAt(i + Math.floor(jumpJ / 4), j - Math.floor(jumpJ / 6)) === 'Void'
+    ) {
+      trade(
+        i + Math.floor(jumpI / 4),
+        j - Math.floor(jumpJ / 6),
         Object.assign(newCurrent, { element: 'Fire' })
       );
     }
@@ -182,10 +208,12 @@ function logic(grid, dimension) {
     // if water is touching, fire disappears
     if (checkNeighbors(i, j, current, 'Water')) {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
-    } else if (checkNeighbors(i, j, current, 'Gunpowder')) {
-      explode(i, j, newCurrent);
     } else {
+      // else burn applicable neighbor cells and call explosion if gunpowder is in the vicinity
       burnNeighbors(i, j);
+      if (checkNeighbors(i, j, current, 'Gunpowder')) {
+        explode(i, j, newCurrent);
+      }
     }
     // disappears after set time if no element conducive to fire (wood, oil) is neighboring
     setTimeout(() => {
