@@ -126,13 +126,25 @@ class Sandbox extends Component {
 
   loadScenariosGrid() {
     const { newGrid } = this.props;
-    const newestGrid = JSON.parse(newGrid.sandbox);
-    const newesterGrid = assignDimensions(newestGrid.length, newestGrid);
-    this.setState({
-      grid: newesterGrid,
-      dimension: newestGrid.length,
-      hasBeenSet: true
-    });
+    // check if the JSON is parsed
+    try {
+      const newestGrid = JSON.parse(newGrid.sandbox);
+      const newesterGrid = assignDimensions(newestGrid.length, newestGrid);
+      this.setState({
+        grid: newesterGrid,
+        dimension: newestGrid.length,
+        hasBeenSet: true
+      });
+    } catch (e) {
+      // if an error is thrown, use newGrid
+      const newestGrid = newGrid.sandbox;
+      const newesterGrid = assignDimensions(newestGrid.length, newestGrid);
+      this.setState({
+        grid: newesterGrid,
+        dimension: newestGrid.length,
+        hasBeenSet: true
+      });
+    }
   }
 
   render() {
