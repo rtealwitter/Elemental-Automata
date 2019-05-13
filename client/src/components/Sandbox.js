@@ -126,9 +126,7 @@ class Sandbox extends Component {
 
   loadScenariosGrid() {
     const { newGrid } = this.props;
-    const newestJSON = JSON.stringify(newGrid.sandbox);
-    const newestGrid = JSON.parse(newestJSON);
-    console.log(newestGrid);
+    const newestGrid = JSON.parse(newGrid.sandbox);
     const newesterGrid = assignDimensions(newestGrid.length, newestGrid);
     this.setState({
       grid: newesterGrid,
