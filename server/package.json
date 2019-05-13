@@ -2,7 +2,7 @@
   "name": "project-server",
   "version": "0.1.0",
   "private": true,
-  "description": "Server for ...",
+  "description": "Server for sandbox database",
   "main": "index.js",
   "scripts": {
     "test": "jest",

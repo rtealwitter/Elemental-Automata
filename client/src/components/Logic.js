@@ -157,7 +157,7 @@ function logic(grid, dimension) {
     // disappears after set time if no element conducive to fire (wood, oil) is neighboring
     setTimeout(() => {
       trade(i, j, Object.assign(newCurrent, { element: 'Void' }));
-    }, 200); // tried to have it last longer but this # is limited by the update speed
+    }, 175); // tried to have it last longer but this # is limited by the update speed
     const maxJump = 10;
     const jumpI = Math.floor(Math.random() * maxJump);
     const jumpJ = Math.floor(Math.random() * maxJump);

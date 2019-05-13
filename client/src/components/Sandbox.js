@@ -27,7 +27,7 @@ const ElementArray = [Void, Rock, Water, Sand, Fire, Plant, Flower, Oil, Wood];
 
 let mouseDown = false;
 
-const speed = 250; //milliseconds between updates
+const speed = 200; //milliseconds between updates
 
 function assignDimensions(dimension, grid) {
   const newGrid = [];
@@ -59,7 +59,7 @@ class Sandbox extends Component {
     this.loadScenariosGrid = this.loadScenariosGrid.bind(this);
 
     this.state = {
-      dimension: 20,
+      dimension: 40,
       grid: [],
       hasBeenSet: false
     };

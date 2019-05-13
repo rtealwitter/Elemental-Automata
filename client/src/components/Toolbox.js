@@ -214,9 +214,8 @@ class Toolbox extends Component {
           </SizeDiv>
           <SavePlayDiv>
             <Button type="button" onClick={this.props.saveMode}>
-              Save
+              Save & Share
             </Button>
-            <Button type="button">Share</Button>
           </SavePlayDiv>
           <SavePlayDiv>
             <Button type="button" onClick={this.props.step}>
