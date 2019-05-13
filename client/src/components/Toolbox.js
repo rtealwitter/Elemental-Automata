@@ -30,7 +30,12 @@ const ElementTitle = styled.h1`
   margin: auto;
 `;
 const Button = styled.button`
-  margin: 0 0.2em;
+  margin: 0 0em;
+  &:disabled {
+    opacity: 0.7;
+    color: black;
+    background: white;
+  }
 `;
 const BrushSizes = styled.div`
   position: relative;
@@ -69,6 +74,7 @@ class Toolbox extends Component {
     if (newSize >= 10) {
       newSize = 10;
     }
+    newSize = newSize.toString();
     this.setState({ [field]: newSize });
     this.props.selected(field, newSize);
   }
@@ -93,10 +99,11 @@ class Toolbox extends Component {
   render() {
     const { play, step, toFill, selected, saveModeState } = this.props;
     const { handleClear, set } = this;
+    const { BrushSize } = this.state;
 
     const elementButton = el => {
       return (
-        <button
+        <Button
           type="button"
           name="elementButton"
           disabled={this.state.SelectedElement === el}
@@ -105,7 +112,7 @@ class Toolbox extends Component {
           value={el}
         >
           {el}
-        </button>
+        </Button>
       );
     };
     const elementList = [
@@ -117,7 +124,6 @@ class Toolbox extends Component {
       'Plant',
       'Oil',
       'Wood'
-
     ]; // Put new elements here
     const buttonList = elementList.map(el => {
       return elementButton(el);
@@ -146,11 +152,35 @@ class Toolbox extends Component {
           set({ SelectedElement: 'Void' });
         }
         if (Number.isInteger(parseInt(e.key))) {
-          const index = parseInt(e.key);
-          if (index < elementList.length) {
+          const index = parseInt(e.key) - 1;
+          if (index < elementList.length && index >= 0) {
             set({ SelectedElement: elementList[index] });
             selected('SelectedElement', elementList[index]);
           }
+        }
+        if (['=', '+'].includes(e.key)) {
+          let newSize = parseInt(BrushSize) + 1;
+          if (newSize <= 0) {
+            newSize = 1;
+          }
+          if (newSize >= 10) {
+            newSize = 10;
+          }
+          newSize = newSize.toString();
+          set({ BrushSize: newSize });
+          selected('BrushSize', newSize);
+        }
+        if (['-', '_'].includes(e.key)) {
+          let newSize = parseInt(BrushSize) - 1;
+          if (newSize <= 0) {
+            newSize = 1;
+          }
+          if (newSize >= 10) {
+            newSize = 10;
+          }
+          newSize = newSize.toString();
+          set({ BrushSize: newSize });
+          selected('BrushSize', newSize);
         }
       }
     };
@@ -164,30 +194,40 @@ class Toolbox extends Component {
           <SizeDiv>
             &emsp;
             <BrushSizes>
-              <button
+              <Button
                 onClick={this.handleSizeChange}
                 value={parseInt(this.state.BrushSize) - 1}
+                disabled={parseInt(this.state.BrushSize) === 1}
               >
                 -
-              </button>
+              </Button>
               <button disabled>{this.state.BrushSize}</button>
-              <button
+              <Button
                 onClick={this.handleSizeChange}
                 value={parseInt(this.state.BrushSize) + 1}
+                disabled={parseInt(this.state.BrushSize) === 10}
               >
                 +
-              </button>
+              </Button>
               &emsp;
             </BrushSizes>
+            &emsp;
             <Button type="button" onClick={this.handleFill} value="fill">
               Fill
             </Button>
+            &emsp;
           </SizeDiv>
           <SavePlayDiv>
-            <Button type="button" onClick={this.props.saveMode}>
+            <Button
+              type="button"
+              margin="0 0.2em"
+              onClick={this.props.saveMode}
+            >
               Save
             </Button>
-            <Button type="button">Share</Button>
+            <Button type="button" margin="0 0.2em">
+              Share
+            </Button>
           </SavePlayDiv>
           <SavePlayDiv>
             <Button type="button" onClick={this.props.step}>
