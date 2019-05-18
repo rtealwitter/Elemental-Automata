@@ -16,7 +16,6 @@ function logic(grid, dimension) {
       element: grid[j][i].element
     });
     Object.assign(newGrid[j][i], { element: newElement });
-    console.log(newCurrent);
   }
 
   function isEmpty(i, j, current) {

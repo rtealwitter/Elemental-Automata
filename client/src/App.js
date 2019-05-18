@@ -150,6 +150,11 @@ class App extends Component {
       position: fixed;
       top: 20%;
     `;
+    const Scenario = styled(Div)`
+      top: 10%;
+      height: 90%;
+      overflow: scroll;
+    `;
     const Start = styled.h1`
       margin: 1em auto;
       display: block;
@@ -300,8 +305,9 @@ class App extends Component {
     }
 
     const ID = styled(Input)`
-      width: 50%;
+      width: 20%;
       position: relative;
+      display: inline;
       margin: 0.5em auto;
     `;
     if (this.state.start) {
@@ -315,7 +321,7 @@ class App extends Component {
       );
     } else if (inScenarioView) {
       return (
-        <Div className="App">
+        <Scenario className="App">
           <GlobalStyle mode="scenario" />
           {scenarioView}
           <Form>
@@ -329,7 +335,7 @@ class App extends Component {
               <Button onClick={this.changeGridByLink}>Submit</Button>
             </FormGroup>
           </Form>
-        </Div>
+        </Scenario>
       );
     } else {
       return (

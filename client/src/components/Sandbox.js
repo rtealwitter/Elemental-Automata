@@ -74,7 +74,7 @@ class Sandbox extends Component {
     this.loadScenariosGrid = this.loadScenariosGrid.bind(this);
 
     this.state = {
-      dimension: 40,
+      dimension: 20,
       grid: [],
       hasBeenSet: false
     };
